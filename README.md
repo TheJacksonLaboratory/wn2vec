@@ -37,3 +37,4 @@ Use the following to run all tests
 ```
 nosetests tests/
 ```
+.
