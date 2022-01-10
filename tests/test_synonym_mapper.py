@@ -20,3 +20,6 @@ class SynonymMapperTester(TestCase):
     
     def test_setup(self):
         self.assertEquals(16, self.counter.get('examination'))
+        
+    def test_setup2(self):
+        self.assertEquals(2, self.counter.get('test'))
