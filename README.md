@@ -28,3 +28,12 @@ ipython kernel install --name "mykernel" --user
 ```
 
 Start with ``jupyter-lab`` or ``jupyter notebook`` and choose ``mykernel``. See the notebook at ``notebook/nltkdemo.ipynb`` for how to use the python package we are creating, ``wn2vec``.
+
+
+Testing
+#######
+
+Use the following to run all tests
+```
+nosetests tests/
+```
