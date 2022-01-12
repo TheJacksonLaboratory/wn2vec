@@ -6,9 +6,9 @@ from collections import Counter  # Import Counter
 import numpy as np
 
 
-class Replace:
-    def __init__(self, list):
-        self.list = list
+class replace:
+    #def __init__(self, list):
+      #  self.list = list
 
     """
     Arragnement(): takes a list and returns list of sorted unique variables according to frequency 
@@ -34,7 +34,21 @@ class Replace:
             for l in syn.lemmas():
                 synonyms.append(l.name())
         return synonyms
-    
+    """
+    giveKey(): Takes a word and dictionary and returns the key of the word in the dictionary  
+            @urgument: 'word' a string or any variable part of the dataset to be replaced with the dictionary key if it is not a key itself
+                        "doctList" a dictionary created with the whole dataset   
+            @return: 'Key_lis[x]' a string of a unique key of the word in the dictionary 
+    """
+    def giveKey(word, dictList):
+        key_list = []
+        val_list = []
+        key_list.extend(dictList.keys())
+        val_list.extend(dictList.values())
+        for x in range(len(val_list)):
+            for j in range(len(val_list[x])):
+                if(val_list[x][j] == word):
+                    return(key_list[x])
     """
     dictCreate(): Creates a dictionary from the whole data set, they keys are in order of their frequency words and the values are synonyms of keys form synset   
             @urgument: 'unique' a list of unique variables from the wholed dataset in order of their frequency
