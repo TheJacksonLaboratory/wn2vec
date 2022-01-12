@@ -1,6 +1,6 @@
 
 # Read ten first ten lines of the data set and prints them 
-
+from replace import*
 from collections import defaultdict
 import csv
 
