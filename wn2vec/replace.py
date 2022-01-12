@@ -5,7 +5,11 @@ from nltk.corpus import wordnet as wn # Import Wordnet
 from collections import Counter  # Import Counter
 import numpy as np
 
+
 class Replace:
+    def __init__(self, list):
+        self.list = list
+
     """
     Arragnement(): takes a list and returns list of sorted unique variables according to frequency 
                 urgument: 'list' a list of data set 
