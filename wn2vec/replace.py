@@ -4,11 +4,12 @@ import nltk
 from nltk.corpus import wordnet as wn # Import Wordnet
 from collections import Counter  # Import Counter
 import numpy as np
+import csv
 
 
 class replace:
-    #def __init__(self, list):
-      #  self.list = list
+    def __init__(self, dataSet):
+        self.dataSet = dataSet
 
     """
     Arragnement(): takes a list and returns list of sorted unique variables according to frequency 
@@ -67,3 +68,38 @@ class replace:
                 valueSynm.extend(synonym(unique[x])) 
                 diction[unique[x]] = synonym(unique[x]) # adding a dicitonary 
         return diction
+
+    #Create a dictionary using all the data set
+    def dictionary_from_list(data_set):
+        tsv_file = open(data_set)
+        read_tsv = csv.reader(tsv_file, delimiter="\t")
+        temp = []
+        for row in read_tsv:
+            #corpus_raw = row
+            raw_sentences = row[2].split('.')
+            sentences = []
+            for sentence in raw_sentences:
+                temp.extend(sentence.split())
+        dictionary = dictCreate(arrangement(temp))
+        tsv_file.close()
+        return dictionary; 
+
+
+    #Replace the dictionary variables 
+    def replace_dataSet(dataSet):
+        tsv_file = open(dataSet)
+        read_tsv = csv.reader(tsv_file, delimiter="\t")
+        for row in read_tsv:
+            #corpus_raw = row
+            raw_sentences = row[2].split('.')
+            sentences = []
+            for sentence in raw_sentences:
+                sentences.append(sentence.split())
+                for i in range(len(sentences)):
+                    if sentences[0][i] in dictionary:
+                        continue
+                    else:
+                    x = giveKey(sentences[i], dictionary)
+                    sentences[i] = x
+            print(sentences[0])
+        tsv_file.close()
