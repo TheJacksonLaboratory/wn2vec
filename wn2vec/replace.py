@@ -74,7 +74,7 @@ replace_data_set(): Replaces the variable in dataset with their synonyms from th
 
 """
 
-def replace_data_set(data_list):
+def replace_data_set(data_list,dictionary):
   for i in range(len(data_list)):
     if data_list[i] in dictionary:
       continue
