@@ -20,6 +20,30 @@ for row in read_tsv:
     break
 
 
+#Create a dictionary using all the data set
+tsv_file = open(marea_file)
+read_tsv = csv.reader(tsv_file, delimiter="\t")
+temp = []
+for row in read_tsv:
+    #corpus_raw = row
+    raw_sentences = row[2].split('.')
+    sentences = []
+    for sentence in raw_sentences:
+        temp.extend(sentence.split())
+dictionary = dictCreate(arrangement(temp))
+tsv_file.close()
+print(dictionary)
 
-dictionary_from_list(marea_file)
-replace_dataSet(marea_file)
+
+
+#Replace the dictionary variables 
+
+tsv_file = open(path)
+read_tsv = csv.reader(tsv_file, delimiter="\t")
+for row in read_tsv:
+    raw_sentences = row[2].split('.')
+    sentences = []
+    for sentence in raw_sentences:
+        sentences.append(sentence.split())
+        print(replace_data_set(sentences[0], dictionary)) #used sentences[0] because the dataset gives us a nested list 
+tsv_file.close()
