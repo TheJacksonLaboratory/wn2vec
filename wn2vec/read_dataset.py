@@ -38,7 +38,7 @@ print(dictionary)
 
 #Replace the dictionary variables 
 
-tsv_file = open(path)
+tsv_file = open(marea_file)
 read_tsv = csv.reader(tsv_file, delimiter="\t")
 for row in read_tsv:
     raw_sentences = row[2].split('.')
