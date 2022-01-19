@@ -25,14 +25,14 @@ class ReplaceTestCase(unittest.TestCase):
         expected_dictionary = {'cell': 'cadre', 'cadre': 'cadre', 'tissue': 'tissue', 'tissue_paper': 'tissue', 'weave': 'tissue', 'cider': 'cider', 'cyder': 'cider'}
         self.assertEqual(expected_dictionary,dictCreate(test_list), 'Dictionary created do not match expected.')
     
-    def test_giveKey(self):
+    def test_giveValue(self):
         test_dictionary = {'cell': 'cadre', 'cadre': 'cadre', 'tissue': 'tissue', 'tissue_paper': 'tissue', 'weave': 'tissue', 'cider': 'cider', 'cyder': 'cider'}
         test5 = 'cell'
         expected5 = 'cadre'
         test6 = 'cider' 
         expected6 = 'cider'
-        self.assertEqual(expected5,giveKey(test5,test_dictionary), 'Key do not match expected.')
-        self.assertEqual(expected6,giveKey(test6,test_dictionary), 'Key do not match expected.')       
+        self.assertEqual(expected5,giveValue(test5,test_dictionary), 'Key do not match expected.')
+        self.assertEqual(expected6,giveValue(test6,test_dictionary), 'Key do not match expected.')       
     
     def test_replace_data_set(self):
         test_set = ['cell', 'cadre', 'cell', 'dyestuff', 'dye', 'dye']
