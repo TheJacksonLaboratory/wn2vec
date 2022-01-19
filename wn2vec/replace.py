@@ -1,6 +1,14 @@
 import nltk
-
+import ssl
+# to disable SSL to be able to download worldnet
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
 nltk.download("wordnet")
+
 from nltk.corpus import wordnet as wn # Import Wordnet
 from collections import Counter  # Import Counter
 import numpy as np
