@@ -22,7 +22,7 @@ class ReplaceTestCase(unittest.TestCase):
     
     def test_dictCreate(self):
         test_list = ['cadre', 'tissue', 'cell', 'weave', 'cider']
-        expected_dicitonary = {'cadre': ['cell', 'cadre', 'cadre'],'cider': ['cider', 'cyder'], 'tissue': ['tissue', 'tissue', 'tissue_paper', 'weave', 'tissue']}
+        expected_dictionary = {'cadre': ['cell', 'cadre', 'cadre'],'cider': ['cider', 'cyder'], 'tissue': ['tissue', 'tissue', 'tissue_paper', 'weave', 'tissue']}
         self.assertEqual(expected_dictionary,dictCreate(test_list), 'Dictionary created do not match expected.')
     
     def test_giveKey(self):
@@ -31,15 +31,15 @@ class ReplaceTestCase(unittest.TestCase):
         expected5 = 'cadre'
         test6 = 'cider' 
         expected6 = 'cider'
-        self.assertEqual(expected5,synonym(test5,test_dictionary), 'Key do not match expected.')
-        self.assertEqual(expected6,synonym(test6,test_dictionary), 'Key do not match expected.')       
+        self.assertEqual(expected5,giveKey(test5,test_dictionary), 'Key do not match expected.')
+        self.assertEqual(expected6,giveKey(test6,test_dictionary), 'Key do not match expected.')       
     
     def test_replace_data_set(self):
         test_set = ['cell', 'cadre', 'cell', 'dyestuff', 'dye', 'dye']
         #test_dictionary = dictCreate(arrangement(test_set))
         test_dictionary = {'cell': ['cell', 'cell', 'cell', 'electric_cell', 'cell', 'cadre', 'cellular_telephone', 'cellular_phone', 'cellphone', 'cell', 'mobile_phone', 'cell', 'cubicle', 'cell', 'jail_cell', 'prison_cell'], 'dye': ['dye', 'dyestuff', 'dye']}
         expected_set =['cell', 'cell', 'cell', 'dye', 'dye', 'dye']
-        self.assertEqual(expected_set,synonym(test_set,test_dictionary), 'Key do not match expected.')
+        self.assertEqual(expected_set,replace_data_set(test_set,test_dictionary), 'Key do not match expected.')
 
 if __name__ == '__main__':
     unittest.main()
