@@ -56,12 +56,12 @@ def dictCreate(unique):
     return dictionary
 
 """
-giveKey(): Takes a word and dictionary and returns the key of the word in the dictionary  
+giveValue(): Takes a word and dictionary and returns the value of the word in the dictionary  
         @argument: 'word' a string or any variable part of the dataset to be replaced with the dictionary key if it is not a key itself
                     "dictList" a dictionary created with the whole dataset   
-        @return: 'Key_lis[x]' a string of a unique key of the word in the dictionary 
+        @return: 'Key_lis[x]' a string of a unique value of the word in the dictionary 
 """
-def giveKey(word, dictList):
+def giveValue(word, dictList):
     return dictList[word]
 
 """
@@ -75,7 +75,7 @@ replace_data_set(): Replaces the variable in dataset with their synonyms from th
 def replace_data_set(data_list,dictionary):
   for i in range(len(data_list)):
     if data_list[i] in dictionary:
-        data_list[i]= giveKey(data_list[i], dictionary)
+        data_list[i]= giveValue(data_list[i], dictionary)
     else:
         continue
       
