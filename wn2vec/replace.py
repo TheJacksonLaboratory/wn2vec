@@ -41,21 +41,18 @@ def synonym(word):
 """
 dictCreate(): Creates a dictionary from the whole data set, they keys are in order of their frequency words and the values are synonyms of keys form synset   
         @argument: 'unique' a list of unique variables from the wholed dataset in order of their frequency
-        @return: 'diction' a dictionary of all the variables in the dataset, the keys are the unique variables with high frequency, and values are key's synonym
+        @return: 'dictionary' a dictionary of all the variables in the dataset, the keys are the unique variables with high frequency, and values are key's synonym
 """
 def dictCreate(unique):
-  
-    list_values = [] #create list of values
     dictionary = {} 
-    dictionary[unique[0]]= synonym(unique[0])
-    list_values.extend(synonym(unique[0]))
-    for x in range(1,len(unique)):
-        if(unique[x] in list_values): #check if the variable is the unique list is part of values (synonyms) of already existing dictionary, and skip that word 
-            continue
-        else:
-            list_values.extend(synonym(unique[x])) 
-            dictionary[unique[x]] = synonym(unique[x]) # adding a dicitonary 
-    #print(diction)
+    i = 0
+    while i < len(unique):
+      if unique[i] in dictionary:
+        i = i+1
+      else:
+        for x in range(0, len(synonym(unique[i]))):
+          dictionary[synonym(unique[i])[x]] = unique[i]
+        i = i+1
     return dictionary
 
 """
@@ -65,14 +62,7 @@ giveKey(): Takes a word and dictionary and returns the key of the word in the di
         @return: 'Key_lis[x]' a string of a unique key of the word in the dictionary 
 """
 def giveKey(word, dictList):
-    key_list = []
-    val_list = []
-    key_list.extend(dictList.keys())
-    val_list.extend(dictList.values())
-    for x in range(len(val_list)):
-        for j in range(len(val_list[x])):
-            if(val_list[x][j] == word):
-                return(key_list[x])
+    return dictList[word]
 
 """
 replace_data_set(): Replaces the variable in dataset with their synonyms from the dictionary  
@@ -85,7 +75,8 @@ replace_data_set(): Replaces the variable in dataset with their synonyms from th
 def replace_data_set(data_list,dictionary):
   for i in range(len(data_list)):
     if data_list[i] in dictionary:
-      continue
+        data_list[i]= giveKey(data_list[i], dictionary)
     else:
-      data_list[i]= giveKey(data_list[i], dictionary)
+        continue
+      
   return(data_list)
