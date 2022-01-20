@@ -10,10 +10,10 @@ import numpy as np
 import csv
 
 class ReplaceTestCase(unittest.TestCase):
-    def test_arrangement(self):
+    def test_sort_words_by_count(self):
         test1 = ['cancer', 'disease', 'caused', 'cell', 'crab', 'simple', 'cadre', 'cell', 'cancer', 'disease', 'cell', 'cancer', 'cell']
         expected = ['cell', 'cancer', 'disease', 'caused', 'crab', 'simple', 'cadre']
-        self.assertEqual(expected,arrangement(test1), 'Arrangement do not match expected.')
+        self.assertEqual(expected,sort_words_by_count(test1), 'Sorting do not match expected.')
 
     def test_synonym(self):
         test2 = 'tissue'
@@ -36,7 +36,7 @@ class ReplaceTestCase(unittest.TestCase):
     
     def test_replace_data_set(self):
         test_set = ['cell', 'cadre', 'cell', 'dyestuff', 'dye', 'dye']
-        test_dictionary = dictCreate(arrangement(test_set))
+        test_dictionary = dictCreate(sort_words_by_count(test_set))
         expected_set =['cell', 'cell', 'cell', 'dye', 'dye', 'dye']
         self.assertEqual(expected_set,replace_data_set(test_set,test_dictionary), 'Key do not match expected.')
 
