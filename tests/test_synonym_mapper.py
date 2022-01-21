@@ -1,6 +1,6 @@
 
 
-from wn2vec.synonym_mapper import SynonymMapper
+from script.synonym_mapper import SynonymMapper
 
 import os
 from collections import defaultdict
