@@ -4,6 +4,8 @@ from collections import Counter
 import ssl
 from typing import List
 from collections import Counter
+
+
 # to disable SSL to be able to download worldnet
 try:
     _create_unverified_https_context = ssl._create_unverified_context
@@ -18,7 +20,6 @@ from collections import Counter  # Import Counter
 import numpy as np
 import csv
 
-<<<<<<< HEAD
 
 def sort_words_by_count(list: List[str]) -> List[str]:
     """
@@ -29,29 +30,10 @@ def sort_words_by_count(list: List[str]) -> List[str]:
    
     """
     counter = Counter(list)
-=======
-"""
-Arragnement(): takes a list and returns list of sorted unique variables according to frequency 
-            @argument: 'list' a list of data set 
-            @return: 'unique' a list of sorted variables in order of frequency  
-            i.e the first element is a unique word which as a high frequency
-"""
-def sort_words_by_count(list: List[str]) -> List[str]:
-    result = sorted(list, key = list.count, reverse = True) # sorting on basis of frequency of elements
-    used = set()
-    unique = [x for x in result if x not in used and (used.add(x) or True)]  #arrange according to unique characters
-    return(unique)
-
-
-def sort_words_by_count2(list: List[str]) -> List[str]:
-    counter = Counter(list)
-    # sort words (keys) by their frequency in 'list' (value)
->>>>>>> 715ea97af5d31ebb9f739d8216e4b7815606d082
     sorted_keys = [pair[0] for pair in sorted(counter.items(), key=lambda item: item[1], reverse=True)]
     return sorted_keys
 
 
-<<<<<<< HEAD
 def synonym(word:str) -> List[str]:
     """
     Takes a word and prints its synonyms in form of a list (synset) using wordnet 
@@ -72,31 +54,6 @@ def dictCreate(unique:List[str]) -> dict[str, str]:
     :return: 'dictionary' a dictionary of all the variables in the dataset, the keys are the unique variables with high frequency, and values are key's synonym
     
     """
-
-=======
-
-"""
-synonym(): Takes a word and prints its synonyms in form of a list (synset) using wordnet 
-        @argument: 'word' a string or any variable part of the dataset  
-        @return: 'synonyms' a list of synonyms of the words 
-"""
-def synonym(word):
-    synonyms = []
-    for syn in wn.synsets(word):
-        #for l in syn.lemmas():
-        #    synonyms.append(l.name())
-        synonyms.extend([l.name() for l in syn.lemmas()])
-    return synonyms
-
-"""
-dictCreate(): Creates a dictionary from the whole data set, 
-they keys are in order of their frequency words and the values 
-are synonyms of keys form synset   
-        @argument: 'unique' a list of unique variables from the wholed dataset in order of their frequency
-        @return: 'dictionary' a dictionary of all the variables in the dataset, the keys are the unique variables with high frequency, and values are key's synonym
-"""
-def dictCreate(unique: List[str]):
->>>>>>> 715ea97af5d31ebb9f739d8216e4b7815606d082
     dictionary = {} 
     synonym2keyword_d = {}
     for word in unique:

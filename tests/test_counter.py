@@ -1,4 +1,4 @@
-from wn2vec.wntransformer import WordNetTransformer
+from script.wntransformer import WordNetTransformer
 
 import os
 from unittest import TestCase
