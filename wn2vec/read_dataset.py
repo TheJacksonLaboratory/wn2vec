@@ -30,7 +30,7 @@ for row in read_tsv:
     sentences = []
     for sentence in raw_sentences:
         temp.extend(sentence.split())
-dictionary = dictCreate(arrangement(temp))
+dictionary = dictCreate(sort_words_by_count(temp))
 tsv_file.close()
 print(dictionary)
 
