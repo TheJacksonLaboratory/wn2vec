@@ -1,7 +1,5 @@
-from script import*
-
 import unittest
-
+from script.replace import*
 
 import nltk
 
