@@ -61,13 +61,13 @@ class Replace:
         
         """
         dictionary = {} 
-        synonym2keyword_d = {}
         for word in unique:
-            synonym2keyword_d[word] = word
-            for syn in synonym(word):
-                if syn in synonym2keyword_d : continue
-                synonym2keyword_d[syn] = word
-        return synonym2keyword_d
+            if word in dictionary: continue
+            else:
+                for syn in synonym(word):
+                    dictionary[syn] = word
+        return dictionary 
+
 
     def replace_data_set(data_list: List[str],dictionary: dict[str,str]) -> List[str]:
         """
