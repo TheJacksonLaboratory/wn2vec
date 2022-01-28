@@ -12,33 +12,30 @@ import csv
 class ReplaceTestCase(unittest.TestCase):
     def test_sort_words_by_count(self):
         test1 = ['cancer', 'disease', 'caused', 'cell', 'crab', 'simple', 'cadre', 'cell', 'cancer', 'disease', 'cell', 'cancer', 'cell']
+        result = Replace.sort_words_by_count(test1)
         expected = ['cell', 'cancer', 'disease', 'caused', 'crab', 'simple', 'cadre']
-        self.assertEqual(expected,sort_words_by_count(test1), 'Arrangement do not match expected.')
+        self.assertEqual(expected, result, 'Arrangement do not match expected.')
         # 'cancer', 'disease', 'caused', 'cell', 'crab', 'simple', 'cadre']
 
     def test_synonym(self):
-        test2 = 'tissue'
         expected = ['tissue', 'tissue', 'tissue_paper', 'weave', 'tissue']
-        print(synonym(test2))
-        self.assertEqual(expected,synonym(test2), 'Synonym do not match expected.')
+        result = Replace.synonym('tissue')
+        self.assertEqual(expected, result, 'Synonym do not match expected.')
     
     def test_dictCreate(self):
         test_list = ['cadre', 'tissue', 'cell', 'weave', 'cider']
         expected_dictionary = {'cell': 'cadre', 'cadre': 'cadre', 'tissue': 'tissue', 'tissue_paper': 'tissue', 'weave': 'tissue', 'cider': 'cider', 'cyder': 'cider'}
-        self.assertEqual(expected_dictionary,dictCreate(test_list), 'Dictionary created do not match expected.')
+        rep = Replace(test_list)
+        d = rep.get_word_dictionary()
+        self.assertEqual(expected_dictionary, d, 'Dictionary created do not match expected.')
       
     
     def test_replace_data_set(self):
         test_set = ['cell', 'cadre', 'cell', 'dyestuff', 'dye', 'dye']
-        test_dictionary = dictCreate(sort_words_by_count(test_set))
-        test_d = {'cell': 'cell', 'dye': 'dye', 'cadre': 'cell', 'dyestuff': 'dye'}
+        replace = Replace(list=test_set)
+        result = replace.get_replaced_data()
         expected_set =['cell', 'cell', 'cell', 'dye', 'dye', 'dye']
-        res = replace_data_set(test_set,test_d)
-        print("DICTIONARY")
-        print(test_dictionary)
-        print("RESULT")
-        print(res)
-        self.assertEqual(expected_set,replace_data_set(test_set,test_d), 'Key do not match expected.')
+        self.assertEqual(expected_set, result, 'Key do not match expected.')
 
 if __name__ == '__main__':
     unittest.main()
