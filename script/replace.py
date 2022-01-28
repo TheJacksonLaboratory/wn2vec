@@ -1,6 +1,8 @@
 
+from readline import replace_history_item
+from turtle import st
 import nltk
-from typing import List
+from typing import List, Dict
 from collections import Counter
 import ssl
 from typing import List
@@ -24,9 +26,13 @@ import csv
 class Replace:
 
     def __init__(self, list):
-        self.list = list
+        sorted_words = Replace.sort_words_by_count(list)
+        print(f"[INFO] {len(sorted_words)} sorted words")
+        self._word_dict = Replace.dictCreate(sorted_words)
+        self._replaced = self.replace_data_set(list)
+        print("[INFO] Created word dictionary")
 
-
+    @staticmethod
     def sort_words_by_count(list: List[str]) -> List[str]:
         """
         takes a list and returns list of sorted unique variables according to frequency 
@@ -39,7 +45,7 @@ class Replace:
         sorted_keys = [pair[0] for pair in sorted(counter.items(), key=lambda item: item[1], reverse=True)]
         return sorted_keys
 
-
+    @staticmethod
     def synonym(word:str) -> List[str]:
         """
         Takes a word and prints its synonyms in form of a list (synset) using wordnet 
@@ -52,8 +58,8 @@ class Replace:
             synonyms.extend([l.name() for l in syn.lemmas()])
         return synonyms
 
-
-    def dictCreate(unique:List[str]) -> dict[str, str]:
+    @staticmethod
+    def dictCreate(unique:List[str]) -> Dict[str, str]:
         """
         Creates a dictionary from the whole data set, they keys are in order of their frequency words and the values are synonyms of keys form synset   
         :param unique: a list of unique variables from the wholed dataset in order of their frequency
@@ -64,20 +70,27 @@ class Replace:
         for word in unique:
             if word in dictionary: continue
             else:
-                for syn in synonym(word):
+                for syn in Replace.synonym(word):
                     dictionary[syn] = word
         return dictionary 
 
 
-    def replace_data_set(data_list: List[str],dictionary: dict[str,str]) -> List[str]:
+    def replace_data_set(self, data_list: List[str]) -> List[str]:
         """
         Replaces the variable in dataset with their synonyms from the dictionary  
         :param data_list: a list of all the data_set in form of a list 
         :param dictionary: a dictionary created with the whole dataset   
-        :return: 'data_list' a new list with the whole list where the words were replaced by their synonyms 
-
+        :return: 'data_list' a new list with the whole list where the words were replaced by their synonyms
         """
+        if not isinstance(data_list, list):
+            raise ValueError("replace_data_set accepts a list of strings")
         for i in range(len(data_list)):
-            if data_list[i] in dictionary:
-               data_list[i]= dictionary[data_list[i]]
+            if data_list[i] in self._word_dict:
+               data_list[i]= self._word_dict[data_list[i]]
         return(data_list)
+
+    def get_word_dictionary(self) -> Dict:
+        return self._word_dict
+
+    def get_replaced_data(self):
+        return self._replaced
