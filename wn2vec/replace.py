@@ -6,49 +6,9 @@ from collections import Counter  # Import Counter
 import numpy as np
 import csv
 
-"""
-Arragnement(): takes a list and returns list of sorted unique variables according to frequency 
-            @argument: 'list' a list of data set 
-            @return: 'unique' a list of sorted variables in order of frequency  
-            i.e the first element is a unique word which as a high frequency
-"""
-def arrangement(list):
-    result = sorted(list, key = list.count, reverse = True) # sorting on basis of frequency of elements
-    used = set()
-    unique = [x for x in result if x not in used and (used.add(x) or True)]  #arrange according to unique characters
-    return(unique)
 
-"""
-synonym(): Takes a word and prints its synonyms in form of a list (synset) using wordnet 
-        @argument: 'word' a string or any variable part of the dataset  
-        @return: 'synonyms' a list of synonyms of the words 
-"""
-def synonym(word):
-    synonyms = []
-    for syn in wn.synsets(word):
-        for l in syn.lemmas():
-            synonyms.append(l.name())
-    return synonyms
 
-"""
-dictCreate(): Creates a dictionary from the whole data set, they keys are in order of their frequency words and the values are synonyms of keys form synset   
-        @argument: 'unique' a list of unique variables from the wholed dataset in order of their frequency
-        @return: 'diction' a dictionary of all the variables in the dataset, the keys are the unique variables with high frequency, and values are key's synonym
-"""
-def dictCreate(unique):
-  
-    list_values = [] #create list of values
-    dictionary = {} 
-    dictionary[unique[0]]= synonym(unique[0])
-    list_values.extend(synonym(unique[0]))
-    for x in range(1,len(unique)):
-        if(unique[x] in list_values): #check if the variable is the unique list is part of values (synonyms) of already existing dictionary, and skip that word 
-            continue
-        else:
-            list_values.extend(synonym(unique[x])) 
-            dictionary[unique[x]] = synonym(unique[x]) # adding a dicitonary 
-    #print(diction)
-    return dictionary
+
 
 """
 giveKey(): Takes a word and dictionary and returns the key of the word in the dictionary  
