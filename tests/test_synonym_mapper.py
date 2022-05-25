@@ -1,7 +1,4 @@
 
-
-from script.synonym_mapper import SynonymMapper
-
 import os
 from collections import defaultdict
 from unittest import TestCase
