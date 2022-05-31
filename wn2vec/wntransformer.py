@@ -81,5 +81,22 @@ class WordNetTransformer:
                 synonyms.append(l.name())
         return synonyms
 
+    def replace_data_set(self, data_list, dictionary) ->List:
+
+        """
+        Replaces the variable in dataset with their synonyms from the dictionary
+        @argument: 'data_list' a list of all the data_set in form of a list
+                          "dictionary" a dictionary created with the whole dataset
+        @return: 'data_list' a new list with the whole list where the words were replaced by their synonyms
+
+        """
+
+        for i in range(len(data_list)):
+            if data_list[i] in dictionary:
+                data_list[i] = dictionary.get(data_list[i])
+            else:
+                raise ValueError("the word is not in the dictionary")
+        return (data_list)
+
     def transform(self, sentence: str) -> str:
         pass
