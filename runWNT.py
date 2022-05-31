@@ -1,4 +1,4 @@
-from wn2vec import WordNetTransformer
+from scripts import WordNetTransformer
 
 
 marea_file = "data/sample100abstracts.tsv"

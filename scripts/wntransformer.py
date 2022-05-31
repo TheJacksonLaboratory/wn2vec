@@ -20,14 +20,15 @@ class WordNetTransformer:
         # Get count of words in corpus
 
         with open(marea_file) as f:
-            data_list = []  # contains string of all the words in dataset
             for line in f:
-                words = line.split()
+                columns = line.split('\t')
+                if len(columns) != 3:
+                    raise ValueError(f'Malformed marea line: {line}')
+                payload = columns[2] # columns[0] - year, columns[1]: pmid, columns[2] abstract text
+                words = payload.split()
                 for w in words:
-                    # TODO skip stop words
                     self._counter[w] += 1
-                    #add each word to the data_list
-                    data_list.append(w)
+
         # Create synonym dictionary with NLTK
         # if needed, install wordnet
         nltk.download("wordnet")
@@ -37,7 +38,6 @@ class WordNetTransformer:
 
         self._do_not_replace_threshold = do_not_replace_threshold
         self._dict = self.dictCreate(words_sorted_by_frequency)
-        self._data_list = data_list
 
     def dictCreate(self, word_list) -> Dict:
         """
@@ -85,22 +85,6 @@ class WordNetTransformer:
                 synonyms.append(l.name())
         return synonyms
 
-    def replace_data_set(self, _data_list, _dict) ->List:
-
-        """
-        Replaces the variable in dataset with their synonyms from the dictionary
-        @argument: 'data_list' a list of all the dataset  in form of a list
-                    '_dict' a dictionary created from the unique words from the whole dataset
-        @return: 'data_list' a new list with the whole list where the words were replaced by their synonyms
-
-        """
-
-        for i in range(len(self._data_list)):
-            if self._data_list[i] in self._dict:
-                self._data_list[i] = self._dict.get(self._data_list[i])
-            else:
-                raise ValueError("the word is not in the dictionary")
-        return (self._data_list)
-
     def transform(self, sentence: str) -> str:
         pass
+
