@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8ffc17b4-2b5e-4cee-8228-44340bdc3102" name="Changes" comment="rename test_replace.py to test_transormer.py">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wn2vec/wntransformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/wn2vec/wntransformer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,7 +19,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="RunManager" selected="Python tests.Python tests for test_wntransformer.WordNetTransformerTestCase.test_replace_data_set">
+  <component name="RunManager" selected="Python.wntransformer">
     <configuration name="wntransformer" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="wn2vec" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -84,10 +85,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.wntransformer" />
         <item itemvalue="Python tests.Python tests for test_wntransformer.WordNetTransformerTestCase.test_synonym" />
         <item itemvalue="Python tests.Python tests for test_wntransformer.WordNetTransformerTestCase.test_replace_data_set" />
         <item itemvalue="Python tests.Python tests for test_wntransformer.WordNetTransformerTestCase" />
-        <item itemvalue="Python.wntransformer" />
       </list>
     </recent_temporary>
   </component>

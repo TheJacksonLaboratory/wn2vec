@@ -18,22 +18,26 @@ class WordNetTransformer:
         self._marea_file = marea_file
         self._counter = defaultdict(int)
         # Get count of words in corpus
+
         with open(marea_file) as f:
+            data_list = []  # contains string of all the words in dataset
             for line in f:
                 words = line.split()
                 for w in words:
                     # TODO skip stop words
                     self._counter[w] += 1
+                    #add each word to the data_list
+                    data_list.append(w)
         # Create synonym dictionary with NLTK
         # if needed, install wordnet
         nltk.download("wordnet")
-        # sorted(d.items(), key=lambda item: item[1])
-        # words_sorted_by_frequency = sorted(self._counter, key=lambda item: item[1], reverse=True)
-        # {k: v for k, v in sorted(x.items(), key=lambda item: item[1])}
+
         words_sorted_by_frequency = [k for k, v in
                                      sorted(self._counter.items(), key=lambda item: item[1], reverse=True)]
+
         self._do_not_replace_threshold = do_not_replace_threshold
         self._dict = self.dictCreate(words_sorted_by_frequency)
+        self._data_list = data_list
 
     def dictCreate(self, word_list) -> Dict:
         """
@@ -81,19 +85,19 @@ class WordNetTransformer:
                 synonyms.append(l.name())
         return synonyms
 
-    def replace_data_set(self, data_list, dictionary) ->List:
+    def replace_data_set(self, data_list, _dict) ->List:
 
         """
         Replaces the variable in dataset with their synonyms from the dictionary
-        @argument: 'data_list' a list of all the data_set in form of a list
-                          "dictionary" a dictionary created with the whole dataset
+        @argument: 'data_list' a list of all the dataset  in form of a list
+                    '_dict' a dictionary created from the unique words from the whole dataset
         @return: 'data_list' a new list with the whole list where the words were replaced by their synonyms
 
         """
 
         for i in range(len(data_list)):
-            if data_list[i] in dictionary:
-                data_list[i] = dictionary.get(data_list[i])
+            if data_list[i] in self._dict:
+                data_list[i] = self._dict.get(data_list[i])
             else:
                 raise ValueError("the word is not in the dictionary")
         return (data_list)
