@@ -59,7 +59,7 @@ class WordNetTransformer:
                 dictionary[this_word] = self._highest_count_synonym(synonym_list)
         return dictionary
 
-    def _highest_count_synonym(self, synonym_list):
+    def _highest_count_synonym(self, synonym_list) ->str:
         """
         :param synonym_list: a list of a word and its synonyms in Wordnet
         :return: The word (synonym) with the highest count in our dataset
