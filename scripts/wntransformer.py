@@ -53,9 +53,10 @@ class WordNetTransformer:
             # skip common words
             this_word_count = self._counter.get(this_word, 0)
             if this_word_count > self._do_not_replace_threshold:
-                continue
-            synonym_list = self.synonym(this_word)
-            dictionary[this_word] = self._highest_count_synonym(synonym_list)
+                dictionary[this_word] = this_word
+            else:
+                synonym_list = self.synonym(this_word)
+                dictionary[this_word] = self._highest_count_synonym(synonym_list)
         return dictionary
 
     def _highest_count_synonym(self, synonym_list):

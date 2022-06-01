@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8ffc17b4-2b5e-4cee-8228-44340bdc3102" name="Changes" comment="updated wntransfomer.py">
-      <change afterPath="$PROJECT_DIR$/scripts/replace.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/transform.py" afterDir="false" />
+    <list default="true" id="8ffc17b4-2b5e-4cee-8228-44340bdc3102" name="Changes" comment="updates">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/runWNT.py" beforeDir="false" afterPath="$PROJECT_DIR$/runWNT.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_wntransformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_wntransformer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wn2vec/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wn2vec/wntransformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/wntransformer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/replace.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/wntransformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/wntransformer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +27,21 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="29yrwm3CkZrc6WsR8uzPdfAm0gF" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true"
+  }
+}]]></component>
   <component name="RunManager" selected="Python.wntransformer (1)">
     <configuration name="replace" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="wn2vec" />
@@ -132,6 +143,7 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task id="LOCAL-00001" summary="rename test_replace.py to test_transormer.py">
       <created>1654001017976</created>
@@ -168,7 +180,21 @@
       <option name="project" value="LOCAL" />
       <updated>1654009688228</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="updates">
+      <created>1654028831620</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1654028831621</updated>
+    </task>
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8ffc17b4-2b5e-4cee-8228-44340bdc3102" name="Changes" comment="updates" />
+      <created>1654096408160</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1654096408160</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -185,6 +211,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="rename test_replace.py to test_transormer.py" />
     <MESSAGE value="updated wntransfomer.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated wntransfomer.py" />
+    <MESSAGE value="updates" />
+    <option name="LAST_COMMIT_MESSAGE" value="updates" />
   </component>
 </project>
