@@ -1,5 +1,6 @@
 import unittest
 from scripts.wntransformer import *
+from scripts import wntransformer
 
 import nltk
 import pytest
