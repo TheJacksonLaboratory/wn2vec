@@ -10,7 +10,7 @@ from collections import defaultdict
 
 class Transformer:
 
-    def __init__(self,marea_file ) -> None:
+    def __init__(self,marea_file, output_file ) -> None:
         """
         Path to the file produced by marea
         """
@@ -18,17 +18,21 @@ class Transformer:
             raise FileNotFoundError("Could not find marea file")
 
         self._marea_file = marea_file
-        self._dict = WordNetTransformer.__dict__
+        self._output_file = output_file
+        self._dict = WordNetTransformer._dict
 
         # Get count of words in corpus
-
-        with open(marea_file) as f:
-            for line in f:
-                columns = line.split('\t')
-                if len(columns) != 3:
-                    raise ValueError(f'Malformed marea line: {line}')
-                abstract = columns[2] # columns[0] - year, columns[1]: pmid, columns[2] abstract text
-                columns[2] = transform(abstract,self._dict)
+        f = open(marea_file, "r")
+        y = open(output_file, 'a')
+        for line in f:
+            columns = line.split('\t')
+            if len(columns) != 3:
+                raise ValueError(f'Malformed marea line: {line}')
+            payload = columns[2]  # columns[0] - year, columns[1]: pmid, columns[2] abstract text
+            columns[2] = self.transform(payload, self._dict)
+            y.writelines(columns)
+        y.close()
+        f.close()
 
 
 def transform(self, abstract, _dict) ->str:
@@ -42,8 +46,8 @@ def transform(self, abstract, _dict) ->str:
     """
     abst_list = abstract.split()
     for i in range(len(abst_list)):
-        if abst_list[i] in dictionary:
-            abst_list[i] = dictionary.get(abst_list[i])
+        if abst_list[i] in self._dict:
+            abst_list[i] = self._dict.get(abst_list[i])
         else:
             raise ValueError("the word is not in the dictionary")
         abstract = ' '.join([str(item) for item in abst_list])

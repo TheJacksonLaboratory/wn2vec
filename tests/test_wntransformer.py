@@ -22,20 +22,8 @@ class ReplaceTestCase(unittest.TestCase):
         cls.wnt = WordNetTransformer(marea_file=test_marea_file)
 
 
-    def test_synonym(self):
-        expected = ['colony', 'colony', 'settlement', 'colony', 'Colony', 'colony', 'colony', 'dependency', 'colony']
-        result = self.wnt.synonym('colony')
-        self.assertEqual(expected, result, 'Synonym do not match expected.')
-
-    def _highest_count_synonym(self):
-        test1 = ['inhibition', 'inhibition', 'suppression', 'inhibition', 'inhibition', 'prohibition', 'inhibition',
-                 'forbiddance']
-        counter = {'evaluation': 2, 'dye': 2, 'exclusion': 2, 'colony': 8, 'settlement': 15, 'inhibition': 17,
-                   'prohibition': 50}
-        result = wntransformer._highest_count_synonym(test1)
-        expected = ['prohibition']
-
     def test_transormer(self):
+
 
 if __name__ == '__main__':
     unittest.main()

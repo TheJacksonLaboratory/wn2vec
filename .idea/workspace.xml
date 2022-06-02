@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8ffc17b4-2b5e-4cee-8228-44340bdc3102" name="Changes" comment="update dictCreate">
-      <change afterPath="$PROJECT_DIR$/scripts/read_file.py" afterDir="false" />
+    <list default="true" id="8ffc17b4-2b5e-4cee-8228-44340bdc3102" name="Changes" comment="updated transformer.py">
+      <change afterPath="$PROJECT_DIR$/data/output100abstracts.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/data/output2abstracts.tsv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/transform.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/transform.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/wntransformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/wntransformer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_wntransformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_wntransformer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,9 +40,16 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "/Users/niyone/Documents/GitHub/wn2vec/tests/data"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/tests/data" />
+      <recent name="$PROJECT_DIR$/data" />
+    </key>
+  </component>
   <component name="RunManager" selected="Python.wntransformer (1)">
     <configuration name="replace" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="wn2vec" />
@@ -201,7 +209,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654114127707</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="updated transformer.py">
+      <created>1654116574796</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1654116574796</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -220,6 +235,7 @@
     <MESSAGE value="updated wntransfomer.py" />
     <MESSAGE value="updates" />
     <MESSAGE value="update dictCreate" />
-    <option name="LAST_COMMIT_MESSAGE" value="update dictCreate" />
+    <MESSAGE value="updated transformer.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated transformer.py" />
   </component>
 </project>
