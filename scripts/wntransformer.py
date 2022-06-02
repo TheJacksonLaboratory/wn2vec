@@ -7,8 +7,9 @@ from collections import defaultdict
 
 
 class WordNetTransformer:
+    _do_not_replace_threshold: int = 2
 
-    def __init__(self, marea_file, do_not_replace_threshold: int = 20) -> None:
+    def __init__(self, marea_file) -> None:
         """
         Path to the file produced by marea
         """
@@ -36,7 +37,7 @@ class WordNetTransformer:
         words_sorted_by_frequency = [k for k, v in
                                      sorted(self._counter.items(), key=lambda item: item[1], reverse=True)]
 
-        self._do_not_replace_threshold = do_not_replace_threshold
+       # self._do_not_replace_threshold = do_not_replace_threshold
         self._dict = self.dictCreate(words_sorted_by_frequency)
 
     def dictCreate(self, word_list) -> Dict:

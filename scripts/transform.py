@@ -10,11 +10,11 @@ from collections import defaultdict
 
 class Transformer(WordNetTransformer):
 
-    def __init__(self, marea_file, do_not_replace_threshold: int = 20, output_file ) -> None:
+    def __init__(self, marea_file, output_file ) -> None:
         """
         Path to the file produced by marea
         """
-        super().__init__(marea_file, do_not_replace_threshold=20)
+        super().__init__(marea_file)
         self._output_file = output_file
 
 
@@ -28,7 +28,8 @@ class Transformer(WordNetTransformer):
             payload = columns[2]  # columns[0] - year, columns[1]: pmid, columns[2] abstract text
             self.abstract = payload
             columns[2] = self.transform(self, abstract,_dict)
-            y.writelines(columns)
+            trans_column = columns[0] + ' ' + columns[1] + '     '+ columns[2]
+            y.writelines(trans_column)
         y.close()
         f.close()
 

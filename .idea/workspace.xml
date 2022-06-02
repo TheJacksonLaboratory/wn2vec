@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8ffc17b4-2b5e-4cee-8228-44340bdc3102" name="Changes" comment="updated transformer.py">
-      <change afterPath="$PROJECT_DIR$/scripts/apply_transform.py" afterDir="false" />
+    <list default="true" id="8ffc17b4-2b5e-4cee-8228-44340bdc3102" name="Changes" comment="updated transformer urguments">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/apply_transform.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/apply_transform.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/transform.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/transform.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/wntransformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/wntransformer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_wntransformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_wntransformer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_synonym_mapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_transformer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,8 +154,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.apply_transform" />
-        <item itemvalue="Python.wntransformer (1)" />
         <item itemvalue="Python.transform" />
+        <item itemvalue="Python.wntransformer (1)" />
         <item itemvalue="Python.replace" />
         <item itemvalue="Python tests.pytest for test_wntransformer.ReplaceTestCase" />
       </list>
@@ -233,7 +233,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654176068297</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="updated transformer urguments">
+      <created>1654194369458</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1654194369458</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -253,6 +260,7 @@
     <MESSAGE value="updates" />
     <MESSAGE value="update dictCreate" />
     <MESSAGE value="updated transformer.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated transformer.py" />
+    <MESSAGE value="updated transformer urguments" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated transformer urguments" />
   </component>
 </project>
