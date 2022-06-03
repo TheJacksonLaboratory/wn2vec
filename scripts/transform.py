@@ -16,39 +16,36 @@ class Transformer(WordNetTransformer):
         """
         super().__init__(marea_file)
         self._output_file = output_file
-
-
         # Get count of words in corpus
         f = open(marea_file, "r")
         y = open(output_file, 'a')
         for line in f:
-            columns = line.split('\t')
-            if len(columns) != 3:
-                raise ValueError(f'Malformed marea line: {line}')
-            payload = columns[2]  # columns[0] - year, columns[1]: pmid, columns[2] abstract text
-            self.abstract = payload
-            columns[2] = self.transform(self, abstract,_dict)
-            trans_column = columns[0] + ' ' + columns[1] + '     '+ columns[2]
-            y.writelines(trans_column)
+            new_abstract = self.transform(line)
+            y.writelines(new_abstract)
         y.close()
         f.close()
 
 
-    def transform(self, abstract, _dict) ->str:
+    def transform(self, line_abstract,_dict):
 
-        """
-        Replaces the variable in dataset with their synonyms from the dictionary
-        @argument: 'abstract' a string of an abstract
-                    "dictionary" a dictionary created with the whole dataset
-        @return: 'data_list' a new list with the whole list where the words were replaced by their synonyms
+          """
+          Replaces the variable in dataset with their synonyms from the dictionary
+          @argument: 'line_abstract' a string of line abstract including pubmed id and year
+                     "_dict" a dictionary created with the whole dataset
+          @return: 'trans_abstract'  a string of transformed abstract
 
-        """
-        abst_list = abstract.split()
-        for i in range(len(abst_list)):
+          """
+          columns = line_abstract.split('\t')
+          if len(columns) != 3:
+            raise ValueError(f'Malformed marea line: {line}')
+          abst_list = columns[2].split()  # columns[0] - year, columns[1]: pmid, columns[2] abstract text
+          #abst_list = abstract.split()
+          for i in range(len(abst_list)):
             if abst_list[i] in self._dict:
-                abst_list[i] = self._dict.get(abst_list[i])
+              abst_list[i]= self._dict.get(abst_list[i])
             else:
-                raise ValueError("the word is not in the dictionary")
+              raise ValueError("the word is not in the dictionary")
             abstract = ' '.join([str(item) for item in abst_list])
-        return abstract
-
+          columns[2] = abstract
+          trans_abstract = columns[0] + ' ' + columns[1] + '     '+ columns[2]
+          return(trans_abstract)
