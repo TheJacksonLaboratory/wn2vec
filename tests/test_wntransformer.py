@@ -9,10 +9,10 @@ import numpy as np
 import csv
 
 class WordNetTransformerTestCase(unittest.TestCase):
-    # def test_synonym(self):
-    #     test1 = 'adam'
-    #     expected = ['adam', 'Adam', 'Adam', 'Robert_Adam', 'Adam', 'ecstasy', 'XTC', 'go', 'disco_biscuit', 'cristal', 'X', 'hug_drug']
-    #     self.assertEqual(expected, WordNetTransformer.synonym(test1), 'Synonym do not match expected.')
+    def test_synonym(self):
+        test1 = 'adam'
+        expected = ['adam', 'Adam', 'Adam', 'Robert_Adam', 'Adam', 'ecstasy', 'XTC', 'go', 'disco_biscuit', 'cristal', 'X', 'hug_drug']
+        self.assertEqual(expected, WordNetTransformer.synonym(test1), 'Synonym do not match expected.')
 
     def test_dictCreate(self):
         test_list = ['prohibition', 'inhibition', 'settlement', 'colony', 'exclusion', 'dye', 'evaluation']
