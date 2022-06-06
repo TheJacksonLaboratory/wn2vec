@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8ffc17b4-2b5e-4cee-8228-44340bdc3102" name="Changes" comment="updated transformer">
+    <list default="true" id="8ffc17b4-2b5e-4cee-8228-44340bdc3102" name="Changes" comment="updated test_transformer">
+      <change afterPath="$PROJECT_DIR$/scripts/wn_transformer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_wn_transformer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/apply_transform.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/apply_transform.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/transform.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/transform.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/test_counter.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_counter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_transformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_transformer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_wntransformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_wntransformer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +54,49 @@
       <recent name="$PROJECT_DIR$/data" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test_wntransformer.WordNetTransformerTestCase.test_dictCreate">
+  <component name="RunManager" selected="Python.wn_transformer">
+    <configuration name="apply_transform" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="wn2vec" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/scripts" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/apply_transform.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="wn_transformer" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="wn2vec" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/scripts" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/wn_transformer.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="pytest for test_transformer.TransformerTestCase.test_transformer" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="wn2vec" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -68,22 +110,6 @@
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;test_transformer.TransformerTestCase.test_transformer&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="pytest for test_wntransformer.WordNetTransformerTestCase" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="wn2vec" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_wntransformer.WordNetTransformerTestCase&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
@@ -103,7 +129,7 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_wntransformer.WordNetTransformerTestCase.test_synonym" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest in test_wn_transformer.py" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="wn2vec" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -115,33 +141,17 @@
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_wntransformer.WordNetTransformerTestCase.test_synonym&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="pytest in test_wntransformer.py" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="wn2vec" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests/test_wntransformer.py&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests/test_wn_transformer.py&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.pytest for test_wntransformer.WordNetTransformerTestCase.test_dictCreate" />
-        <item itemvalue="Python tests.pytest for test_wntransformer.WordNetTransformerTestCase" />
-        <item itemvalue="Python tests.pytest in test_wntransformer.py" />
-        <item itemvalue="Python tests.pytest for test_wntransformer.WordNetTransformerTestCase.test_synonym" />
+        <item itemvalue="Python.wn_transformer" />
+        <item itemvalue="Python tests.pytest in test_wn_transformer.py" />
         <item itemvalue="Python tests.pytest for test_transformer.TransformerTestCase.test_transformer" />
+        <item itemvalue="Python tests.pytest for test_wntransformer.WordNetTransformerTestCase.test_dictCreate" />
+        <item itemvalue="Python.apply_transform" />
       </list>
     </recent_temporary>
   </component>
@@ -231,7 +241,21 @@
       <option name="project" value="LOCAL" />
       <updated>1654201527594</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="updated test_transformer">
+      <created>1654271706559</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1654271706559</updated>
+    </task>
+    <task id="LOCAL-00013" summary="updated test_transformer">
+      <created>1654271732351</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1654271732351</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -253,6 +277,7 @@
     <MESSAGE value="updated transformer.py" />
     <MESSAGE value="updated transformer urguments" />
     <MESSAGE value="updated transformer" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated transformer" />
+    <MESSAGE value="updated test_transformer" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated test_transformer" />
   </component>
 </project>

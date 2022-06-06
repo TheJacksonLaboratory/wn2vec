@@ -25,7 +25,6 @@ class Transformer(WordNetTransformer):
         y.close()
         f.close()
 
-
     def transform(self, line_abstract,_dict):
 
           """
