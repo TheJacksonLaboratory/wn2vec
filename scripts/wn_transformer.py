@@ -45,8 +45,9 @@ class WordNetTransformer:
 
         f = open(marea_file, "r")
         y = open(output_file, 'a')
+        dictionary = self.dictCreate(words_sorted_by_frequency)
         for line in f:
-            new_abstract = self.transform(line, self._dict)
+            new_abstract = self.transform(line, dictionary)
             y.writelines(new_abstract)
         y.close()
         f.close()
@@ -59,7 +60,6 @@ class WordNetTransformer:
         @return: a dictionary of all the variables in the dataset, the keys are the unique variables
                    with high frequency, and values are key's synonym
         """
-        print("dictCreate")
         dictionary = {}
         for i in range(len(word_list)):
             this_word = word_list[i]
@@ -118,14 +118,39 @@ class WordNetTransformer:
               raise ValueError("the word is not in the dictionary")
             abstract = ' '.join([str(item) for item in abst_list])
           columns[2] = abstract
-          trans_abstract = columns[0] + ' ' + columns[1] + '     '+ columns[2]
+          #columns[2] = 'PS5 Restock India \n'
+          trans_abstract = columns[0] + ' ' + columns[1] + '     '+ columns[2] + '\n'
           return(trans_abstract)
 
-    def transform(self, sentence: str) -> str:
-        pass
+if __name__ == "__main__":
 
-output = '/Users/niyone/Documents/GitHub/wn2vec/tests/data/output2abstracts.tsv'
-test_marea = '/Users/niyone/Documents/GitHub/wn2vec/tests/data/sample2abstracts.tsv'
+    # #test with 2 abstract
+    # test_output = '/Users/niyone/Documents/GitHub/wn2vec/tests/data/output2abstracts.tsv'
+    # test_marea = '/Users/niyone/Documents/GitHub/wn2vec/tests/data/sample2abstracts.tsv'
+    # #test with 100 abstract
+    # marea_file = '/Users/niyone/Documents/GitHub/wn2vec/data/sample100abstracts.tsv'
+    # output_file = '/Users/niyone/Documents/GitHub/wn2vec/data/output100abstracts.tsv'
+    #
+    # sample_100_abstract = WordNetTransformer(marea_file, output_file)
+    # sample_2_abstract = WordNetTransformer(test_marea, test_output)
 
-test1 = WordNetTransformer(test_marea, output)
+   #running code using command line
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('input', type=str) #address of the marea file
+    parser.add_argument('output', type=str) #address of output file
+    args = parser.parse_args()
+    WordNetTransformer(args.input, args.output)
+    print('Input: ', args.input, 'Output', args.output)
+
+    #sample way of running the code using arparse:
+    """
+    locate the file you are running + python + wn_transformer.pu + address of marea_file + address of output_file
+    example: 
+    (venv) MLG-JGM201:scripts niyone$ python wn_transformer.py '/Users/niyone/Documents/GitHub/wn2vec/data/sample100abstracts.tsv' '/Users/niyone/Documents/GitHub/wn2vec/data/output100abstracts.tsv'
+    [nltk_data] Downloading package wordnet to /Users/niyone/nltk_data...
+    [nltk_data]   Package wordnet is already up-to-date!
+    Input:  /Users/niyone/Documents/GitHub/wn2vec/data/sample100abstracts.tsv Output /Users/niyone/Documents/GitHub/wn2vec/data/output100abstracts.tsv
+    (venv) MLG-JGM201:scripts niyone$ 
+    """
 

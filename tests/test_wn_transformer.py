@@ -1,11 +1,11 @@
 import unittest
 from scripts.wn_transformer import WordNetTransformer
 import os
-#import pytest
+import pytest
 from unittest import TestCase
 from collections import defaultdict
 
-nltk.download("wordnet")
+# nltk.download()
 from nltk.corpus import wordnet as wn # Import Wordnet
 from collections import Counter  # Import Counter
 import numpy as np
