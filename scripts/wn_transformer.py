@@ -133,7 +133,7 @@ if __name__ == "__main__":
 
     #sample way of running the code using arparse:
     """
-    locate the file you are running + python + wn_transformer.pu + address of marea_file + address of output_file
+    locate the file you are running + python + wn_transformer.py + address of marea_file + address of output_file
     example: 
     > python wn_transformer.py 'marea_file location' 'output_file location'
 
