@@ -39,7 +39,6 @@ class WordNetTransformer:
         words_sorted_by_frequency = [k for k, v in
                                      sorted(self._counter.items(), key=lambda item: item[1], reverse=True)]
 
-       # self._do_not_replace_threshold = do_not_replace_threshold
         self._dict = self.dictCreate(words_sorted_by_frequency)
 
 
@@ -124,16 +123,6 @@ class WordNetTransformer:
 
 if __name__ == "__main__":
 
-    # #test with 2 abstract
-    # test_output = '/Users/niyone/Documents/GitHub/wn2vec/tests/data/output2abstracts.tsv'
-    # test_marea = '/Users/niyone/Documents/GitHub/wn2vec/tests/data/sample2abstracts.tsv'
-    # #test with 100 abstract
-    # marea_file = '/Users/niyone/Documents/GitHub/wn2vec/data/sample100abstracts.tsv'
-    # output_file = '/Users/niyone/Documents/GitHub/wn2vec/data/output100abstracts.tsv'
-    #
-    # sample_100_abstract = WordNetTransformer(marea_file, output_file)
-    # sample_2_abstract = WordNetTransformer(test_marea, test_output)
-
    #running code using command line
     import argparse
     parser = argparse.ArgumentParser()
@@ -141,16 +130,11 @@ if __name__ == "__main__":
     parser.add_argument('output', type=str) #address of output file
     args = parser.parse_args()
     WordNetTransformer(args.input, args.output)
-    print('Input: ', args.input, 'Output', args.output)
 
     #sample way of running the code using arparse:
     """
     locate the file you are running + python + wn_transformer.pu + address of marea_file + address of output_file
     example: 
-    (venv) MLG-JGM201:scripts niyone$ python wn_transformer.py '/Users/niyone/Documents/GitHub/wn2vec/data/sample100abstracts.tsv' '/Users/niyone/Documents/GitHub/wn2vec/data/output100abstracts.tsv'
-    [nltk_data] Downloading package wordnet to /Users/niyone/nltk_data...
-    [nltk_data]   Package wordnet is already up-to-date!
-    Input:  /Users/niyone/Documents/GitHub/wn2vec/data/sample100abstracts.tsv Output /Users/niyone/Documents/GitHub/wn2vec/data/output100abstracts.tsv
-    (venv) MLG-JGM201:scripts niyone$ 
-    """
+    > python wn_transformer.py 'marea_file location' 'output_file location'
 
+    """
