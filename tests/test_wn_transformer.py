@@ -5,7 +5,7 @@ import pytest
 from unittest import TestCase
 from collections import defaultdict
 
-#nltk.download()
+nltk.download()
 from nltk.corpus import wordnet as wn # Import Wordnet
 from collections import Counter  # Import Counter
 import numpy as np

@@ -1,5 +1,7 @@
 numpy
 nltk
 pytest
+pandas
+#tensorfolow
 
 

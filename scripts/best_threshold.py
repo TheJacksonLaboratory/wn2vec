@@ -124,13 +124,91 @@ class WordNetTransformer:
 
 if __name__ == "__main__":
 
-    #running code using command line
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument('input', type=str) #address of the marea file
-    parser.add_argument('output', type=str) #address of output file
-    args = parser.parse_args()
-    WordNetTransformer(args.input, args.output)
+   #running code using command line
+    # import argparse
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument('input', type=str) #address of the marea file
+    # parser.add_argument('output', type=str) #address of output file
+    # args = parser.parse_args()
+    # WordNetTransformer(args.input, args.output)
+    import os
+    import pandas as pd
+    import numpy as np
+    import math
+
+
+    def best_threshold(counter):
+        # convert a dictionary into a tuple
+        counter_dict = counter
+        dict_tuple = [(k, v) for k, v in counter_dict.items()]
+
+        # sorting tuple
+        def Sort_Tuple(tup):
+            # getting length of list of tuples
+            lst = len(tup)
+            for i in range(0, lst):
+                for j in range(0, lst - i - 1):
+                    if (tup[j][1] < tup[j + 1][1]):
+                        temp = tup[j]
+                        tup[j] = tup[j + 1]
+                        tup[j + 1] = temp
+            return tup
+
+            # print(Sort_Tuple(dir_tuple))
+
+        sorted_dict_tup = Sort_Tuple(dict_tuple)
+
+        # convert a tuple into a panda dataframe
+        dict_words = []
+        words_count = []
+        for i in range(0, len(sorted_dict_tup)):
+            dict_words.append(sorted_dict_tup[i][0])
+            words_count.append(sorted_dict_tup[i][1])
+
+        ser3 = pd.Series(dict_words)
+        ser4 = pd.Series(words_count)
+
+        dict_df = pd.concat([ser3, ser4], axis=1)
+        # Rename Columns
+        dict_df.columns = ['Words', 'Counts']
+
+        # print mean of the word frequency
+        mean_frequency = dict_df['Counts'].mean()
+        # print('Mean: %d ' %(mean_frequency))
+        # print(dict_df)
+        # print(dict_df['Counts'])
+        # ax = sns.barplot(x="Words", y="Counts", data=dict_df)
+        # plt.show()
+        # print(ax)
+        mean_frequency = round(mean_frequency)
+        return mean_frequency
+
+
+    def all_replaced_words(dict):
+        replaced = []
+        for i in dict:
+            if dict.get(i) != i:
+                replaced.append(i)
+        return replaced
+
+
+    # input = '/Users/niyone/Documents/GitHub/wn2vec/tests/data/sample2abstracts.tsv'
+    # output = '/Users/niyone/Documents/GitHub/wn2vec/tests/data/output2abstracts.tsv'
+
+    input = '/Users/niyone/Documents/GitHub/wn2vec/data/sample10000abstracts.tsv.tsv'
+    output = '/Users/niyone/Documents/GitHub/wn2vec/data/output.tsv'
+
+    app = WordNetTransformer(input, output)
+
+    counter = app._counter
+
+    threshold = best_threshold(counter)
+    print('Best Threshold: ', threshold)
+
+    dictionary = app._dict
+    replaced_words = all_replaced_words(dictionary)
+    print("Number of replaced words: ", len(replaced_words))
+    print('All replaced words: \n', replaced_words)
 
 
 #sample way of running the code using arparse:
