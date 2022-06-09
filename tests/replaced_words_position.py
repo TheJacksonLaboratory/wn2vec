@@ -1,7 +1,7 @@
 import nltk
 from nltk.corpus import wordnet as wn
 from typing import List, Dict
-from wn_transformer import WordNetTransformer
+#from wn_transformer import WordNetTransformer
 import os
 from collections import defaultdict
 #nltk.download()

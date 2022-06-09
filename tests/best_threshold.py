@@ -123,6 +123,7 @@ class WordNetTransformer:
 
 
 if __name__ == "__main__":
+    _do_not_replace_threshold = 2
 
    #running code using command line
     # import argparse
@@ -192,11 +193,11 @@ if __name__ == "__main__":
         return replaced
 
 
-    # input = '/Users/niyone/Documents/GitHub/wn2vec/tests/data/sample2abstracts.tsv'
-    # output = '/Users/niyone/Documents/GitHub/wn2vec/tests/data/output2abstracts.tsv'
+    #input = '/Users/niyone/Documents/GitHub/wn2vec/tests/data/sample2abstracts.tsv'
+    #output = '/Users/niyone/Documents/GitHub/wn2vec/tests/data/output2abstracts.tsv'
 
     input = '/Users/niyone/Documents/GitHub/wn2vec/data/sample10000abstracts.tsv.tsv'
-    output = '/Users/niyone/Documents/GitHub/wn2vec/data/output.tsv'
+    output = '/Users/niyone/Documents/GitHub/wn2vec/data/output10000abstracts.tsv'
 
     app = WordNetTransformer(input, output)
 
