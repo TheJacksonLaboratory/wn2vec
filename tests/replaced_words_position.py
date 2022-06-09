@@ -27,12 +27,17 @@ def replaced_words_position(input, output):
       print('Before: ', input_abst_list[i-1: i+2])
       print('After: ' ,output_abst_list[i-1: i+2])
 
-
-
+# 2 Abstract
 input = '/Users/niyone/Documents/GitHub/wn2vec/tests/data/sample2abstracts.tsv'
 output = '/Users/niyone/Documents/GitHub/wn2vec/tests/data/output2abstracts.tsv'
 
+# 100 Abstract
+# input = '/Users/niyone/Documents/GitHub/wn2vec/data/sample100abstracts.tsv'
+# output = '/Users/niyone/Documents/GitHub/wn2vec/data/output100abstracts.tsv'
 
+# 10000 Abstract
+# input = '/Users/niyone/Documents/GitHub/wn2vec/data/sample10000abstracts.tsv.tsv'
+# output = '/Users/niyone/Documents/GitHub/wn2vec/data/output10000abstracts.tsv'
 
 f = open(input)
 y = open(output)

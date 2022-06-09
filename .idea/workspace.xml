@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8ffc17b4-2b5e-4cee-8228-44340bdc3102" name="Changes" comment="created replace_words_position.py and best_threshold.py">
+    <list default="true" id="8ffc17b4-2b5e-4cee-8228-44340bdc3102" name="Changes" comment="updated best_threshold.py">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/best_threshold.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/best_threshold.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/test_replaced_words_position.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/replaced_words_position.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/data/output2abstracts.tsv" beforeDir="false" afterPath="$PROJECT_DIR$/tests/data/output2abstracts.tsv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/testoop.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/output100abstracts.tsv" beforeDir="false" afterPath="$PROJECT_DIR$/data/output100abstracts.tsv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/best_threshold.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/best_threshold.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/replaced_words_position.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/replaced_words_position.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -283,7 +282,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654722849975</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="updated best_threshold.py">
+      <created>1654793260959</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1654793260959</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -309,6 +315,7 @@
     <MESSAGE value="created wn_transformer.py combining both transformer.py and wntransformer.py" />
     <MESSAGE value="integrate arpase &amp; running code for output" />
     <MESSAGE value="created replace_words_position.py and best_threshold.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="created replace_words_position.py and best_threshold.py" />
+    <MESSAGE value="updated best_threshold.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated best_threshold.py" />
   </component>
 </project>

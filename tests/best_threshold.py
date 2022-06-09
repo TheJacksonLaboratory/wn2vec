@@ -7,7 +7,7 @@ from collections import defaultdict
 #nltk.download()
 
 class WordNetTransformer:
-    _do_not_replace_threshold: int = 27
+    _do_not_replace_threshold: int = 2
 
     def __init__(self, marea_file, output_file) -> None:
         """
@@ -123,7 +123,7 @@ class WordNetTransformer:
 
 
 if __name__ == "__main__":
-    _do_not_replace_threshold = 2
+
 
    #running code using command line
     # import argparse
@@ -192,14 +192,20 @@ if __name__ == "__main__":
                 replaced.append(i)
         return replaced
 
+    # 2 Abstract
+    input = '/Users/niyone/Documents/GitHub/wn2vec/tests/data/sample2abstracts.tsv'
+    output = '/Users/niyone/Documents/GitHub/wn2vec/tests/data/output2abstracts.tsv'
 
-    #input = '/Users/niyone/Documents/GitHub/wn2vec/tests/data/sample2abstracts.tsv'
-    #output = '/Users/niyone/Documents/GitHub/wn2vec/tests/data/output2abstracts.tsv'
+    #100 Abstract
+    # input = '/Users/niyone/Documents/GitHub/wn2vec/data/sample100abstracts.tsv'
+    # output = '/Users/niyone/Documents/GitHub/wn2vec/data/output100abstracts.tsv'
 
-    input = '/Users/niyone/Documents/GitHub/wn2vec/data/sample10000abstracts.tsv.tsv'
-    output = '/Users/niyone/Documents/GitHub/wn2vec/data/output10000abstracts.tsv'
+    #10000 Abstract
+    #input = '/Users/niyone/Documents/GitHub/wn2vec/data/sample10000abstracts.tsv.tsv'
+    #output = '/Users/niyone/Documents/GitHub/wn2vec/data/output10000abstracts.tsv'
 
     app = WordNetTransformer(input, output)
+
 
     counter = app._counter
 
