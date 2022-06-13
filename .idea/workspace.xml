@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8ffc17b4-2b5e-4cee-8228-44340bdc3102" name="Changes" comment="updated best_threshold.py">
+    <list default="true" id="8ffc17b4-2b5e-4cee-8228-44340bdc3102" name="Changes" comment="completed hand test using best_threshold &amp; replaced_words_position.py">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/output100abstracts.tsv" beforeDir="false" afterPath="$PROJECT_DIR$/data/output100abstracts.tsv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/best_threshold.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/best_threshold.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/replaced_words_position.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/replaced_words_position.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,7 +151,6 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.best_threshold" />
-        <item itemvalue="Python.test_replaced_words_position" />
         <item itemvalue="Python tests.pytest in replaced_words_position.py" />
         <item itemvalue="Python tests.pytest for test_wn_transformer.WordNetTransformerTestCase.test_synonym" />
         <item itemvalue="Python.wn_transformer.py" />
@@ -289,7 +285,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654793260959</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="completed hand test using best_threshold &amp; replaced_words_position.py">
+      <created>1654801425125</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1654801425125</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -316,6 +319,7 @@
     <MESSAGE value="integrate arpase &amp; running code for output" />
     <MESSAGE value="created replace_words_position.py and best_threshold.py" />
     <MESSAGE value="updated best_threshold.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated best_threshold.py" />
+    <MESSAGE value="completed hand test using best_threshold &amp; replaced_words_position.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="completed hand test using best_threshold &amp; replaced_words_position.py" />
   </component>
 </project>
