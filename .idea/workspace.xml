@@ -292,7 +292,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654801425125</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="completed hand test using best_threshold &amp; replaced_words_position.py">
+      <created>1655151943557</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1655151943557</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
