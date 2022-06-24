@@ -175,12 +175,6 @@ if __name__ == "__main__":
 
         # print mean of the word frequency
         mean_frequency = dict_df['Counts'].mean()
-        # print('Mean: %d ' %(mean_frequency))
-        # print(dict_df)
-        # print(dict_df['Counts'])
-        # ax = sns.barplot(x="Words", y="Counts", data=dict_df)
-        # plt.show()
-        # print(ax)
         mean_frequency = round(mean_frequency)
         return mean_frequency
 

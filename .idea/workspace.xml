@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8ffc17b4-2b5e-4cee-8228-44340bdc3102" name="Changes" comment="completed hand test using best_threshold &amp; replaced_words_position.py">
+    <list default="true" id="8ffc17b4-2b5e-4cee-8228-44340bdc3102" name="Changes" comment="Test abstracts &amp; output">
+      <change afterPath="$PROJECT_DIR$/tests/best_threshold_test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/output10000abstracts.tsv" beforeDir="false" afterPath="$PROJECT_DIR$/data/output10000abstracts.tsv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/wn_transformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/wn_transformer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/best_threshold.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/best_threshold.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/data/outputTest.tsv" beforeDir="false" afterPath="$PROJECT_DIR$/tests/data/outputTest.tsv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_wn_transformer.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +58,7 @@
       <recent name="$PROJECT_DIR$/tests" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.best_threshold">
+  <component name="RunManager" selected="Python.wntransformer">
     <configuration name="best_threshold" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="wn2vec" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -74,7 +80,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="replaced_words_position" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="best_threshold_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="wn2vec" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -82,11 +88,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/scripts" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/replaced_words_position.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/best_threshold_test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -116,20 +122,25 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_wn_transformer.WordNetTransformerTestCase.test_synonym" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="wntransformer" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="wn2vec" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/scripts" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_wn_transformer.WordNetTransformerTestCase.test_synonym&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/wntransformer.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
     <configuration name="pytest in replaced_words_position.py" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
@@ -150,10 +161,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.wntransformer" />
+        <item itemvalue="Python.best_threshold_test" />
         <item itemvalue="Python.best_threshold" />
-        <item itemvalue="Python tests.pytest in replaced_words_position.py" />
-        <item itemvalue="Python tests.pytest for test_wn_transformer.WordNetTransformerTestCase.test_synonym" />
         <item itemvalue="Python.wn_transformer.py" />
+        <item itemvalue="Python tests.pytest in replaced_words_position.py" />
       </list>
     </recent_temporary>
   </component>
@@ -299,7 +311,14 @@
       <option name="project" value="LOCAL" />
       <updated>1655151943557</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Test abstracts &amp; output">
+      <created>1655209650711</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1655209650711</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -327,6 +346,7 @@
     <MESSAGE value="created replace_words_position.py and best_threshold.py" />
     <MESSAGE value="updated best_threshold.py" />
     <MESSAGE value="completed hand test using best_threshold &amp; replaced_words_position.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="completed hand test using best_threshold &amp; replaced_words_position.py" />
+    <MESSAGE value="Test abstracts &amp; output" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test abstracts &amp; output" />
   </component>
 </project>

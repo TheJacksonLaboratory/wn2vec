@@ -7,7 +7,7 @@ from collections import defaultdict
 #nltk.download()
 
 class WordNetTransformer:
-    _do_not_replace_threshold: int = 27
+    _do_not_replace_threshold: int = 2
 
     def __init__(self, marea_file, output_file) -> None:
         """
