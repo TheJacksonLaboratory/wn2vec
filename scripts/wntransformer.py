@@ -129,9 +129,9 @@ class WordNetTransformer:
 
     def best_threshold(self,_counter) -> int:
         """
-        @argument: 'line_abstract' a string of line abstract including pubmed id and year
-                   "_dict" a dictionary created with the whole dataset
-        @return: 'trans_abstract'  a string of transformed abstract
+
+        @argument: '_counter' a dictionary created from whole dataset with the unique work as the key and frequency as the value
+        @return: 'mean_frequency'  an int which is mean of the unique words' frequencies
 
         """
         # convert a dictionary into a tuple
@@ -161,15 +161,17 @@ class WordNetTransformer:
             dict_words.append(sorted_dict_tup[i][0])
             words_count.append(sorted_dict_tup[i][1])
 
-        ser3 = pd.Series(dict_words)
-        ser4 = pd.Series(words_count)
+        unique_words = pd.Series(dict_words)
+        words_frequency = pd.Series(words_count)
 
-        dict_df = pd.concat([ser3, ser4], axis=1)
+        dict_df = pd.concat([unique_words, words_frequency], axis=1)
+
         # Rename Columns
         dict_df.columns = ['Words', 'Counts']
 
         # print mean of the word frequency
         mean_frequency = dict_df['Counts'].mean()
+
         mean_frequency = round(mean_frequency)
         return mean_frequency
 
