@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8ffc17b4-2b5e-4cee-8228-44340bdc3102" name="Changes" comment="Test abstracts &amp; output">
-      <change afterPath="$PROJECT_DIR$/tests/best_threshold_test.py" afterDir="false" />
+    <list default="true" id="8ffc17b4-2b5e-4cee-8228-44340bdc3102" name="Changes" comment="updated wntransformer.py">
+      <change afterPath="$PROJECT_DIR$/data/100pubmed_cr.tsv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/output10000abstracts.tsv" beforeDir="false" afterPath="$PROJECT_DIR$/data/output10000abstracts.tsv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/wn_transformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/wn_transformer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/best_threshold.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/best_threshold.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/data/outputTest.tsv" beforeDir="false" afterPath="$PROJECT_DIR$/tests/data/outputTest.tsv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_wn_transformer.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/output100abstracts.tsv" beforeDir="false" afterPath="$PROJECT_DIR$/data/output100abstracts.tsv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/wntransformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/wntransformer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,23 +39,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/niyone/Documents/GitHub/wn2vec&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "/Users/niyone/Documents/GitHub/wn2vec/data"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/tests/data" />
       <recent name="$PROJECT_DIR$/data" />
+      <recent name="$PROJECT_DIR$/tests/data" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/tests" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.wntransformer">
+  <component name="RunManager" selected="Python.wntransformNew">
     <configuration name="best_threshold" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="wn2vec" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -122,6 +119,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="wntransformNew" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="wn2vec" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/scripts" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/wntransformNew.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="wntransformer" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="wn2vec" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -143,29 +161,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest in replaced_words_position.py" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="wn2vec" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests/replaced_words_position.py&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.wntransformNew" />
         <item itemvalue="Python.wntransformer" />
         <item itemvalue="Python.best_threshold_test" />
         <item itemvalue="Python.best_threshold" />
         <item itemvalue="Python.wn_transformer.py" />
-        <item itemvalue="Python tests.pytest in replaced_words_position.py" />
       </list>
     </recent_temporary>
   </component>
@@ -318,7 +320,14 @@
       <option name="project" value="LOCAL" />
       <updated>1655209650711</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="updated wntransformer.py">
+      <created>1656075628962</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1656075628962</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -347,6 +356,7 @@
     <MESSAGE value="updated best_threshold.py" />
     <MESSAGE value="completed hand test using best_threshold &amp; replaced_words_position.py" />
     <MESSAGE value="Test abstracts &amp; output" />
-    <option name="LAST_COMMIT_MESSAGE" value="Test abstracts &amp; output" />
+    <MESSAGE value="updated wntransformer.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated wntransformer.py" />
   </component>
 </project>
