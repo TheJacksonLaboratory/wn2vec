@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="8ffc17b4-2b5e-4cee-8228-44340bdc3102" name="Changes" comment="updated wntransformer.py">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/100pubmed_cr.tsv" beforeDir="false" afterPath="$PROJECT_DIR$/data/100pubmed_cr.tsv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/output100abstracts.tsv" beforeDir="false" afterPath="$PROJECT_DIR$/data/output100abstracts.tsv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/wn_transformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/wn_transformer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/wntransformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/wntransformer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,13 +40,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "/Users/niyone/Documents/GitHub/wn2vec/data"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/niyone/Documents/GitHub/wn2vec/data&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/data" />
@@ -163,10 +165,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.wntransformer" />
+        <item itemvalue="Python.wn_transformer.py" />
         <item itemvalue="Python.wntransformNew" />
         <item itemvalue="Python.best_threshold_test" />
         <item itemvalue="Python.best_threshold" />
-        <item itemvalue="Python.wn_transformer.py" />
       </list>
     </recent_temporary>
   </component>
@@ -333,7 +335,14 @@
       <option name="project" value="LOCAL" />
       <updated>1656344844072</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="updated wntransformer.py">
+      <created>1656354537450</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1656354537450</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
