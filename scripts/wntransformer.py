@@ -48,7 +48,7 @@ class WordNetTransformer:
         self._dict = self.dictCreate(words_sorted_by_frequency)
 
         f = open(marea_file, "r")
-        y = open(output_file, 'a')
+        y = open(output_file, 'w')
         dictionary = self.dictCreate(words_sorted_by_frequency)
         for line in f:
             new_abstract = self.transform(line, dictionary)
@@ -74,7 +74,45 @@ class WordNetTransformer:
             else:
                 synonym_list = self.synonym(this_word)
                 dictionary[this_word] = self._highest_count_synonym(synonym_list)
-        return dictionary
+        """""
+        # Remove duplicates
+        # if a value is not the same as the key, and there is no pair of the same key & value (based on the value), 
+                 and then replace the value with the same key
+        """""
+        # dictionary to tuple
+        dict_tuple = [(k, v) for k, v in dictionary.items()]
+
+        # tuple to list
+        size = len(dict_tuple)
+        key_list = []
+        value_list = []
+        for i in range(0, size):
+            key_list.append(dict_tuple[i][0])
+            value_list.append(dict_tuple[i][1])
+
+        #check if there is a pair of the unique value with a smiliar key
+        def same_key_value(word, dict_tuple):
+            same = True
+            for i in range(len(dict_tuple)):
+                if (dict_tuple[i][0] == word) and (dict_tuple[i][0] == dict_tuple[i][1]):
+                    same = False
+            return same
+
+        for i in range(len(value_list)):
+            if (value_list[i] != key_list[i]):
+                if (same_key_value(value_list[i], dict_tuple) == True):
+                    value_list[i] = key_list[i]
+
+        # list to dictionary
+        new_dictionary = {}
+        for key in key_list:
+            for value in value_list:
+                new_dictionary[key] = value
+                value_list.remove(value)
+                break
+
+        return new_dictionary
+
 
     def _highest_count_synonym(self, synonym_list) -> str:
         """

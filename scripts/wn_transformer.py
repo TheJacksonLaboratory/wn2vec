@@ -25,9 +25,9 @@ class WordNetTransformer:
         with open(marea_file) as f:
             for line in f:
                 columns = line.split('\t')
-                if len(columns) != 3:
+                if len(columns) != 2:
                     raise ValueError(f'Malformed marea line: {line}')
-                payload = columns[2] # columns[0] - year, columns[1]: pmid, columns[2] abstract text
+                payload = columns[1] # columns[0] - year, columns[1]: pmid, columns[2] abstract text
                 words = payload.split()
                 for w in words:
                     self._counter[w] += 1
@@ -107,18 +107,18 @@ class WordNetTransformer:
 
           """
           columns = line_abstract.split('\t')
-          if len(columns) != 3:
+          if len(columns) != 2:
             raise ValueError(f'Malformed marea line: {line}')
-          abst_list = columns[2].split()  # columns[0] - year, columns[1]: pmid, columns[2] abstract text
+          abst_list = columns[1].split()  # columns[0] - year, columns[1]: pmid, columns[2] abstract text
           for i in range(len(abst_list)):
             if abst_list[i] in self._dict:
               abst_list[i]= self._dict.get(abst_list[i])
             else:
               raise ValueError("the word is not in the dictionary")
             abstract = ' '.join([str(item) for item in abst_list])
-          columns[2] = abstract
+          columns[1] = abstract
           #columns[2] = 'PS5 Restock India \n'
-          trans_abstract = columns[0] + '\t' + columns[1] + '\t'+ columns[2] + '\n'
+          trans_abstract = columns[0] + '\t' + columns[1] + '\n'
           return(trans_abstract)
 
 
