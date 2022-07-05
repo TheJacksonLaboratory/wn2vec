@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8ffc17b4-2b5e-4cee-8228-44340bdc3102" name="Changes" comment="updated wntransformer.py">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+    <list default="true" id="7b19ce2b-0565-4006-90a0-08dc3c16333d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/data/100pubmed_cr.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/output100abstracts.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/wn_transformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/wn_transformer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/wntransformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/wntransformer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
