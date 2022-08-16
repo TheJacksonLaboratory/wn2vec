@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+inputgenesets/
+non_alt_loci_set.txt
+wn2vec_genesets.tsv
