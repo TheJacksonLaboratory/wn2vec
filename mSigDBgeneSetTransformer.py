@@ -9,6 +9,7 @@ from csv import DictReader
 from collections import defaultdict
 import argparse
 
+
 parser = argparse.ArgumentParser(description='Process MSigDb genesets into wn2vec concept set format.')
 parser.add_argument('-i',  type=str, required=True, help='input directory with MSigDb files')
 parser.add_argument('-o', type=str, default='wn2vec_genesets.tsv',
@@ -62,7 +63,7 @@ def process_MSigDb_file(fname):
     mapped_symbols = None
     standard_name = None
     systematicName = None
-    with open(fname) as f:
+    with open(fname, encoding="latin-1") as f:
         for line in f:
             fields = line.rstrip().split('\t')
             if len(fields) == 2:
@@ -81,11 +82,10 @@ def process_MSigDb_file(fname):
     
 
 
-
-
 gene_set_list = []
 
-dir_list = os.listdir(input_dir)
+dir_list = os.listdir(input_dir)[1:] # this is to eliminate '.DS_Store' as part of the files to be read
+
 for f in dir_list:
     fullpath = os.path.join(input_dir, f)
     geneset = process_MSigDb_file(fname=fullpath)
