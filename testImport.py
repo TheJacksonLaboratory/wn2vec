@@ -2,7 +2,7 @@ from wn2vec import TfConceptParser, TfConcept
 import os
 
 
-dir = '/home/robinp/data/wn2vec'
+dir = '/Users/niyone/Documents/GitHub/wn2vec/data/tf_wn2vec'
 pm_meta = os.path.join(dir, 'pubmed_cr2.0_metadata.tsv')
 pm_vectors = os.path.join(dir, 'pubmed_cr2.0_vectors.tsv')
 
@@ -28,6 +28,8 @@ print(f"Concepts: n={len(concept_set)}")
 parser = TfConceptParser(meta_file=pm_meta, vector_file=pm_vectors, concept_set=concept_set)
 
 concept_dict_pm = parser.get_active_concept_d()
+pm_values = concept_dict_pm.values()
+print(pm_values)
 print(f"PM Concept objects: n={len(concept_dict_pm)}")
 
 parser = TfConceptParser(meta_file=wn_meta, vector_file=wn_vectors, concept_set=concept_set)
