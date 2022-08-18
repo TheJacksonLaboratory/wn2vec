@@ -84,6 +84,7 @@ def process_MSigDb_file(fname):
 
 gene_set_list = []
 
+#dir_list = os.listdir(input_dir)
 dir_list = os.listdir(input_dir)[1:] # this is to eliminate '.DS_Store' as part of the files to be read
 
 for f in dir_list:

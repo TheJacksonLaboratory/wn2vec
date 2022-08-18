@@ -16,6 +16,7 @@ class Ttest:
         # -->  Pre_Step 2: Finding average cosine distance of a cluster
 
         self._p_values = []
+        self._trueCounts = 0
 
         def distanceVectors(vector1, vector2):
             cosine_similarity = np.dot(vector1, vector2) / (np.linalg.norm(vector1) * np.linalg.norm(vector2))
@@ -42,8 +43,14 @@ class Ttest:
         for i in range (0,len(pm_common_genes)):
             self._p_values.append(t_test(pm_common_genes[i], wn_common_genes[i]))
 
+        for pValue in self._p_values:
+            if pValue < 0.05:
+                self._trueCounts += 1
+
 
 
 
     def get_pValues_list(self):
         return self._p_values
+    def get_True_counts(self):
+        return self._trueCounts

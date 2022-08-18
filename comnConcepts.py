@@ -37,4 +37,6 @@ print('wn',len(wn_common_genes))
 
 comparison = Ttest(pm_common_genes,wn_common_genes)
 t_test = comparison.get_pValues_list()
-print(t_test)
+trueCounts = comparison.get_True_counts()
+print('True Counts:', trueCounts)
+print('T_Test: ', t_test)
