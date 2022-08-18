@@ -13,44 +13,49 @@ from collections import defaultdict
 
 class Ttest:
     def __init__(self, pm_common_genes, wn_common_genes) -> None:
-        # -->  Pre_Step 2: Finding average cosine distance of a cluster
-
-        self._p_values = []
-        self._trueCounts = 0
-
-        def distanceVectors(vector1, vector2):
-            cosine_similarity = np.dot(vector1, vector2) / (np.linalg.norm(vector1) * np.linalg.norm(vector2))
-            return cosine_similarity
-
-        # cosine_distance between 2 vectors
-        # Average cosine distance of vectors in a cluster
-
-        def cluster_distance(cluster):
-            clust_dist = []
-            vec_pair = list(combinations(cluster, 2))
-            for pair in vec_pair:
-                dist = distanceVectors(pair[0], pair[1])
-                clust_dist.append(dist)
-            return clust_dist
-
-        def t_test(cluster1, cluster2):
-            list1 = cluster_distance(cluster1)
-            list2 = cluster_distance(cluster2)
-            p_value = stats.ttest_ind(a=list1, b=list2, equal_var=True)
-            return (p_value[1])
+        if not isinstance(pm_common_genes, TfConcept):
+            raise ValueError("Need to pass TfConcept object")
+        if not isinstance(wn_common_genes, TfConcept):
+            raise ValueError("Need to pass TfConcept object")
+        pw_dist1 = Ttest.get_all_pairwise_distances_in_cluster(pm_common_genes)
+        pw_dist2 = Ttest.get_all_pairwise_distances_in_cluster(wn_common_genes)
+        self._mean_dist_pubmed = np.mean(pw_dist1)
+        self._mean_dist_wordnet = np.mean(pw_dist2)
+        n_comparisons_pm = len(pw_dist1)
+        if n_comparisons_pm != len(pw_dist2):
+            raise ValueError(f"Error - inequal numbeer of concepts: pubemd {n_comparisons_pm} wordnet {len(pw_dist2)}")
+        self._n_comparisons = n_comparisons_pm
+        self._n_concepts = len(pm_common_genes)
+        self._pvalue = stats.ttest_ind(a=pw_dist1, b=pw_dist2, equal_var=True)
 
 
-        for i in range (0,len(pm_common_genes)):
-            self._p_values.append(t_test(pm_common_genes[i], wn_common_genes[i]))
+    @staticmethod
+    def get_all_pairwise_distances_in_cluster(cluster):
+        pairwise_distance_list = []
+        vec_pair = list(combinations(cluster, 2))
+        for pair in vec_pair:
+            vec1 = cluster.get(pair[0]).vector
+            vec2 = cluster.get(pair[1]).vector
+            cosine_similarity = np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
+            pairwise_distance_list.append(cosine_similarity)
+        return pairwise_distance_list
 
-        for pValue in self._p_values:
-            if pValue < 0.05:
-                self._trueCounts += 1
+    @property
+    def p_value(self):
+        return self._pvalue[1]
 
+    @property
+    def mean_dist_pubmed(self):
+        return self._mean_dist_pubmed
 
+    @property
+    def mean_dist_wordnet(self):
+        return self._mean_dist_wordnet
 
+    @property
+    def n_comparisons(self):
+        return self._n_comparisons
 
-    def get_pValues_list(self):
-        return self._p_values
-    def get_True_counts(self):
-        return self._trueCounts
+    @property
+    def n_concepts(self):
+        return self._n_concepts

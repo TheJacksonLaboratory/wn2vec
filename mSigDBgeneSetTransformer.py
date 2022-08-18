@@ -85,9 +85,11 @@ def process_MSigDb_file(fname):
 gene_set_list = []
 
 #dir_list = os.listdir(input_dir)
-dir_list = os.listdir(input_dir)[1:] # this is to eliminate '.DS_Store' as part of the files to be read
+dir_list = os.listdir(input_dir) # this is to eliminate '.DS_Store' as part of the files to be read
 
 for f in dir_list:
+    if not f.endswith('.tsv'):
+        continue
     fullpath = os.path.join(input_dir, f)
     geneset = process_MSigDb_file(fname=fullpath)
     gene_set_list.append(geneset)
