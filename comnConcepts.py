@@ -1,4 +1,4 @@
-from wn2vec import TfConceptParser, TfConcept
+from wn2vec import TfConceptParser, TfConcept, Ttest
 import os
 
 dir = '/Users/niyone/Documents/GitHub/wn2vec/data/tf_wn2vec'
@@ -33,3 +33,8 @@ parser = TfConceptParser(meta_file=wn_meta, vector_file=wn_vectors, concept_set=
 
 wn_common_genes = parser.common_genes()
 print('wn',len(wn_common_genes))
+
+
+comparison = Ttest(pm_common_genes,wn_common_genes)
+t_test = comparison.get_pValues_list()
+print(t_test)
