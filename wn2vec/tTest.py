@@ -13,17 +13,17 @@ from collections import defaultdict
 
 class Ttest:
     def __init__(self, pm_common_genes, wn_common_genes) -> None:
-        if not isinstance(pm_common_genes, TfConcept):
-            raise ValueError("Need to pass TfConcept object")
-        if not isinstance(wn_common_genes, TfConcept):
-            raise ValueError("Need to pass TfConcept object")
+        #if not isinstance(pm_common_genes, TfConcept):
+            #raise ValueError("Need to pass TfConcept object")
+        #if not isinstance(wn_common_genes, TfConcept):
+            #raise ValueError("Need to pass TfConcept object")
         pw_dist1 = Ttest.get_all_pairwise_distances_in_cluster(pm_common_genes)
         pw_dist2 = Ttest.get_all_pairwise_distances_in_cluster(wn_common_genes)
         self._mean_dist_pubmed = np.mean(pw_dist1)
         self._mean_dist_wordnet = np.mean(pw_dist2)
         n_comparisons_pm = len(pw_dist1)
-        if n_comparisons_pm != len(pw_dist2):
-            raise ValueError(f"Error - inequal numbeer of concepts: pubemd {n_comparisons_pm} wordnet {len(pw_dist2)}")
+        #if n_comparisons_pm != len(pw_dist2):
+         #   raise ValueError(f"Error - inequal numbeer of concepts: pubemd {n_comparisons_pm} wordnet {len(pw_dist2)}")
         self._n_comparisons = n_comparisons_pm
         self._n_concepts = len(pm_common_genes)
         self._pvalue = stats.ttest_ind(a=pw_dist1, b=pw_dist2, equal_var=True)
@@ -34,8 +34,10 @@ class Ttest:
         pairwise_distance_list = []
         vec_pair = list(combinations(cluster, 2))
         for pair in vec_pair:
-            vec1 = cluster.get(pair[0]).vector
-            vec2 = cluster.get(pair[1]).vector
+            #vec1 = cluster.get(pair[0]).vector
+            #vec2 = cluster.get(pair[1]).vector
+            vec1 = pair[0]
+            vec2 = pair[1]
             cosine_similarity = np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
             pairwise_distance_list.append(cosine_similarity)
         return pairwise_distance_list
