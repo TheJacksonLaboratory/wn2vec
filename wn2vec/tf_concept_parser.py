@@ -31,6 +31,7 @@ class TfConceptParser:
             if c in concept_set:
                 values = vector_line.rstrip().split('\t')
                 fvals = np.array([float(v) for v in values])
+                #self._d[c] = fvals
                 self._d[c] = TfConcept(name=c, vctor=fvals)
         meta_fh.close()
         vector_fh.close()
