@@ -36,8 +36,6 @@ class Ttest:
         pairwise_distance_list = []
         vec_pair = list(combinations(cluster, 2))
         for pair in vec_pair:
-            #vec1 = cluster.get(pair[0]).vector
-            #vec2 = cluster.get(pair[1]).vector
             vec1 = pair[0]
             vec2 = pair[1]
             cosine_similarity = np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
