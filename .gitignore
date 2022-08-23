@@ -130,3 +130,7 @@ dmypy.json
 inputgenesets/
 non_alt_loci_set.txt
 wn2vec_genesets.tsv
+
+
+.idea/
+.vscode/
