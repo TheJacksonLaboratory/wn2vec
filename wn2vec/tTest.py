@@ -13,10 +13,12 @@ from collections import defaultdict
 
 class Ttest:
     def __init__(self, pm_common_genes, wn_common_genes) -> None:
-        #if not isinstance(pm_common_genes, TfConcept):
-            #raise ValueError("Need to pass TfConcept object")
-        #if not isinstance(wn_common_genes, TfConcept):
-            #raise ValueError("Need to pass TfConcept object")
+
+        if not isinstance(pm_common_genes, np.ndarray):
+            raise ValueError("Need to be numpy array")
+        if not isinstance(wn_common_genes, np.ndarray):
+            raise ValueError("Need to be numpy array")
+
         pw_dist1 = Ttest.get_all_pairwise_distances_in_cluster(pm_common_genes)
         pw_dist2 = Ttest.get_all_pairwise_distances_in_cluster(wn_common_genes)
         self._mean_dist_pubmed = np.mean(pw_dist1)

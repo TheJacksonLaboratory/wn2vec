@@ -49,10 +49,10 @@ for cs in concept_set_list:
 
     if comparison.n_concepts > 3:
         relevant_sets_count +=1
-        print(
-            f'P-val: {comparison.p_value}; n comparisons {comparison.n_comparisons}; pubmed mean distance {comparison.mean_dist_pubmed}; wordnet mean dist {comparison.mean_dist_wordnet}')
+        #print(
+            #f'P-val: {comparison.p_value}; n comparisons {comparison.n_comparisons}; pubmed mean distance {comparison.mean_dist_pubmed}; wordnet mean dist {comparison.mean_dist_wordnet}')
         p_values.append(comparison.p_value)
-        print(f'concepts {comparison.n_concepts}')
+        #print(f'concepts {comparison.n_concepts}')
 
 
 true_counts = 0
@@ -60,6 +60,7 @@ for pv in p_values:
     if pv <= 0.05:
         true_counts +=1
 
+print('P_Values for all sets: ', p_values)
 print(f'In : {relevant_sets_count}, relevant gene sets {true_counts}, are the significant difference ')
 
 
