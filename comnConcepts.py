@@ -44,9 +44,10 @@ for cs in concept_set_list:
     wn_vecs = np.array([concept_set_d_wn.get(c).vector for c in cs.concepts if c in concept_set_d_wn])
     pm_concept = TfConcept(name=cs.name, vctor=pm_vecs)
     wn_concept = TfConcept(name=cs.name, vctor=wn_vecs)
+
     #comparison = Ttest(pm_concept, wn_concept)
     comparison = Ttest(pm_vecs, wn_vecs)
-
+    pm_mean = comparison._mean_dist
     if comparison.n_concepts > 3:
         relevant_sets_count +=1
         #print(

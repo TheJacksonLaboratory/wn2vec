@@ -239,6 +239,6 @@ if __name__ == "__main__":
     """
     locate the file you are running + python + wntransformer.py + address of marea_file + address of output_file
     example: 
-    > python wn_transformer.py 'marea_file location' 'output_file location'
+    > python wntransformer.py 'marea_file location' 'output_file location'
 
     """
