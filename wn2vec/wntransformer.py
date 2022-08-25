@@ -14,7 +14,7 @@ from collections import defaultdict
 # nltk.download()
 
 class WordNetTransformer:
-    #_do_not_replace_threshold: int = 2
+    
 
     def __init__(self, marea_file, output_file) -> None:
         """
@@ -237,8 +237,8 @@ if __name__ == "__main__":
 
     # sample way of running the code using arparse:
     """
-    locate the file you are running + python + wn_transformer.py + address of marea_file + address of output_file
+    locate the file you are running + python + wntransformer.py + address of marea_file + address of output_file
     example: 
-    > python wn_transformer.py 'marea_file location' 'output_file location'
+    > python wntransformer.py 'marea_file location' 'output_file location'
 
     """
