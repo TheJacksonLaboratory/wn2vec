@@ -61,3 +61,12 @@ class Ttest:
     @property
     def n_concepts(self):
         return self._n_concepts
+
+    def wn_distance_smaller_than_pm(self):
+        return self.mean_dist_wordnet  < self._mean_dist_pubmed
+
+    def pm_distance_smaller_than_wn(self):
+        return self._mean_dist_pubmed < self._mean_dist_wordnet
+
+    def is_significant(self, alpha_threshold=0.05):
+        return self._pvalue[1] <= alpha_threshold

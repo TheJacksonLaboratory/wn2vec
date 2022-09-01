@@ -2,3 +2,105 @@ mesh.id	label
 D001145	Arrhythmias, Cardiac
 D007674	Kidney Diseases
 D009202	Cardiomyopathies
+D001523	Mental Disorders
+D004065	Digestive System Abnormalities
+D001660	Biliary Tract Diseases
+D004067	Digestive System Neoplasms
+D004701	Endocrine Gland Neoplasms
+D001943	Breast Neoplasms
+D001859	Bone Neoplasms
+D005134	Eye Neoplasms
+D006258	Head and Neck Neoplasms
+D019337	Hematologic Neoplasms
+D009423	Nervous System Neoplasms
+D010386	Pelvic Neoplasms
+D012878	Skin Neoplasms
+D012983	Soft Tissue Neoplasms
+D013160	Splenic Neoplasms
+D013899	Thoracic Neoplasms
+D014565	Urogenital Neoplasms
+D005831	Genital Diseases, Female
+D059952	Pelvic Floor Disorders
+D014376	Tuberculosis
+D005832	Genital Diseases, Male
+D007246	Infertility
+D012735	Sexual Dysfunction, Physiological
+D012749	Sexually Transmitted Diseases
+D001424	Bacterial Infections
+D009181	Mycoses
+D001850	Bone Diseases, Infectious
+D053821	Cardiovascular Infections
+D002494	Central Nervous System Infections
+D015817	Eye Infections
+D005891	Gingivitis
+D010272	Parasitic Diseases
+D060737	Reproductive Tract Infections
+D012141	Respiratory Tract Infections
+D018805	Sepsis
+D012749	Sexually Transmitted Diseases
+D012874	Skin Diseases, Infectious
+D018461	Soft Tissue Infections
+D014552	Urinary Tract Infections
+D000079426	Vector Borne Diseases
+D014777	Virus Diseases
+D001927	Brain Diseases
+D009069	Movement Disorders
+D015835	Ocular Motility Disorders
+D007905	Lens Diseases
+D003229	Conjunctival Diseases
+D003316	Corneal Diseases
+D015785	Eye Diseases, Hereditary
+D009421	Nervous System Malformations
+D020752	Neurocutaneous Syndromes
+D019636	Neurodegenerative Diseases
+D000090862	Neuroinflammatory Diseases
+D009468	Neuromuscular Diseases
+D020258	Neurotoxicity Syndromes
+D012893	Sleep Wake Disorders
+D020196	Trauma, Nervous System
+D014947	Wounds and Injuries
+D001145	Arrhythmias, Cardiac
+D009202	Cardiomyopathies
+D006330	Heart Defects, Congenital
+D000783	Aneurysm
+D001018	Aortic Diseases
+D001165	Arteriovenous Malformations
+D002561	Cerebrovascular Disorders
+D003704	Dementia
+D020773	Headache Disorders
+D004827	Epilepsy
+D002526	Cerebellar Diseases
+D003389	Cranial Nerve Diseases
+D009421	Nervous System Malformations
+D017094	Porphyrias, Hepatic
+D012873	Skin Diseases, Genetic
+D003240	Connective Tissue Diseases
+D013543	Sweat Gland Diseases
+D017444	Skin Diseases, Papulosquamous
+D009260	Nail Diseases
+D004890	Erythema
+D006201	Hair Diseases
+D007642	Keratosis
+D010859	Pigmentation Disorders
+D012625	Sebaceous Gland Diseases
+D017443	Skin Diseases, Eczematous
+D001982	Bronchial Diseases
+D002925	Ciliary Motility Disorders
+D004427	Ear Diseases
+D007818	Laryngeal Diseases
+D008173	Lung Diseases, Obstructive
+D017563	Lung Diseases, Interstitial
+D008174	Lung Diseases, Parasitic
+D001991	Bronchitis
+D011014	Pneumonia
+D012852	Sinusitis
+D001778	Blood Coagulation Disorders
+D001791	Blood Platelet Disorders
+D000740	Anemia
+D001796	Blood Protein Disorders
+D001855	Bone Marrow Diseases
+D019337	Hematologic Neoplasms
+D006453	Hemoglobinopathies
+D006474	Hemorrhagic Disorders
+D007960	Leukocyte Disorders
+D019851	Thrombophilia
