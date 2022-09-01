@@ -2,59 +2,60 @@ from wn2vec import TfConceptParser, TfConcept, Ttest, ConceptSetParser, ConceptS
 import os
 import argparse
 import numpy as np
+import pandas as pd
 import typing
 
+import logging
+log = logging.getLogger("wn2vec.log")
+log.setLevel(logging.INFO)
+
+
+# create console handler with a higher log level
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+# create formatter and add it to the handlers
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+# add the handlers to the logger
+log.addHandler(ch)
+
+
+
 parser = argparse.ArgumentParser(description='Process MSigDb genesets into wn2vec concept set format.')
-parser.add_argument('-i',  type=str, default='data/tf_wn2vec', required=False, help='input directory')
+parser.add_argument('-i',  type=str, required=True, help='input directory with tensor flow output files')
 parser.add_argument('-o', type=str, default='wn2vec_genesets.tsv',
                     help='name of output file (default=\'wn2vec_genesets.tsv\'')
 args = parser.parse_args()
 input_dir = args.i
 out_fname = args.o
 
-
-
-
 dir = args.i
 
-# pm_meta = os.path.join(dir, 'pubmed_cr0.0_metadata.tsv')
-# pm_vectors = os.path.join(dir, 'pubmed_cr0.0_vectors.tsv')
-#
-# wn_meta = os.path.join(dir, 'wn2vec0.0_metadata.tsv')
-# wn_vectors = os.path.join(dir, 'wn2vec0.0_vectors.tsv')
 
 
+pm_meta = os.path.join(dir, '2012_pm_metadata.tsv')
+pm_vectors = os.path.join(dir, '2012_pm_vectors.tsv')
 
-# pm_meta = os.path.join(dir, 'pubmed_cr2.0_metadata.tsv')
-# pm_vectors = os.path.join(dir, 'pubmed_cr2.0_vectors.tsv')
-#
-# wn_meta = os.path.join(dir, 'wn2vec2.0_metadata.tsv')
-# wn_vectors = os.path.join(dir, 'wn2vec2.0_vectors.tsv')
-
-
-
-# pm_meta = os.path.join(dir, 'marea_0.1_metadata.tsv')
-# pm_vectors = os.path.join(dir, 'marea_0.1_vectors.tsv')
-#
-# wn_meta = os.path.join(dir, 'wn2vec_0.1_metadata.tsv')
-# wn_vectors = os.path.join(dir, 'wn2vec_0.1_vectors.tsv')
-
-
-
-pm_meta = os.path.join(dir, 'marea_4.0_metadata.tsv')
-pm_vectors = os.path.join(dir, 'marea_4.0_vectors.tsv')
-
-wn_meta = os.path.join(dir, 'wn2vec_4.0_metadata.tsv')
-wn_vectors = os.path.join(dir, 'wn2vec_4.0_vectors.tsv')
+wn_meta = os.path.join(dir, '2012_wn_metadata.tsv')
+wn_vectors = os.path.join(dir, '2012_wn_vectors.tsv')
 
 
 # Intended purpose -- file with ALL of gene sets we are interested in
 # our_concept_file = 'wn2vec_genesets.tsv'
 our_concept_file = 'mesh_sets.tsv'
-concept_set_parser = ConceptSetParser(concept_file_path=our_concept_file)
-all_concept_sets = concept_set_parser.get_all_concepts()
-concept_set_list = concept_set_parser.get_concept_set_list()
+mesh_concept_set_parser = ConceptSetParser(concept_file_path=our_concept_file)
+all_concept_sets = mesh_concept_set_parser.get_all_concepts()
+concept_set_list = mesh_concept_set_parser.get_concept_set_list()
+log.info(f"We got {len(concept_set_list)} MeSH concepts")
 
+our_gene_concept_file = 'data/genesets.tsv'
+gene_concept_set_parser = ConceptSetParser(concept_file_path=our_gene_concept_file)
+gene_concept_sets = gene_concept_set_parser.get_all_concepts()
+gene_concept_set_list = gene_concept_set_parser.get_concept_set_list()
+log.info(f"We got {len(gene_concept_set_list)} gene concepts")
+
+all_concept_sets.update(gene_concept_sets)
+concept_set_list.extend(gene_concept_set_list)
 
 
 parser = TfConceptParser(meta_file=pm_meta, vector_file=pm_vectors, concept_set=all_concept_sets)
@@ -68,54 +69,37 @@ pm_mean_distance = []
 wn_mean_distance = []
 p_values = []
 relevant_sets_count = 0
+
+comparison_dictionary_list = []
+
+
+sig_wn = 0
+sig_pm = 0
+
+
 for cs in concept_set_list:
     pm_vecs = np.array([concept_set_d_pm.get(c).vector for c in cs.concepts if c in concept_set_d_pm])
     wn_vecs = np.array([concept_set_d_wn.get(c).vector for c in cs.concepts if c in concept_set_d_wn])
     pm_concept = TfConcept(name=cs.name, vctor=pm_vecs)
     wn_concept = TfConcept(name=cs.name, vctor=wn_vecs)
+    comparison = Ttest(pm_common_genes=pm_vecs, wn_common_genes=wn_vecs)
+    if comparison.n_concepts > MINIMUM_CONCEPT_SET_SIZE:
+        d  = {'name': cs.name, 
+        'comparisons': comparison.n_comparisons,
+        'concepts': comparison.n_concepts,
+        'mean_distance_pm': comparison.mean_dist_pubmed,
+        'mean_distance_wn': comparison.mean_dist_wordnet,
+        'pval': comparison.p_value}
+        comparison_dictionary_list.append(d)
+        if comparison.is_significant():
+            if comparison.wn_distance_smaller_than_pm():
+                sig_wn += 1
+            elif comparison.pm_distance_smaller_than_wn():
+                sig_pm += 1
+log.info(f"WN sig {sig_wn} and PM sig {sig_pm}")
 
-    #comparison = Ttest(pm_concept, wn_concept)
-    comparison = Ttest(pm_vecs, wn_vecs)
-    pm_mean = comparison._mean_dist
-    if comparison.n_concepts > 3:
-        relevant_sets_count +=1
-        #print(
-            #f'P-val: {comparison.p_value}; n comparisons {comparison.n_comparisons}; pubmed mean distance {comparison.mean_dist_pubmed}; wordnet mean dist {comparison.mean_dist_wordnet}')
-        p_values.append(comparison.p_value)
-        pm_mean_distance.append(comparison.mean_dist_pubmed)
-        wn_mean_distance.append(comparison.mean_dist_wordnet)
-        #print(f'concepts {comparison.n_concepts}')
+df = pd.DataFrame(comparison_dictionary_list) 
 
+log.info(f"Outputting results to {out_fname}")
 
-
-true_counts = 0
-index_true_counts = []
-for i in range (0, len(p_values)):
-    if p_values[i] <= 0.05:
-        true_counts +=1
-        index_true_counts.append(i)
-
-
-# Code to see which value (pm or wn) is significant in either direction
-wn_less_pm = 0
-pm_less_wn = 0
-for index in index_true_counts:
-    if wn_mean_distance[index] < pm_mean_distance[index]:
-        wn_less_pm +=1
-    else:
-        pm_less_wn +=1
-
-
-print('P_Values for all sets: ', p_values)
-print(f'Mean distance for pubmed:', pm_mean_distance)
-print(f'Mean distance for wordnet:', wn_mean_distance)
-# print(f'Index True Counts:', index_true_counts, "\n")
-print(f'In : {relevant_sets_count}, relevant gene sets {true_counts}, are the significant difference ')
-print(f'Tally of when wn is less than pm: {wn_less_pm}')
-print(f'Tally of when pm is less than wn: {pm_less_wn}')
-
-
-
-
-
-
+df.to_csv(out_fname, sep='\t')

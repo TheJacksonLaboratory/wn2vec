@@ -106,6 +106,8 @@ for me in mesh_ids:
     target_mesh_id = me.id
     target_mesh_label = me.label
     entries = get_mesh_entries(target_mesh_id)
+    if len(entries) < 3: 
+        continue
     entry_id_list = [e.meshlabel for e in entries]
     entry_str = ";".join(entry_id_list)
     fh.write(f"{target_mesh_label}\t{target_mesh_id}\t{entry_str}\n")
