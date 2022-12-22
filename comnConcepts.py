@@ -8,7 +8,7 @@ import typing
 import logging
 log = logging.getLogger("wn2vec.log")
 log.setLevel(logging.INFO)
-
+MINIMUM_CONCEPT_SET_SIZE = 5
 
 # create console handler with a higher log level
 ch = logging.StreamHandler()
@@ -42,7 +42,7 @@ wn_vectors = os.path.join(dir, '2012_wn_vectors.tsv')
 
 # Intended purpose -- file with ALL of gene sets we are interested in
 # our_concept_file = 'wn2vec_genesets.tsv'
-our_concept_file = 'mesh_sets.tsv'
+our_concept_file = 'data/mesh_sets.tsv'
 mesh_concept_set_parser = ConceptSetParser(concept_file_path=our_concept_file)
 all_concept_sets = mesh_concept_set_parser.get_all_concepts()
 concept_set_list = mesh_concept_set_parser.get_concept_set_list()
@@ -75,6 +75,8 @@ comparison_dictionary_list = []
 
 sig_wn = 0
 sig_pm = 0
+wn_less = 0
+pm_less = 0
 
 
 for cs in concept_set_list:
@@ -96,7 +98,12 @@ for cs in concept_set_list:
                 sig_wn += 1
             elif comparison.pm_distance_smaller_than_wn():
                 sig_pm += 1
+        if comparison.wn_distance_smaller_than_pm():
+            wn_less += 1
+        else:
+            pm_less += 1
 log.info(f"WN sig {sig_wn} and PM sig {sig_pm}")
+log.info(f"WN LESS  {wn_less} and PM LESS {pm_less} (irregardless of pvalue)")
 
 df = pd.DataFrame(comparison_dictionary_list) 
 

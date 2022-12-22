@@ -45,7 +45,7 @@ class WordNetTransformer:
 
         words_sorted_by_frequency = [k for k, v in
                                      sorted(self._counter.items(), key=lambda item: item[1], reverse=True)]
-        self._do_not_replace_threshold = self.best_threshold(self._counter)
+        self._do_not_replace_threshold = self.calculate_mean_word_count(self._counter)
         self._dict = self.dictCreate(words_sorted_by_frequency)
 
         f = open(marea_file, "r")
@@ -140,7 +140,7 @@ class WordNetTransformer:
                 max_count = c
         return max_word
 
-    def synonym(self, word: str) -> List:
+    def get_synonym_list(self, word: str) -> List:
         """
         @argument: 'word' A word from the input dataset
         @return: a list of synonyms of the words
@@ -174,12 +174,15 @@ class WordNetTransformer:
         return (trans_abstract)
 
 
-    def best_threshold(self,_counter) -> int:
+    def calculate_mean_word_count(self,counter_d) -> int:
         """
 
-        @argument: '_counter' a dictionary created from whole dataset with the unique work as the key and frequency as the value
+        @argument: 'counter_d' a dictionary created from whole dataset with the unique work as the key and frequency as the value
         @return: 'mean_frequency'  an int which is mean of the unique words' frequencies
 
+        """
+        ## CHECK IF THIS IS THE SAME
+        return math.round(np.mean(counter_d.values()))
         """
         # convert a dictionary into a tuple
         counter_dict = _counter
@@ -205,7 +208,7 @@ class WordNetTransformer:
 
         mean_frequency = round(mean_frequency)
         return mean_frequency
-
+        """
 
 
 if __name__ == "__main__":
