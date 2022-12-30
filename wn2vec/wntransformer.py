@@ -12,13 +12,45 @@ import os
 from collections import defaultdict
 
 
-
 class WordNetTransformer:
     
+    """
+    A class to represent a transofrmation of Pubmed Abstracts by reducing vocabulary size through replacing words with their synonyms from Wordnet.
+
+    ...
+
+    Attributes
+    ----------
+    marea_file: str
+                path to .tsv file with abstracts from marea output
+    output_file: str
+                path to .tsv file that will contain the output after abstracts are transformed
+
+    Methods
+    -------
+    get_word_to_synonyms_d(unique_words_list) -> Dict:
+        Creates a dictionary from the whole data set, keys are unique words, and the values are synonyms of keys from synset
+
+    def get_highest_occuring_synonym(synonym_list) -> str:
+        gets the highest occuring word in the synonym list of the whole dataset (all the bastracts being transformed)
+
+    def transform(line_abstract: str, _word_to_synonym_d) -> str:
+        Replaces the variable in dataset with their synonyms from the dictionary
+
+    """
+
+
 
     def __init__(self, marea_file, output_file) -> None:
         """
-        Path to the file produced by marea
+        Constructs all the necessary attributes for the  WordNetTransformer class
+        
+        Parameters
+        ----------
+        marea_file: str
+                    path to .tsv file with abstracts from marea output
+        output_file: str
+                    path to .tsv file that will contain the output after abstracts are transformed
         """
         if not os.path.exists(marea_file):
             raise FileNotFoundError("Could not find marea file")
@@ -40,41 +72,46 @@ class WordNetTransformer:
                     self._counter[w] += 1
 
         # Create synonym dictionary with NLTK
-        # if needed, install wordnet
         nltk.download("wordnet")
 
         words_sorted_by_frequency = [k for k, v in
                                      sorted(self._counter.items(), key=lambda item: item[1], reverse=True)]
         self._do_not_replace_threshold = self.calculate_mean_word_count(self._counter)
-        self._dict = self.dictCreate(words_sorted_by_frequency)
+        self._word_to_synonym_d = self.get_word_to_synonyms_d(words_sorted_by_frequency)
 
         f = open(marea_file, "r")
         y = open(output_file, 'w')
-        dictionary = self.dictCreate(words_sorted_by_frequency)
+        word_to_synonym_d= self.get_word_to_synonyms_d(words_sorted_by_frequency)
         for line in f:
-            new_abstract = self.transform(line, dictionary)
+            new_abstract = self.transform(line, word_to_synonym_d)
             y.writelines(new_abstract)
         y.close()
         f.close()
 
-    def dictCreate(self, word_list) -> Dict:
+    def get_word_to_synonyms_d(self, unique_words_list) -> Dict:
         """
-        Creates a dictionary from the whole data set, they keys are in order of their frequency words
-        and the values are synonyms of keys from synset
-        @argument: 'word_list' a list of unique words from the whole dataset in order of frequency
+        Creates a dictionary from the whole data set, keys are unique words, and the values are synonyms of keys from synset
+        @parameter: 
+            unique_words_list: list
+             a list of unique words from the whole dataset in order of frequency
         @return: a dictionary of all the variables in the dataset, the keys are the unique variables
-                   with high frequency, and values are key's synonym
+                   with high frequency, and values are key's synonyms list
+        Methods
+        -------
+        def check_same_key_value(word, dict_tuple):
+            check if there is a pair of the unique value with a smiliar key
+
         """
         dictionary = {}
-        for i in range(len(word_list)):
-            this_word = word_list[i]
-            # skip common words
+        for i in range(len(unique_words_list)):
+            this_word = unique_words_list[i]
+            # skip common words not replaced 
             this_word_count = self._counter.get(this_word, 0)
             if this_word_count > self._do_not_replace_threshold:
                 dictionary[this_word] = this_word
             else:
                 synonym_list = self.get_synonym_list(this_word)
-                dictionary[this_word] = self._highest_count_synonym(synonym_list)
+                dictionary[this_word] = self.get_highest_occuring_synonym(synonym_list)
         """""
         # Remove duplicates
         # if a value is not the same as the key, and there is no pair of the same key & value (based on the value), 
@@ -100,62 +137,73 @@ class WordNetTransformer:
             key_list.append(dict_tuple[i][0])
             value_list.append(dict_tuple[i][1])
 
-        #check if there is a pair of the unique value with a smiliar key
-        def same_key_value(word, dict_tuple):
-            same = True
+        
+        def check_same_key_value(word, dict_tuple):
+            """
+            check if there is a pair of the unique value with a smiliar key
+            @ parameter: dict_tuple: tuple
+                a dictionary maped to a tuple, where the key is a word and the value is a list of a word's synonym
+            
+            @ return: status: Boolean
+                returns false if the key and the values are not the same, true otherwise
+            """
+            status = True
             for i in range(len(dict_tuple)):
                 if (dict_tuple[i][0] == word) and (dict_tuple[i][0] == dict_tuple[i][1]):
-                    same = False
-            return same
+                    status = False
+            return status
 
         for i in range(len(value_list)):
             if (value_list[i] != key_list[i]):
-                if (same_key_value(value_list[i], dict_tuple) == True):
+                if (check_same_key_value(value_list[i], dict_tuple) == True):
                     value_list[i] = key_list[i]
 
         # list to dictionary
-        new_dictionary = {}
+        word_to_synonyms_d = {}
         for key in key_list:
             for value in value_list:
-                new_dictionary[key] = value
+                word_to_synonyms_d[key] = value
                 value_list.remove(value)
                 break
 
-        return new_dictionary
+        return word_to_synonyms_d
 
 
-    def _highest_count_synonym(self, synonym_list) -> str:
+    def get_highest_occuring_synonym(self, synonym_list) -> str:
         """
-        :param synonym_list: a list of a word and its synonyms in Wordnet
-        :return: The word (synonym) with the highest count in our dataset
+        gets the highest occuring word in the synonym list of the whole dataset (all the bastracts being transformed)
+        @ urgument: synonym_list: a list of a word's syonyms from Wordnet
+        @ return: The word (synonym) with the highest count in our dataset
         """
         if len(synonym_list) == 0:
             raise ValueError("synonym_list was length zero, should never happen")
         max_count = 0
-        max_word = synonym_list[0]
+        highest_occuring_synonym = synonym_list[0]
         for s in synonym_list:
+            #check frequency of a word in whole dataset
             c = self._counter.get(s, 0)
             if c > max_count:
-                max_word = s
+                highest_occuring_synonym = s
                 max_count = c
-        return max_word
+        return highest_occuring_synonym
 
     def get_synonym_list(self, word: str) -> List:
         """
+        returns a 
         @argument: 'word' A word from the input dataset
-        @return: a list of synonyms of the words
+        @return: a list of synonyms of the word
         """
-        synonyms = [word]
+        synonym_list = [word]
         for syn in wn.synsets(word):
             for l in syn.lemmas():
-                synonyms.append(l.name())
-        return synonyms
+                synonym_list.append(l.name())
+        return synonym_list
 
-    def transform(self, line_abstract: str, _dict) -> str:
+    def transform(self, line_abstract: str, _word_to_synonym_d) -> str:
         """
         Replaces the variable in dataset with their synonyms from the dictionary
         @argument: 'line_abstract' a string of line abstract including pubmed id and year
-                   "_dict" a dictionary created with the whole dataset
+                   "_word_to_synonym_d" a dictionary created with the whole dataset
         @return: 'trans_abstract'  a string of transformed abstract
 
         """
@@ -164,8 +212,8 @@ class WordNetTransformer:
             raise ValueError(f'Malformed marea line: {line}')
         abst_list = columns[2].split()  # columns[0]: pmid, columns[1] year, columns[0] abstract text
         for i in range(len(abst_list)):
-            if abst_list[i] in self._dict:
-                abst_list[i] = self._dict.get(abst_list[i])
+            if abst_list[i] in self._word_to_synonym_d:
+                abst_list[i] = self._word_to_synonym_d.get(abst_list[i])
             else:
                 raise ValueError("the word is not in the dictionary")
             abstract = ' '.join([str(item) for item in abst_list])
@@ -175,8 +223,8 @@ class WordNetTransformer:
 
 
     def calculate_mean_word_count(self,counter_d) -> int:
-        """
 
+        """
         @argument: 'counter_d' a dictionary created from whole dataset with the unique word as the key and frequency as the value
         @return:  an int which is mean of the unique words' frequencies
 
@@ -207,7 +255,7 @@ if __name__ == "__main__":
     threshold = app._do_not_replace_threshold
     print('Threshold: ', threshold)
 
-    dictionary = app._dict
+    dictionary = app._word_to_synonym_d
     replaced_words = all_replaced_words(dictionary)
     print("Number of replaced words: ", len(replaced_words))
     #print('All replaced words: \n', replaced_words)
