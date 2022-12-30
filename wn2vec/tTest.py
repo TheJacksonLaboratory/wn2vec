@@ -24,8 +24,8 @@ class Ttest:
         self._mean_dist_pubmed = np.mean(pw_dist1)
         self._mean_dist_wordnet = np.mean(pw_dist2)
         n_comparisons_pm = len(pw_dist1)
-        #if n_comparisons_pm != len(pw_dist2):
-         #   raise ValueError(f"Error - inequal numbeer of concepts: pubemd {n_comparisons_pm} wordnet {len(pw_dist2)}")
+        if n_comparisons_pm != len(pw_dist2):
+            raise ValueError(f"Error - inequal numbeer of concepts: pubemd {n_comparisons_pm} wordnet {len(pw_dist2)}")
         self._n_comparisons = n_comparisons_pm
         self._n_concepts = len(pm_common_genes)
         self._pvalue = stats.ttest_ind(a=pw_dist1, b=pw_dist2, equal_var=True)

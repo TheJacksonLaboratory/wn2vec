@@ -5,13 +5,13 @@ from typing import List, Dict
 import os
 import pandas as pd
 import numpy as np
+import statistics
 import math
 
 import os
 from collections import defaultdict
 
-#nltk.download('omw-1.4')
-# nltk.download()
+
 
 class WordNetTransformer:
     
@@ -73,7 +73,7 @@ class WordNetTransformer:
             if this_word_count > self._do_not_replace_threshold:
                 dictionary[this_word] = this_word
             else:
-                synonym_list = self.synonym(this_word)
+                synonym_list = self.get_synonym_list(this_word)
                 dictionary[this_word] = self._highest_count_synonym(synonym_list)
         """""
         # Remove duplicates
@@ -177,38 +177,12 @@ class WordNetTransformer:
     def calculate_mean_word_count(self,counter_d) -> int:
         """
 
-        @argument: 'counter_d' a dictionary created from whole dataset with the unique work as the key and frequency as the value
-        @return: 'mean_frequency'  an int which is mean of the unique words' frequencies
+        @argument: 'counter_d' a dictionary created from whole dataset with the unique word as the key and frequency as the value
+        @return:  an int which is mean of the unique words' frequencies
 
         """
-        ## CHECK IF THIS IS THE SAME
-        return math.round(np.mean(counter_d.values()))
-        """
-        # convert a dictionary into a tuple
-        counter_dict = _counter
-        dict_tuple = [(k, v) for k, v in counter_dict.items()]
-        sorted_dict_tup = dict_tuple
-        # convert a tuple into a panda dataframe
-        dict_words = []
-        words_count = []
-        for i in range(0, len(sorted_dict_tup)):
-            dict_words.append(sorted_dict_tup[i][0])
-            words_count.append(sorted_dict_tup[i][1])
+        return round(statistics.mean(list(counter_d.values())))
 
-        unique_words = pd.Series(dict_words)
-        words_frequency = pd.Series(words_count)
-
-        dict_df = pd.concat([unique_words, words_frequency], axis=1)
-
-        # Rename Columns
-        dict_df.columns = ['Words', 'Counts']
-
-        # print mean of the word frequency
-        mean_frequency = dict_df['Counts'].mean()
-
-        mean_frequency = round(mean_frequency)
-        return mean_frequency
-        """
 
 
 if __name__ == "__main__":
