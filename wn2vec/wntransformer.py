@@ -31,11 +31,17 @@ class WordNetTransformer:
     get_word_to_synonyms_d(unique_words_list) -> Dict:
         Creates a dictionary from the whole data set, keys are unique words, and the values are synonyms of keys from synset
 
-    def get_highest_occuring_synonym(synonym_list) -> str:
+    get_highest_occuring_synonym(synonym_list) -> str:
         gets the highest occuring word in the synonym list of the whole dataset (all the bastracts being transformed)
 
-    def transform(line_abstract: str, _word_to_synonym_d) -> str:
+    get_synonym_list(self, word: str) -> List:
+        takes a word and returns a list of a word's synonyms using wordnet
+
+    transform(line_abstract: str, _word_to_synonym_d) -> str:
         Replaces the variable in dataset with their synonyms from the dictionary
+    
+    calculate_mean_word_count(counter_d) -> int:
+        calculates the mean of the frequencies of all the vocabilaries in the datasets
 
     """
 
@@ -189,7 +195,7 @@ class WordNetTransformer:
 
     def get_synonym_list(self, word: str) -> List:
         """
-        returns a 
+        takes a word and returns a list of a word's synonyms using wordnet
         @argument: 'word' A word from the input dataset
         @return: a list of synonyms of the word
         """
@@ -225,6 +231,7 @@ class WordNetTransformer:
     def calculate_mean_word_count(self,counter_d) -> int:
 
         """
+        calculates the mean of the frequencies of all the vocabilaries in the datasets
         @argument: 'counter_d' a dictionary created from whole dataset with the unique word as the key and frequency as the value
         @return:  an int which is mean of the unique words' frequencies
 
@@ -258,7 +265,7 @@ if __name__ == "__main__":
     dictionary = app._word_to_synonym_d
     replaced_words = all_replaced_words(dictionary)
     print("Number of replaced words: ", len(replaced_words))
-    #print('All replaced words: \n', replaced_words)
+    print('All replaced words: \n', replaced_words)
 
     # sample way of running the code using arparse:
     """
