@@ -1,5 +1,5 @@
 import unittest
-from wn2vec.wntransformer import*
+from scripts.wntransformer import*
 
 import nltk
 

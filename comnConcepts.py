@@ -1,4 +1,4 @@
-from wn2vec import TfConceptParser, TfConcept, Ttest, ConceptSetParser, ConceptSet
+from scripts import TfConceptParser, TfConcept, Ttest, ConceptSetParser, ConceptSet
 import os
 import argparse
 import numpy as np
