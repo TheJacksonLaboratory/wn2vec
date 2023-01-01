@@ -1,4 +1,4 @@
-from wn2vec import TfConceptParser, TfConcept
+from scripts import TfConceptParser, TfConcept
 import os
 
 

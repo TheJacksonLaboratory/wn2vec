@@ -1,4 +1,4 @@
-## when the pubmed_cr has 3 columns
+
 import nltk
 from nltk.corpus import wordnet as wn
 from typing import List, Dict
