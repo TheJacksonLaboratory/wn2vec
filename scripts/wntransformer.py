@@ -78,7 +78,7 @@ class WordNetTransformer:
                     self._counter[w] += 1
 
         # Create synonym dictionary with NLTK
-        nltk.download("wordnet")
+        nltk.download("wordnet", download_dir = '../data')
 
         words_sorted_by_frequency = [k for k, v in
                                      sorted(self._counter.items(), key=lambda item: item[1], reverse=True)]

@@ -11,4 +11,4 @@
 module load python36
 source myenv/bin/activate
 
-python /projects/robinson-lab/wn2vec/wn2vec1.0/scripts/wntransformer.py /projects/robinson-lab/wn2vec/word2vec_tf/abst_filter/2007Pubmed_filt.tsv /projects/robinson-lab/wn2vec/word2vec_tf/abst_filter/2007_Wordnet.tsv
+python ../scripts/wntransformer.py /projects/robinson-lab/wn2vec/word2vec_tf/abst_filter/2007Pubmed_filt.tsv /projects/robinson-lab/wn2vec/word2vec_tf/abst_filter/2007_Wordnet.tsv

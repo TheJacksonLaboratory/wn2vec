@@ -12,5 +12,5 @@
 
 
 
-python /projects/robinson-lab/wn2vec/word2vec_tf/abst_filter/newFilter.py   /projects/robinson-lab/wn2vec/marea1.0/data/pubmed_txt  /projects/robinson-lab/wn2vec/wn2vec1.0/data/pubmed_cr/pubmed_cr.tsv 2007
+python ../scripts/filter_by_year.py   /projects/robinson-lab/wn2vec/marea1.0/data/pubmed_cr  /projects/robinson-lab/wn2vec/wn2vec1.0/data/pubmed_cr/pubmed_filt.tsv 2007
 

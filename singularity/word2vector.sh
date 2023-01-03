@@ -14,4 +14,4 @@
 
 source /projects/robinson-lab/wn2vec/word2vec_tf/envs/myenv/bin/activate
 
-python /projects/robinson-lab/wn2vec/word2vec_tf/abst_filter/word2vector.py   /projects/robinson-lab/wn2vec/word2vec_tf/abst_filter/2007Pubmed_filt.tsv  2007Vector.tsv 2007Metadata.tsv
+python ../scripts/word2vector.py   /projects/robinson-lab/wn2vec/word2vec_tf/abst_filter/2007Pubmed_filt.tsv  2007Vector.tsv 2007Metadata.tsv
