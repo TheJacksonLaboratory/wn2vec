@@ -79,7 +79,24 @@ def generate_training_data(sequences, window_size, num_ns, vocab_size, seed):
 path_to_file = args.input
 #path_to_file = "/Users/niyone/Desktop/wn2vc_marea/test_jupyter/1000_test_marea.tsv"
 
+"""
+Use this when the data has 2 columns
 
+lines = []
+with open(path_to_file) as f:
+    for line in f:
+        columns = line.split('\t')
+        if len(columns) != 2:
+            raise ValueError(f'Malformed marea line: {line}')
+        abstract = columns[1]  #columns[0]: pmid,  columns[1] year, columns[2] abstract text
+        lines.append(abstract)
+for line in lines[:20]:
+  print(line)
+"""
+
+"""""
+Use this when the data has 3 columns
+"""""
 lines = []
 with open(path_to_file) as f:
     for line in f:
@@ -103,7 +120,7 @@ def custom_standardization(input_data):
 
 
 # Define the vocabulary size and the number of words in a sequence.
-vocab_size = 5000
+vocab_size = 50000
 sequence_length = 10
 
 # Use the `TextVectorization` layer to normalize, split, and map strings to
