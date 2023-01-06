@@ -2,18 +2,44 @@ import io
 import re
 import string
 import tqdm
-
+import logging
+import datetime
 import numpy as np
-
 import tensorflow as tf
 from tensorflow.keras import layers
-
 import argparse
+import time
+ 
+
+
+today_date = datetime.date.today().strftime("%B_%d_%Y")
+logname = f"wn2vec_{today_date}.log"
+
+logging.basicConfig(level=logging.INFO, filename=logname, filemode='w', datefmt='%Y-%m-%d %H:%M:%S', 
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+
 parser = argparse.ArgumentParser()
 parser.add_argument('input', type=str) #address of the marea file
 parser.add_argument('vector', type=str) #name of vector file
 parser.add_argument('metadata', type=str) #name of metadata file
+parser.add_argument('vocab_size', type=int, default=5000)
 args = parser.parse_args()
+
+
+
+logging.info(f"Starting word2vec run on {today_date}")
+
+##########
+# #### Word2vec parameters
+##########
+# the vocabulary size and the number of words in a sequence.
+vocab_size = args.vocab_size
+sequence_length = 10
+
+
+
+logging.info(f"vocab_size: {vocab_size}")
 
 
 # Load the TensorBoard notebook extension
@@ -79,7 +105,8 @@ def generate_training_data(sequences, window_size, num_ns, vocab_size, seed):
 path_to_file = args.input
 #path_to_file = "/Users/niyone/Desktop/wn2vc_marea/test_jupyter/1000_test_marea.tsv"
 
-
+# record start time
+start_time = time.time()
 lines = []
 with open(path_to_file) as f:
     for line in f:
@@ -102,9 +129,7 @@ def custom_standardization(input_data):
                                   '[%s]' % re.escape(string.punctuation), '')
 
 
-# Define the vocabulary size and the number of words in a sequence.
-vocab_size = 5000
-sequence_length = 10
+
 
 # Use the `TextVectorization` layer to normalize, split, and map strings to
 # integers. Set the `output_sequence_length` length to pad all samples to the
@@ -137,6 +162,12 @@ targets, contexts, labels = generate_training_data(
     num_ns=4,
     vocab_size=vocab_size,
     seed=SEED)
+# record start time
+now_time = time.time()
+duration = (now_time - start_time)* 10**6
+logging.info(f"Time to generate training data {duration} seconds")
+
+
 
 targets = np.array(targets)
 contexts = np.array(contexts)[:,:,0]
@@ -192,6 +223,8 @@ def custom_loss(x_logit, y_true):
 
 embedding_dim = 128
 word2vec = Word2Vec(vocab_size, embedding_dim)
+
+start_time = time.time()
 word2vec.compile(optimizer='adam',
                  loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True),
                  metrics=['accuracy'])
@@ -221,7 +254,10 @@ for index, word in enumerate(vocab):
 out_v.close()
 out_m.close()
 
+now_time = time.time()
+duration = (now_time - start_time)* 10**6
 
+logging.info(f"Time to generate embeddings {duration} seconds")
 try:
   from google.colab import files
   files.download(vector_file)
