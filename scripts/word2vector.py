@@ -20,7 +20,7 @@ args = parser.parse_args()
 #%load_ext tensorboard
 
 SEED = 42
-AUTOTUNE = tf.data.AUTOTUNE
+AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 num_ns = 4
 
@@ -77,32 +77,13 @@ def generate_training_data(sequences, window_size, num_ns, vocab_size, seed):
 
 
 path_to_file = args.input
-#path_to_file = "/Users/niyone/Desktop/wn2vc_marea/test_jupyter/1000_test_marea.tsv"
 
-"""
-Use this when the data has 2 columns
-
-lines = []
-with open(path_to_file) as f:
-    for line in f:
-        columns = line.split('\t')
-        if len(columns) != 2:
-            raise ValueError(f'Malformed marea line: {line}')
-        abstract = columns[1]  #columns[0]: pmid,  columns[1] year, columns[2] abstract text
-        lines.append(abstract)
-for line in lines[:20]:
-  print(line)
-"""
-
-"""""
-Use this when the data has 3 columns
-"""""
 lines = []
 with open(path_to_file) as f:
     for line in f:
         columns = line.split('\t')
         if len(columns) != 3:
-            raise ValueError(f'Malformed marea line: {line}')
+           raise ValueError(f'Malformed marea line: {line}')
         abstract = columns[2]  #columns[0]: pmid,  columns[1] year, columns[2] abstract text
         lines.append(abstract)
 for line in lines[:20]:
@@ -120,13 +101,13 @@ def custom_standardization(input_data):
 
 
 # Define the vocabulary size and the number of words in a sequence.
-vocab_size = 50000
+vocab_size = 100000
 sequence_length = 10
 
 # Use the `TextVectorization` layer to normalize, split, and map strings to
 # integers. Set the `output_sequence_length` length to pad all samples to the
 # same length.
-vectorize_layer = layers.TextVectorization(
+vectorize_layer = tf.keras.layers.TextVectorization(
     standardize=custom_standardization,
     max_tokens=vocab_size,
     output_mode='int',
@@ -146,7 +127,7 @@ print(len(sequences))
 
 
 for seq in sequences[:5]:
-  print(f"{seq} => {[inverse_vocab[i] for i in seq]}")
+ print(f"{seq} => {[inverse_vocab[i] for i in seq]}")
 
 targets, contexts, labels = generate_training_data(
     sequences=sequences,
@@ -165,8 +146,7 @@ print(f"contexts.shape: {contexts.shape}")
 print(f"labels.shape: {labels.shape}")
 
 
-#BATCH_SIZE = 400
-#BUFFER_SIZE = 3000
+
 BATCH_SIZE = 1024
 BUFFER_SIZE = 10000
 
@@ -245,5 +225,4 @@ try:
   files.download(metadata_file)
 except Exception:
   pass
-
 

@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH --job-name=2007_wn2v
-#SBATCH --output=2007_wn2vec.out
+#SBATCH --job-name=wntransformer
+#SBATCH --output=wntrasformer.out
 #SBATCH --qos=batch
 #SBATCH --time=72:00:00
 #SBATCH --mem-per-cpu=50G
@@ -8,7 +8,11 @@
 #SBATCH --mail-type=END,FAIL
 ### SLURM HEADER
 
-module load python36
-source myenv/bin/activate
+source ../ myenv/bin/activate
 
-python ../scripts/wntransformer.py /projects/robinson-lab/wn2vec/word2vec_tf/abst_filter/2007Pubmed_filt.tsv /projects/robinson-lab/wn2vec/word2vec_tf/abst_filter/2007_Wordnet.tsv
+python ../scripts/wntransformer.py /projects/robinson-lab/wn2vec/current/data/pubmed_filt/100pubmed_filt.tsv  /projects/robinson-lab/wn2vec/current/data/pubmed_wn/100pubmed_wn.tsv
+
+
+
+
+
