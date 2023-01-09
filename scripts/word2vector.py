@@ -181,8 +181,11 @@ print(f"contexts.shape: {contexts.shape}")
 print(f"labels.shape: {labels.shape}")
 
 
-BATCH_SIZE = 1024
-BUFFER_SIZE = 10000
+BATCH_SIZE = 512
+BUFFER_SIZE = 5000
+
+#BATCH_SIZE = 1024
+#BUFFER_SIZE = 10000
 
 dataset = tf.data.Dataset.from_tensor_slices(((targets, contexts), labels))
 dataset = dataset.shuffle(BUFFER_SIZE).batch(BATCH_SIZE, drop_remainder=True)
