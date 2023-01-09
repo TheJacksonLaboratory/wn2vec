@@ -2,22 +2,53 @@ import io
 import re
 import string
 import tqdm
-
+import logging
+import datetime
 import numpy as np
-
 import tensorflow as tf
 from tensorflow.keras import layers
-
 import argparse
+import time
+
+
+today_date = datetime.date.today().strftime("%b_%d_%Y")
+start_time = time.time()
+start_time_fmt= time.strftime("%H:%M:%S", time.gmtime(start_time))
+
+logname = f"wn2vec_{today_date} {start_time_fmt}.log"
+
+logging.basicConfig(level=logging.INFO, filename=logname, filemode='w', datefmt='%Y-%m-%d %H:%M:%S', 
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+
+
 parser = argparse.ArgumentParser()
 parser.add_argument('input', type=str) #address of the marea file
 parser.add_argument('vector', type=str) #name of vector file
 parser.add_argument('metadata', type=str) #name of metadata file
+parser.add_argument('vocab_size', type=int, default=5000)
 args = parser.parse_args()
+
+
+
+logging.info(f"Starting word2vec run on {today_date}")
+
+##########
+# #### Word2vec parameters
+##########
+# the vocabulary size and the number of words in a sequence.
+vocab_size = args.vocab_size
+sequence_length = 10
+
+
+
+logging.info(f"vocab_size: {vocab_size}")
 
 
 # Load the TensorBoard notebook extension
 #%load_ext tensorboard
+
+
 
 SEED = 42
 AUTOTUNE = tf.data.experimental.AUTOTUNE
@@ -75,8 +106,8 @@ def generate_training_data(sequences, window_size, num_ns, vocab_size, seed):
 
   return targets, contexts, labels
 
-
 path_to_file = args.input
+
 
 lines = []
 with open(path_to_file) as f:
@@ -100,9 +131,6 @@ def custom_standardization(input_data):
                                   '[%s]' % re.escape(string.punctuation), '')
 
 
-# Define the vocabulary size and the number of words in a sequence.
-vocab_size = 100000
-sequence_length = 10
 
 # Use the `TextVectorization` layer to normalize, split, and map strings to
 # integers. Set the `output_sequence_length` length to pad all samples to the
@@ -136,6 +164,13 @@ targets, contexts, labels = generate_training_data(
     vocab_size=vocab_size,
     seed=SEED)
 
+# record time to generate training data
+now_time = time.time()
+duration = time.strftime("%H:%M:%S", time.gmtime(now_time - start_time))
+logging.info(f"Time to generate training data {duration} ")
+
+
+
 targets = np.array(targets)
 contexts = np.array(contexts)[:,:,0]
 labels = np.array(labels)
@@ -144,7 +179,6 @@ print('\n')
 print(f"targets.shape: {targets.shape}")
 print(f"contexts.shape: {contexts.shape}")
 print(f"labels.shape: {labels.shape}")
-
 
 
 BATCH_SIZE = 1024
@@ -226,3 +260,7 @@ try:
 except Exception:
   pass
 
+# record end time
+end_time = time.time()
+duration_time = time.strftime("%H:%M:%S", time.gmtime(end_time - start_time))
+logging.info(f"Execution time: {duration_time} ")
