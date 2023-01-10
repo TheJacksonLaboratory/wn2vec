@@ -33,11 +33,11 @@ dir = args.i
 
 
 
-pm_meta = os.path.join(dir, '2012_pm_metadata.tsv')
-pm_vectors = os.path.join(dir, '2012_pm_vectors.tsv')
+pm_meta = os.path.join(dir, 'pubmed_cr2.0_metadata.tsv')
+pm_vectors = os.path.join(dir, 'pubmed_cr2.0_vectors.tsv')
 
-wn_meta = os.path.join(dir, '2012_wn_metadata.tsv')
-wn_vectors = os.path.join(dir, '2012_wn_vectors.tsv')
+wn_meta = os.path.join(dir, 'wn2vec2.0_metadata.tsv')
+wn_vectors = os.path.join(dir, 'wn2vec2.0_vectors.tsv')
 
 
 # Intended purpose -- file with ALL of gene sets we are interested in
