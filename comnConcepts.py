@@ -8,6 +8,7 @@ import typing
 import logging
 log = logging.getLogger("wn2vec.log")
 log.setLevel(logging.INFO)
+
 MINIMUM_CONCEPT_SET_SIZE = 5
 
 # create console handler with a higher log level
@@ -22,9 +23,9 @@ log.addHandler(ch)
 
 
 parser = argparse.ArgumentParser(description='Process MSigDb genesets into wn2vec concept set format.')
-parser.add_argument('-i',  type=str, required=True, help='input directory with tensor flow output files')
-parser.add_argument('-o', type=str, default='wn2vec_genesets.tsv',
-                    help='name of output file (default=\'wn2vec_genesets.tsv\'')
+parser.add_argument('-i',  type=str, required=True, help='input directory with word2vector.py output files')
+parser.add_argument('-o', type=str, default='comn_concepts.tsv',
+                    help='name of output file (default=\'comn_concepts.tsv\'')
 args = parser.parse_args()
 input_dir = args.i
 out_fname = args.o
@@ -33,22 +34,32 @@ dir = args.i
 
 
 
-pm_meta = os.path.join(dir, 'pubmed_cr2.0_metadata.tsv')
-pm_vectors = os.path.join(dir, 'pubmed_cr2.0_vectors.tsv')
+pm_meta = os.path.join(dir, '2018_filt_metadata.tsv')
+pm_vectors = os.path.join(dir, '2018_filt_vector.tsv')
 
-wn_meta = os.path.join(dir, 'wn2vec2.0_metadata.tsv')
-wn_vectors = os.path.join(dir, 'wn2vec2.0_vectors.tsv')
+wn_meta = os.path.join(dir, '2018_wn_metadata.tsv')
+wn_vectors = os.path.join(dir, '2018_wn_vector.tsv')
 
+"""
+
+pm_meta = os.path.join(dir, '100000_filt_metadata.tsv')
+pm_vectors = os.path.join(dir, '100000_filt_vector.tsv')
+
+wn_meta = os.path.join(dir, '100000_wn_metadata.tsv')
+wn_vectors = os.path.join(dir, '100000_wn_vector.tsv')
+
+"""
 
 # Intended purpose -- file with ALL of gene sets we are interested in
-# our_concept_file = 'wn2vec_genesets.tsv'
-our_concept_file = 'data/mesh_sets.tsv'
-mesh_concept_set_parser = ConceptSetParser(concept_file_path=our_concept_file)
+
+
+our_mesh_concept_file = 'data/mesh_sets.tsv'
+mesh_concept_set_parser = ConceptSetParser(concept_file_path=our_mesh_concept_file)
 all_concept_sets = mesh_concept_set_parser.get_all_concepts()
 concept_set_list = mesh_concept_set_parser.get_concept_set_list()
 log.info(f"We got {len(concept_set_list)} MeSH concepts")
 
-our_gene_concept_file = 'data/genesets.tsv'
+our_gene_concept_file = 'data/gene_sets.tsv'
 gene_concept_set_parser = ConceptSetParser(concept_file_path=our_gene_concept_file)
 gene_concept_sets = gene_concept_set_parser.get_all_concepts()
 gene_concept_set_list = gene_concept_set_parser.get_concept_set_list()
@@ -110,3 +121,11 @@ df = pd.DataFrame(comparison_dictionary_list)
 log.info(f"Outputting results to {out_fname}")
 
 df.to_csv(out_fname, sep='\t')
+
+# sample way of running the code using arparse:
+"""
+locate the file you are running + python + comnConcepts.py  + '-i' +  address of word2vector output (metadata & vectors) + address of output_file (optional)
+example: 
+> python comnConcepts.py  -i /Users/niyone/Desktop/testing/metadata_vectors -o comn_concepts.tsv
+
+"""
