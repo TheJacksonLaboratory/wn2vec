@@ -10,6 +10,8 @@ from tensorflow.keras import layers
 import argparse
 import time
 
+import wn2vec
+
 
 today_date = datetime.date.today().strftime("%b_%d_%Y")
 start_time = time.time()
@@ -28,6 +30,20 @@ parser.add_argument('vector', type=str) #name of vector file
 parser.add_argument('metadata', type=str) #name of metadata file
 parser.add_argument('vocab_size', type=int, default=5000)
 args = parser.parse_args()
+
+"""
+1. Make new class
+class Word2VecRunner:
+  def __init__(self, list of all parameters with defauilt values, e.g. embedding_dim= 128)
+
+2. In this runner file, keep things simple
+from wn2vec import Word2VecRunner
+
+# put all of the argparse stuff here
+runner = Word2VecRunner(window_size = 10,embedding_dim= 256, .. ....)
+runner.run() # run word2vec and output the vector and metadata files
+
+"""
 
 
 
