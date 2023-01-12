@@ -17,7 +17,7 @@ requires-python = ">=3.5"
 description = "wordnet 2 vec non-biomedical synonym replacement"
 readme = "README.md"
 authors = [
-    {name = "Enock Niyonkuru", email="enock.niyonkuru@trincoll.edu" }
+    {name = "Enock Niyonkuru", email="enock.niyonkuru@trincoll.edu" },
     {name = "Peter Robinson", email="peter.robinson@jax.org"},
      ]
 license = { file = "LICENSE" }
