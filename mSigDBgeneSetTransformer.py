@@ -12,8 +12,8 @@ import argparse
 
 parser = argparse.ArgumentParser(description='Process MSigDb genesets into wn2vec concept set format.')
 parser.add_argument('-i',  type=str, required=True, help='input directory with MSigDb files')
-parser.add_argument('-o', type=str, default='wn2vec_genesets.tsv',
-                    help='name of output file (default=\'wn2vec_genesets.tsv\'')
+parser.add_argument('-o', type=str, default='data/gene_sets.tsv',
+                    help='name of output file (default=\'data/gene_sets.tsv\'')
 args = parser.parse_args()
 input_dir = args.i
 out_fname = args.o
@@ -38,7 +38,49 @@ with open(hgncFilename) as f:
 
 
 class MSigDbGeneSet:
+    """
+    creates an object of MSigDb gene sets
+    ...
+
+    Attributes
+    ----------
+        name: str
+            a name of a gene set
+        
+        id: str
+            an id of a gene set 
+
+        symbols: list
+            a list of genes in the gene set of the corresponding name and id 
+        
+
+    Methods
+    -------
+    def name(self)
+    def id(self)
+    def symbols(self)
+
+    """
+
+
+
     def __init__(self, name, id, symbols):
+        """
+        Constructs all the necessary attributes for the  MSigDbGeneSet class
+        
+        Parameters
+        ----------
+        name: str
+            a name of a gene set
+        
+        id: str
+            an id of a gene set 
+
+        symbols: list
+            a list of genes in the gene set of the corresponding name and id 
+        
+        """
+
         self._name = name
         self._id = id
         self._symbols = symbols
@@ -57,6 +99,14 @@ class MSigDbGeneSet:
 
 
 def process_MSigDb_file(fname):
+    """
+    Transforms selected gene sets from MSigDb into the format required for WN2VEC
+    @ parameter: fname: str
+        the name of the gene set 
+
+    @ return: status: Boolean
+        returns a transformed gene set in the format required for WN2VEC
+    """
     print(f"Processing {fname}")
     if not os.path.isfile(fname):
         raise FileNotFoundError(f"Could not find {fname}")
@@ -104,3 +154,10 @@ for geneset in gene_set_list:
     fh.write("%s\t%s\t%s\n" % (name, id, ";".join(replaced_symbols)))
 fh.close()
     
+# sample way of running the code using arparse:
+"""
+locate the file you are running + python + mSigDBgeneSetTransformer.py  + '-i' +  address of gene sets files  + address of output_file (optional)
+example: 
+> python mSigDBgeneSetTransformer.py -i /Users/niyone/Desktop/testing/gene_sets/kegg_canonical_gene_set -o data/gene_sets.tsv
+
+"""
