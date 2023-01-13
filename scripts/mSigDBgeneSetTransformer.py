@@ -21,7 +21,7 @@ out_fname = args.o
 
 
 hgncUrl = "http://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/tsv/non_alt_loci_set.txt"
-hgncFilename = "non_alt_loci_set.txt"
+hgncFilename = "/data/non_alt_loci_set.txt"
 
 # download file if needed
 if not os.path.isfile(hgncFilename):

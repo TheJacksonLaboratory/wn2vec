@@ -7,12 +7,48 @@ import numpy as np
 
 
 class TfConceptParser:
+    """
+    creates a dictionary of concepts that are both interested in (genes or mesh) and are present in the word2vec output (key: metadata, value: vector)
+    ...
+
+    Attributes
+    ----------
+        meta_file: str
+                   output of tensorflow word2vec, metadata file with names of concepts
+        
+        vector_file: str
+                    output of tensorflow word2vec, metadata file with vectors (same order as concepts)
+        
+        concept_set: str
+                   set of concept ids we are interested in
+
+    Methods
+    -------
+    def get_active_concept_d(self):
+        Dictionary of all concepts used at least once in the concept_set passed to the constructor
+
+    """
+
+
+
     def __init__(self, meta_file, vector_file, concept_set) -> None:
         """
-        meta_file: output of tensorflow word2vec, metadata file with names of concepts
-        vector_file: output of tensorflow word2vec, metadata file with vectors (same order as concepts)
-        concept_set: set of concept ids we are interested in
+        Constructs all the necessary attributes for the  TfConceptParser class
+        
+        Parameters
+        ----------
+        meta_file: str
+                   output of tensorflow word2vec, metadata file with names of concepts
+        
+        vector_file: str
+                    output of tensorflow word2vec, metadata file with vectors (same order as concepts)
+        
+        concept_set: str
+                   set of concept ids we are interested in
+       
         """
+
+
         self._d = defaultdict(TfConcept)
         self._vectors = []
         self._concepts = []
@@ -38,7 +74,7 @@ class TfConceptParser:
 
     def get_active_concept_d(self):
         """
-        Dictionary of all concepts used at least once in the concept_set passed to the constructor
+        creates a dictionary of all concepts used at least once in the concept_set passed to the constructor
         """
         return self._d
 

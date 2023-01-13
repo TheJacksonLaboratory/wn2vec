@@ -4,28 +4,82 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 
 
 class MeSHEntry:
+
+     """
+    reads a list of targeted mesh ids and their labels and creates a formated file with mesh sets required for WN2VEC output
+    ...
+
+    Attributes
+    ----------
+        id: str
+            mesh id (ex: D007674)	Kidney Diseases
+        label: str
+            a lable corresponding to mesh id (ex "Kidney Diseases")
+                   
+
+    Methods
+    -------
+    def id(self):
+        returns the mesh id
+
+    def label(self):
+        returns the label corresponding to the mesh id
+
+    def meshlabel(self):
+        returns the string with mesh label
+
+    def __str__(self):
+        returns a string with mesh id and mesh label 
+
+    """
+
     def __init__(self, id, label) -> None:
+        """
+        Constructs all the necessary attributes for the  class MeSHEntry class
+        
+        Parameters
+        ----------
+        id: str
+            mesh id (ex: D007674)	Kidney Diseases
+        label: str
+            a lable corresponding to mesh id (ex "Kidney Diseases")
+                   
+        """
         self._id = id
         self._label = label
 
     @property
     def id(self):
+        """
+        returns the mesh id
+        """
         return self._id
 
     @property
     def label(self):
+        """
+        returns the label corresponding to the mesh id
+        """
         return self._label
 
     @property
     def meshlabel(self):
+        """
+        returns the string with mesh label
+        """
         return "meshd" + self._id[1:]
 
     def __str__(self):
+        """
+        returns a string with mesh id and mesh label 
+        """
         return f"{self._id}: {self._label}"
 
 
 
 def get_query(meshid):
+
+    
     return """
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -49,8 +103,6 @@ def get_query(meshid):
 
     ORDER BY ?label
     """ % meshid
-
-
 
 
 
@@ -97,7 +149,7 @@ def get_target_mesh_ids():
     return mesh_entries
 
 
-outname = "mesh_sets.tsv" 
+outname = "data/mesh_sets.tsv" 
 
 fh = open(outname, 'wt')
 
@@ -116,3 +168,10 @@ fh.close()
 
 
 
+# sample way of running the code using arparse:
+"""
+locate the file you are running + python + meshImporter.py 
+example: 
+> python meshImporter.py 
+
+"""
