@@ -104,11 +104,11 @@ class Word2VecRunner:
             return targets, contexts, labels
 
     
-        def input_file(self, verbose=False):
-            path_to_file = self._input 
-            if not os.path.isfile(path_to_file):
-                raise FileNotFoundError(f"Could not find input file at {path_to_file}")
-            with open(path_to_file) as f:
+        def input_file(self, input_file, verbose=False):
+            self._input = input_file
+            if not os.path.isfile(input_file):
+                raise FileNotFoundError(f"Could not find input file at {input_file}")
+            with open(input_file) as f:
                 for line in f:
                     columns = line.split('\t')
                     if len(columns) != 3:
@@ -118,9 +118,7 @@ class Word2VecRunner:
             if verbose:
                 for line in self._lines[:20]:
                     print(line)
-
-
-    text_ds = tf.data.TextLineDataset(path_to_file).filter(lambda x: tf.cast(tf.strings.length(x), bool))
+            text_ds = tf.data.TextLineDataset(input_file).filter(lambda x: tf.cast(tf.strings.length(x), bool))
 
     # Now, create a custom standardization function to lowercase the text and
     # remove punctuation.
