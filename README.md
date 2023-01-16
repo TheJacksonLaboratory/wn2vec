@@ -17,6 +17,12 @@ python3 -m build .
 ```
 
 
+## Set up documentation
+```
+source venv/bin/activite
+pip install sphinx
+
+
 
 ## Part I: Marea : (marea1.0 @ HPC)
 Filter PubMed articles for relevance based on year of publication and apply PubTator Central concept recognition to the titles and abstracts of relevant articles. 

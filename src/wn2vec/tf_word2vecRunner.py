@@ -2,6 +2,7 @@ import io
 import re
 import string
 import tqdm
+import os
 import logging
 import datetime
 import numpy as np
@@ -27,19 +28,21 @@ class Word2VecRunner:
 
 
     """
-    def __init__(self, input, vector, metadata, vocab_size, 
+    def __init__(self, vector, metadata, vocab_size, 
                         embedding_dim, sequence_length, window_size, 
                              BATCH_SIZE , BUFFER_SIZE, num_ns, SEED ):
-        self._input = input
+        self._input = None
         self._vector = vector
         self._metadata = metadata
         self._vocab_size = vocab_size
+        self._embedding_dim = embedding_dim
         self._sequence_length = sequence_length
         self._window_size = window_size
         self._BATCH_SIZE = BATCH_SIZE
         self._BUFFER_SIZE = BUFFER_SIZE
         self._num_ns = num_ns
         self._SEED= SEED
+        self._lines = []
     
     # Load the TensorBoard notebook extension
     #%load_ext tensorboard
@@ -100,19 +103,21 @@ class Word2VecRunner:
 
             return targets, contexts, labels
 
-    path_to_file = self._input 
-
-
-    lines = []
-    with open(path_to_file) as f:
-        for line in f:
-            columns = line.split('\t')
-            if len(columns) != 3:
-                raise ValueError(f'Malformed marea line: {line}')
-            abstract = columns[2]  #columns[0]: pmid,  columns[1] year, columns[2] abstract text
-            lines.append(abstract)
-    for line in lines[:20]:
-        print(line)
+    
+        def input_file(self, verbose=False):
+            path_to_file = self._input 
+            if not os.path.isfile(path_to_file):
+                raise FileNotFoundError(f"Could not find input file at {path_to_file}")
+            with open(path_to_file) as f:
+                for line in f:
+                    columns = line.split('\t')
+                    if len(columns) != 3:
+                        raise ValueError(f'Malformed marea line: {line}')
+                    abstract = columns[2]  #columns[0]: pmid,  columns[1] year, columns[2] abstract text
+                    self._lines.append(abstract)
+            if verbose:
+                for line in self._lines[:20]:
+                    print(line)
 
 
     text_ds = tf.data.TextLineDataset(path_to_file).filter(lambda x: tf.cast(tf.strings.length(x), bool))
