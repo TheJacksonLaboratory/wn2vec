@@ -21,6 +21,10 @@ python3 -m build .
 ```
 source venv/bin/activite
 pip install sphinx
+pip install sphinx_rtd_theme
+cd docs
+make html
+```
 
 
 
