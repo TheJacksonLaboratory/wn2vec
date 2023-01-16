@@ -13,25 +13,11 @@ import argparse
 
 class Word2VecRunner:
 
-    """
-    Attributes
-
-    - input: address of the abstracts files
-    - vector: name of vector file
-    - metadata: name of metadata file
-    - vocab_size: default = 5000
-    - embedding_dim: default = 128
-    - sequence_length: default = 10
-    - BATCH_SIZE: default = 128
-    - BUFFER_SIZE: default = 10000
-
-
-
-    """
-    def __init__(self, vector, metadata, vocab_size, 
+    def __init__(self, input_file, vector, metadata, vocab_size, 
                         embedding_dim, sequence_length, window_size, 
                              BATCH_SIZE , BUFFER_SIZE, num_ns, SEED ):
-        self._input = None
+        #self._input = None
+        self._input_file = input_file
         self._vector = vector
         self._metadata = metadata
         self._vocab_size = vocab_size
@@ -104,21 +90,28 @@ class Word2VecRunner:
             return targets, contexts, labels
 
     
-        def input_file(self, input_file, verbose=False):
-            self._input = input_file
-            if not os.path.isfile(input_file):
-                raise FileNotFoundError(f"Could not find input file at {input_file}")
-            with open(input_file) as f:
-                for line in f:
-                    columns = line.split('\t')
-                    if len(columns) != 3:
-                        raise ValueError(f'Malformed marea line: {line}')
-                    abstract = columns[2]  #columns[0]: pmid,  columns[1] year, columns[2] abstract text
-                    self._lines.append(abstract)
-            if verbose:
-                for line in self._lines[:20]:
-                    print(line)
-            text_ds = tf.data.TextLineDataset(input_file).filter(lambda x: tf.cast(tf.strings.length(x), bool))
+    def input_file(self, verbose=False):
+        """
+        opening input file from path and  create text_ds
+        """
+        input_file = self._input_file
+        if not os.path.isfile(input_file):
+            raise FileNotFoundError(f"Could not find input file at {input_file}")
+        with open(input_file) as f:
+            for line in f:
+                columns = line.split('\t')
+                if len(columns) != 3:
+                    raise ValueError(f'Malformed marea line: {line}')
+                abstract = columns[2]  #columns[0]: pmid,  columns[1] year, columns[2] abstract text
+                self._lines.append(abstract)
+        if verbose:
+            for line in self._lines[:20]:
+                print(line)
+        text_ds = tf.data.TextLineDataset(input_file).filter(lambda x: tf.cast(tf.strings.length(x), bool))
+        
+        return text_ds
+
+
 
     # Now, create a custom standardization function to lowercase the text and
     # remove punctuation.
@@ -132,52 +125,60 @@ class Word2VecRunner:
     # Use the `TextVectorization` layer to normalize, split, and map strings to
     # integers. Set the `output_sequence_length` length to pad all samples to the
     # same length.
-    vectorize_layer = tf.keras.layers.TextVectorization(
-        standardize=custom_standardization,
-        max_tokens=self._vocab_size,
-        output_mode='int',
-        output_sequence_length=self._sequence_length)
+   
+    def get_vecotrized_layer(self):
+        vectorize_layer = tf.keras.layers.TextVectorization(
+            standardize=self.custom_standardization,
+            max_tokens=self._vocab_size,
+            output_mode='int',
+            output_sequence_length=self._sequence_length)
 
-    vectorize_layer.adapt(text_ds.batch(1024))
+        text_ds = self.input_file(self)
 
-    # Save the created vocabulary for reference.
-    inverse_vocab = vectorize_layer.get_vocabulary()
-    print(inverse_vocab[:20])
+        vectorize_layer.adapt(self.text_ds.batch(1024))
 
-    # Vectorize the data in text_ds.
-    text_vector_ds = text_ds.batch(1024).prefetch(AUTOTUNE).map(vectorize_layer).unbatch()
+        
+        # Save the created vocabulary for reference.
+        inverse_vocab = vectorize_layer.get_vocabulary()
+        print(inverse_vocab[:20])
 
-    sequences = list(text_vector_ds.as_numpy_iterator())
-    print(len(sequences))
+        # Vectorize the data in text_ds.
+        text_vector_ds = text_ds.batch(1024).prefetch(AUTOTUNE).map(vectorize_layer).unbatch()
 
-
-    for seq in sequences[:5]:
-        print(f"{seq} => {[inverse_vocab[i] for i in seq]}")
-
-    targets, contexts, labels = generate_training_data(self, _sequence_length, 
-                                                             _window_size, _num_ns,
-                                                              _vocab_size, _seed) 
+        sequences = list(text_vector_ds.as_numpy_iterator())
+        print(len(sequences))
 
 
+        for seq in sequences[:5]:
+            print(f"{seq} => {[inverse_vocab[i] for i in seq]}")
+
+        targets, contexts, labels = self.generate_training_data(self, _sequence_length, 
+                                                                _window_size, _num_ns,
+                                                                _vocab_size, _seed) 
 
 
-    targets = np.array(targets)
-    contexts = np.array(contexts)[:,:,0]
-    labels = np.array(labels)
-
-    print('\n')
-    print(f"targets.shape: {targets.shape}")
-    print(f"contexts.shape: {contexts.shape}")
-    print(f"labels.shape: {labels.shape}")
 
 
-    dataset = tf.data.Dataset.from_tensor_slices(((targets, contexts), labels))
-    dataset = dataset.shuffle(self._BUFFER_SIZE).batch(self._BATCH_SIZE, drop_remainder=True)
-    print(dataset)
+        targets = np.array(targets)
+        contexts = np.array(contexts)[:,:,0]
+        labels = np.array(labels)
+
+        print('\n')
+        print(f"targets.shape: {targets.shape}")
+        print(f"contexts.shape: {contexts.shape}")
+        print(f"labels.shape: {labels.shape}")
 
 
-    dataset = dataset.cache().prefetch(buffer_size=AUTOTUNE)
-    print(dataset)
+        dataset = tf.data.Dataset.from_tensor_slices(((targets, contexts), labels))
+        dataset = dataset.shuffle(self._BUFFER_SIZE).batch(self._BATCH_SIZE, drop_remainder=True)
+        print(dataset)
+
+
+        dataset = dataset.cache().prefetch(buffer_size=AUTOTUNE)
+        print(dataset)
+
+        return dataset, vectorize_layer
+
 
     class Word2Vec(tf.keras.Model):
         def __init__(self, vocab_size, embedding_dim):
@@ -208,41 +209,43 @@ class Word2VecRunner:
     def custom_loss(x_logit, y_true):
         return tf.nn.sigmoid_cross_entropy_with_logits(logits=x_logit, labels=y_true)
 
-    word2vec = Word2Vec(self, _vocab_size, _embedding_dim)
-    word2vec.compile(optimizer='adam',
-                    loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True),
-                    metrics=['accuracy'])
+    def get_embedding(self): 
+        dataset, vectorize_layer = self.get_vecotrized_layer()
+        word2vec = self.Word2Vec(self, _vocab_size, _embedding_dim)
+        word2vec.compile(optimizer='adam',
+                        loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True),
+                        metrics=['accuracy'])
 
-    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir="logs")
-    history_all = word2vec.fit(dataset, epochs=10, callbacks=[tensorboard_callback])
-
-
-    #docs_infra: no_execute
-    #%tensorboard --logdir logs
+        tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir="logs")
+        history_all = word2vec.fit(dataset, epochs=10, callbacks=[tensorboard_callback])
 
 
-    weights = word2vec.get_layer('w2v_embedding').get_weights()[0]
-    vocab = vectorize_layer.get_vocabulary()
-
-    vector_file = self._vector
-    metadata_file = self._metadata
-    out_v = io.open(vector_file, 'w', encoding='utf-8')
-    out_m = io.open(metadata_file, 'w', encoding='utf-8')
-
-    for index, word in enumerate(vocab):
-        if index == 0:
-            continue  # skip 0, it's padding.
-    vec = weights[index]
-    out_v.write('\t'.join([str(x) for x in vec]) + "\n")
-    out_m.write(word + "\n")
-    out_v.close()
-    out_m.close()
+        #docs_infra: no_execute
+        #%tensorboard --logdir logs
 
 
-    try:
-        from google.colab import files
-        files.download(vector_file)
-        files.download(metadata_file)
-    except Exception:
-        pass
+        weights = word2vec.get_layer('w2v_embedding').get_weights()[0]
+        vocab = vectorize_layer.get_vocabulary()
+
+        vector_file = self._vector
+        metadata_file = self._metadata
+        out_v = io.open(vector_file, 'w', encoding='utf-8')
+        out_m = io.open(metadata_file, 'w', encoding='utf-8')
+
+        for index, word in enumerate(vocab):
+            if index == 0:
+                continue  # skip 0, it's padding.
+        vec = weights[index]
+        out_v.write('\t'.join([str(x) for x in vec]) + "\n")
+        out_m.write(word + "\n")
+        out_v.close()
+        out_m.close()
+
+
+        try:
+            from google.colab import files
+            files.download(vector_file)
+            files.download(metadata_file)
+        except Exception:
+            pass
 

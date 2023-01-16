@@ -1,10 +1,12 @@
 
-from scripts import TfConceptParser, TfConcept, Ttest, ConceptSetParser, ConceptSet
 import os
 import argparse
 import numpy as np
 import pandas as pd
 import typing
+
+from wn2vec import TfConceptParser, TfConcept, Ttest, ConceptSetParser, ConceptSet
+
 
 import logging
 log = logging.getLogger("wn2vec.log")

@@ -4,8 +4,7 @@ import datetime
 
 import argparse
 import time
-
-from wn2vec import Word2VecRunner
+import Word2VecRunner
 
 
 today_date = datetime.date.today().strftime("%b_%d_%Y")
@@ -34,7 +33,7 @@ metadata_name = args._m
 vocab_size = args.vocab_size
 embed_dim = args.embedding_dim
 
-runner = Word2VecRunner(input=input_file_path, vector=vector_name, metadata=metadata_name, vocab_size=5000, 
+runner = Word2VecRunner(input_file=input_file_path, vector=vector_name, metadata=metadata_name, vocab_size=5000, 
                              embedding_dim=embed_dim, sequence_length = 10, window_size = 2, 
                               BATCH_SIZE = 128, BUFFER_SIZE= 10000, num_ns = 4, SEED = 42 )
 """
@@ -44,6 +43,12 @@ runner.embed_file()
 runner.output_vectors(outputfile="???")
 
 """
+#open input file , returns text_ds
+runner.input_file()
+
+runner.get_vecotrized_layer()
+
+runner.get_embedding()
 
 
 
