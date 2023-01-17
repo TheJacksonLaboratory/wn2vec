@@ -1,0 +1,49 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+
+["src"]
+
+
+[project]
+name = "wn2vec"
+version = "0.0.2"
+requires-python = ">=3.5"
+description = "wordnet 2 vec non-biomedical synonym replacement"
+readme = "README.md"
+authors = [
+    {name = "Enock Niyonkuru", email="enock.niyonkuru@trincoll.edu" },
+    {name = "Peter Robinson", email="peter.robinson@jax.org"},
+     ]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+]
+keywords = [
+    "word2vec",
+    "wordnet",
+    ]
+dependencies = [
+    "nltk>=3.6.4",
+    "numpy",
+    "TensorFlow",
+    "SPARQLWrapper",
+    "scipy"
+]
+
+
+
+[project.urls]
+homepage = "https://github.com/monarch-initiative/wn2vec"
+repository = "https://github.com/monarch-initiative/wn2vec.git"
+documentation = "https://github.com/monarch-initiative/wn2vec"
+bugtracker = "https://github.com/monarch-initiative/wn2vec/issues"
+
+#[project.scripts]
+# ... = "reader.__main__:main"
