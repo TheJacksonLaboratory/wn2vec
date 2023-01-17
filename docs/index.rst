@@ -2,13 +2,65 @@
 WN2Vec
 ======
 
-WN2Vec
-TODO add description, add figure
+The original word2vec method operates on individual words (tokens). However, many biomedical concepts span multiple tokens. 
+For instance, <i>Myocardial Infarction</i>  would be treated by word2vec as two words, but it represents a 
+single medical concept. For this reason, recent approaches collapse multiword concepts into a single token prior to 
+embedding by replacing the multiword concepts with a single concept id (e.g., MeSH:D009203).
 
-.. figure:: img/PhenoteOverview.png
-    :scale: 50 %
-    :alt: PhenoteFX - overview
+In this project,  we reasoned that replacing synomnyms of non-biomedical concepts with the same identifier would 
+additional improve the performance of word2vec. WordNet is a  database of synonyms, hyponyms, and meronyms that 
+groups synonyms from the same lexical category (nouns, verbs, adjectives, and adverbs) into synsets. 
 
+---------------------------
+Running the WN2Vec pipeline
+---------------------------
+
+To reproduce the results in the manuscript, the following steps should be performed.
+
+Installation
+^^^^^^^^^^^^
+See :ref:`installation` for instructions on how to set up the package. 
+
+PubMed abstracts
+^^^^^^^^^^^^^^^^
+
+To obtain PubMed abstracts, following the instructions
+of the NCBI `Download PubMed Data <https://pubmed.ncbi.nlm.nih.gov/download/>`_ website. 
+
+Replacement of biomedical concepts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We use the `marea <https://github.com/TheJacksonLaboratory/marea>`_ package to replace 
+single- or multi-word biomedical concepts with concept identifiers.
+
+See :ref:`rst_marea` for instructions in how to run marea to perform biomedical concept replacement.
+
+
+WordNet-based synonym Replacement
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The XYZ script from the wn2vec package is used to replace non-biomedical synonyms with WordNet identifiers.
+
+See :ref:`wnreplacement` for details.
+
+
+word2vec
+^^^^^^^^
+
+We perform word2vec embedding using TensorFlow2 with the XYZ script from the wn2vec package. In order to 
+compare the results of embedding with and without WordNet replacment, embedding is performed on both datasets.
+
+See :ref:`w2v` for details.
+
+
+Evaluating concept sets 
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Our hypothesis is that non-biomedical concept replacement will improve embeddings as judged by a smaller distance of related 
+concepts to each other. TO assess this, we defined XYZ concept sets representing genetic and genomic functions (gene sets) and biomedical concepts taken from MeSH.
+The XYZ script from wn2vec is used to assess the mean intracluster cosine distances of the corresponding concepts.
+
+See :ref:`conceptseteval` for details.
 
 --------
 Feedback
@@ -23,9 +75,10 @@ The best place to leave feedback, ask questions, and report bugs is the `WN2vec 
     :hidden:
 
     install
-    tutorial_setup
-    tutorial_local_hpo
-    tutorial_working
+    marea
+    wordnetreplacement
+    word2vec
+    conceptset_evaluation
 
 .. toctree::
     :caption: Project Info
