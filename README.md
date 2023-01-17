@@ -12,8 +12,7 @@ Wordnet 2 vector
 ```
 python3 -m venv venv
 source venv/bin/activate
-pip install build
-python3 -m build .
+pip install .
 ```
 
 
