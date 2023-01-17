@@ -1,5 +1,32 @@
 # wn2vec
 Wordnet 2 vector
+
+
+
+## Setup
+(TODO install package from PyPI, for now we will do local install)
+- create a virtual environment
+- pip-install the build package
+- do a local build
+- then we can use the scripts in the 'scripts' subdirectory with the wn2vec package
+```
+python3 -m venv venv
+source venv/bin/activate
+pip install .
+```
+
+
+## Set up documentation
+```
+source venv/bin/activite
+pip install sphinx
+pip install sphinx_rtd_theme
+cd docs
+make html
+```
+
+
+
 ## Part I: Marea : (marea1.0 @ HPC)
 Filter PubMed articles for relevance based on year of publication and apply PubTator Central concept recognition to the titles and abstracts of relevant articles. 
 ### Step 1:  Requirements (step 1 of original Marea)
