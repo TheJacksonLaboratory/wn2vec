@@ -33,7 +33,7 @@ dependencies = [
     "nltk>=3.6.4",
     "numpy",
     "TensorFlow",
-    "SPARQLWrappercle",
+    "SPARQLWrapper",
     "scipy"
 ]
 
