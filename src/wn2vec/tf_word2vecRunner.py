@@ -13,6 +13,21 @@ import argparse
 
 class Word2VecRunner:
 
+    """
+    Attributes
+
+    - input_file: address of the abstracts files
+    - vector: name of vector file
+    - metadata: name of metadata file
+    - vocab_size: default = 5000
+    - embedding_dim: default = 128
+    - sequence_length: default = 10
+    - BATCH_SIZE: default = 128
+    - BUFFER_SIZE: default = 10000
+
+
+
+    """
     def __init__(self, input_file, vector, metadata, vocab_size, 
                         embedding_dim, sequence_length, window_size, 
                              BATCH_SIZE , BUFFER_SIZE, num_ns, SEED ):
@@ -127,15 +142,16 @@ class Word2VecRunner:
     # same length.
    
     def get_vecotrized_layer(self):
+        input_file = self._input_file
         vectorize_layer = tf.keras.layers.TextVectorization(
-            standardize=self.custom_standardization,
+            standardize=self.custom_standardization(input_file),
             max_tokens=self._vocab_size,
             output_mode='int',
             output_sequence_length=self._sequence_length)
 
         text_ds = self.input_file(self)
 
-        vectorize_layer.adapt(self.text_ds.batch(1024))
+        vectorize_layer.adapt(text_ds.batch(1024))
 
         
         # Save the created vocabulary for reference.
