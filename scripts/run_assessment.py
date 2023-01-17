@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import typing
 
+import wn2vec 
 from wn2vec import TfConceptParser, TfConcept, Ttest, ConceptSetParser, ConceptSet
 
 
