@@ -89,5 +89,5 @@ The best place to leave feedback, ask questions, and report bugs is the `WN2vec 
     contributing
     authors
     history
-    license
+    LICENSE
   #  release_howto
