@@ -38,14 +38,8 @@ embed_dim = args.embedding_dim
 runner = Word2VecRunner(input_file=input_file_path, vector=vector_name, metadata=metadata_name, vocab_size=5000, 
                              embedding_dim=embed_dim, sequence_length = 10, window_size = 2, 
                               BATCH_SIZE = 128, BUFFER_SIZE= 10000, num_ns = 4, SEED = 42 )
-"""
-TODO -- adapt script to 
-runner.input_file()
-runner.embed_file()
-runner.output_vectors(outputfile="???")
 
-"""
-#open input file , returns text_ds
+
 runner.input_file()
 
 runner.get_vecotrized_layer()

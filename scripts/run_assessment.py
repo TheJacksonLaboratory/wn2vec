@@ -28,7 +28,7 @@ log.addHandler(ch)
 
 parser = argparse.ArgumentParser(description='Process MSigDb genesets into wn2vec concept set format.')
 parser.add_argument('-i',  type=str, required=True, help='input directory with word2vector.py output files')
-parser.add_argument('-o', type=str, default='/data/comn_concepts.tsv',
+parser.add_argument('-o', type=str, default='../data/comn_concepts.tsv',
                     help='name of output file (default=\'comn_concepts.tsv\'')
 args = parser.parse_args()
 input_dir = args.i
@@ -37,24 +37,54 @@ out_fname = args.o
 dir = args.i
 
 
+"""
+pm_meta = os.path.join(dir, '2018_filt_metadata.tsv')
+pm_vectors = os.path.join(dir, '2018_filt_vector.tsv')
 
+wn_meta = os.path.join(dir, '2018_wn_metadata.tsv')
+wn_vectors = os.path.join(dir, '2018_wn_vector.tsv')
+
+
+#100000
 pm_meta = os.path.join(dir, '100000_filt_metadata.tsv')
 pm_vectors = os.path.join(dir, '100000_filt_vector.tsv')
 
 wn_meta = os.path.join(dir, '100000_wn_metadata.tsv')
 wn_vectors = os.path.join(dir, '100000_wn_vector.tsv')
+"""
+#2015
+pm_meta = os.path.join(dir, '2015_filt_sumner_metadata.tsv')
+pm_vectors = os.path.join(dir, '2015_filt_sumner_vector.tsv')
 
+wn_meta = os.path.join(dir, '2015_wn_sumner_metadata.tsv')
+wn_vectors = os.path.join(dir, '2015_wn_sumner_vector.tsv')
+"""
+
+#2010
+pm_meta = os.path.join(dir, '2010_filt_sumner_metadata.tsv')
+pm_vectors = os.path.join(dir, '2010_filt_sumner_vector.tsv')
+
+wn_meta = os.path.join(dir, '2010_wn_sumner_metadata.tsv')
+wn_vectors = os.path.join(dir, '2010_wn_sumner_vector.tsv')
+"""
 
 # Intended purpose -- file with ALL of gene sets we are interested in
 
 
-our_mesh_concept_file = 'data/mesh_sets.tsv'
+#our_mesh_concept_file = '../data/0_mesh_sets.tsv'
+our_mesh_concept_file = '../data/mesh_sets.tsv'
 mesh_concept_set_parser = ConceptSetParser(concept_file_path=our_mesh_concept_file)
 all_concept_sets = mesh_concept_set_parser.get_all_concepts()
 concept_set_list = mesh_concept_set_parser.get_concept_set_list()
 log.info(f"We got {len(concept_set_list)} MeSH concepts")
 
-our_gene_concept_file = 'data/gene_sets.tsv'
+our_gene_concept_file = '../data/gene_sets_100.tsv'
+#our_gene_concept_file = '../data/gene_sets_biocarta.tsv'
+#our_gene_concept_file = '../data/gene_sets_kegg.tsv'
+#our_gene_concept_file = '../data/gene_sets_bp.tsv'
+#our_gene_concept_file = '../data/gene_sets_pid.tsv'
+
+#our_gene_concept_file = 'data/gene_sets.tsv'
 gene_concept_set_parser = ConceptSetParser(concept_file_path=our_gene_concept_file)
 gene_concept_sets = gene_concept_set_parser.get_all_concepts()
 gene_concept_set_list = gene_concept_set_parser.get_concept_set_list()
@@ -67,8 +97,23 @@ concept_set_list.extend(gene_concept_set_list)
 parser = TfConceptParser(meta_file=pm_meta, vector_file=pm_vectors, concept_set=all_concept_sets)
 concept_set_d_pm = parser.get_active_concept_d()
 
+
 parser = TfConceptParser(meta_file=wn_meta, vector_file=wn_vectors, concept_set=all_concept_sets)
 concept_set_d_wn = parser.get_active_concept_d()
+
+pm_relevant_concepts = list(concept_set_d_pm.keys())
+wn_relevant_concepts = list(concept_set_d_wn.keys())
+
+pm_relevant_concepts_length= len(pm_relevant_concepts)
+wn_relevant_concepts_length = len(wn_relevant_concepts)
+
+
+for  concept in wn_relevant_concepts:
+    if concept in pm_relevant_concepts:
+        continue
+    else:
+        del concept_set_d_wn[concept]
+
 
 
 pm_mean_distance = []
@@ -84,13 +129,17 @@ sig_pm = 0
 wn_less = 0
 pm_less = 0
 
-
 for cs in concept_set_list:
+    
+    print(cs)
     pm_vecs = np.array([concept_set_d_pm.get(c).vector for c in cs.concepts if c in concept_set_d_pm])
+    
     wn_vecs = np.array([concept_set_d_wn.get(c).vector for c in cs.concepts if c in concept_set_d_wn])
     pm_concept = TfConcept(name=cs.name, vctor=pm_vecs)
     wn_concept = TfConcept(name=cs.name, vctor=wn_vecs)
     comparison = Ttest(pm_common_genes=pm_vecs, wn_common_genes=wn_vecs)
+
+     
     if comparison.n_concepts > MINIMUM_CONCEPT_SET_SIZE:
         d  = {'name': cs.name, 
         'comparisons': comparison.n_comparisons,
@@ -108,6 +157,9 @@ for cs in concept_set_list:
             wn_less += 1
         else:
             pm_less += 1
+
+log.info(f"WN relevant concepts {wn_relevant_concepts_length} and PM relevant concepts {pm_relevant_concepts_length}")
+
 log.info(f"WN sig {sig_wn} and PM sig {sig_pm}")
 log.info(f"WN LESS  {wn_less} and PM LESS {pm_less} (irregardless of pvalue)")
 

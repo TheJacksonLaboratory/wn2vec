@@ -8,7 +8,7 @@ import numpy as np
 
 class TfConceptParser:
     """
-    creates a dictionary of concepts that are both interested in (genes or mesh) and are present in the word2vec output (key: metadata, value: vector)
+    creates a dictionary of concepts that are both  we are interested in (genes or mesh) and are present in the word2vec output (key: metadata, value: vector)
     ...
 
     Attributes
