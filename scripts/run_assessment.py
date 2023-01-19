@@ -44,7 +44,7 @@ pm_vectors = os.path.join(dir, '2018_filt_vector.tsv')
 wn_meta = os.path.join(dir, '2018_wn_metadata.tsv')
 wn_vectors = os.path.join(dir, '2018_wn_vector.tsv')
 
-
+"""
 #100000
 pm_meta = os.path.join(dir, '100000_filt_metadata.tsv')
 pm_vectors = os.path.join(dir, '100000_filt_vector.tsv')
@@ -58,7 +58,7 @@ pm_vectors = os.path.join(dir, '2015_filt_sumner_vector.tsv')
 
 wn_meta = os.path.join(dir, '2015_wn_sumner_metadata.tsv')
 wn_vectors = os.path.join(dir, '2015_wn_sumner_vector.tsv')
-"""
+
 
 #2010
 pm_meta = os.path.join(dir, '2010_filt_sumner_metadata.tsv')
@@ -78,11 +78,11 @@ all_concept_sets = mesh_concept_set_parser.get_all_concepts()
 concept_set_list = mesh_concept_set_parser.get_concept_set_list()
 log.info(f"We got {len(concept_set_list)} MeSH concepts")
 
-our_gene_concept_file = '../data/gene_sets_100.tsv'
+#our_gene_concept_file = '../data/gene_sets_100.tsv'
 #our_gene_concept_file = '../data/gene_sets_biocarta.tsv'
 #our_gene_concept_file = '../data/gene_sets_kegg.tsv'
 #our_gene_concept_file = '../data/gene_sets_bp.tsv'
-#our_gene_concept_file = '../data/gene_sets_pid.tsv'
+our_gene_concept_file = '../data/gene_sets_pid.tsv'
 
 #our_gene_concept_file = 'data/gene_sets.tsv'
 gene_concept_set_parser = ConceptSetParser(concept_file_path=our_gene_concept_file)
