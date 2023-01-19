@@ -13,21 +13,6 @@ import argparse
 
 class Word2VecRunner:
 
-    """
-    Attributes
-
-    - input_file: address of the abstracts files
-    - vector: name of vector file
-    - metadata: name of metadata file
-    - vocab_size: default = 5000
-    - embedding_dim: default = 128
-    - sequence_length: default = 10
-    - BATCH_SIZE: default = 128
-    - BUFFER_SIZE: default = 10000
-
-
-
-    """
     def __init__(self, input_file, vector, metadata, vocab_size, 
                         embedding_dim, sequence_length, window_size, 
                              BATCH_SIZE , BUFFER_SIZE, num_ns, SEED ):
@@ -143,8 +128,10 @@ class Word2VecRunner:
    
     def get_vecotrized_layer(self):
         input_file = self._input_file
+        AUTOTUNE = tf.data.experimental.AUTOTUNE
+
         vectorize_layer = tf.keras.layers.TextVectorization(
-            standardize=self.custom_standardization(input_file),
+            #standardize=self.custom_standardization,
             max_tokens=self._vocab_size,
             output_mode='int',
             output_sequence_length=self._sequence_length)
@@ -157,10 +144,16 @@ class Word2VecRunner:
         # Save the created vocabulary for reference.
         inverse_vocab = vectorize_layer.get_vocabulary()
         print(inverse_vocab[:20])
+         
+        
+        return vectorize_layer, text_ds, inverse_vocab,
 
+    def get_sequences(vectorize_layer, text_ds, inverse_vocab):
+        AUTOTUNE = tf.data.experimental.AUTOTUNE
         # Vectorize the data in text_ds.
         text_vector_ds = text_ds.batch(1024).prefetch(AUTOTUNE).map(vectorize_layer).unbatch()
 
+        #Obtain sequences from the dataset
         sequences = list(text_vector_ds.as_numpy_iterator())
         print(len(sequences))
 
@@ -168,9 +161,12 @@ class Word2VecRunner:
         for seq in sequences[:5]:
             print(f"{seq} => {[inverse_vocab[i] for i in seq]}")
 
-        targets, contexts, labels = self.generate_training_data(self, _sequence_length, 
-                                                                _window_size, _num_ns,
-                                                                _vocab_size, _seed) 
+        #Generate training examples from sequences
+        targets, contexts, labels = self.generate_training_data(sequences=sequences, 
+                                                                window_size=self._window_size, 
+                                                                num_ns=self._num_ns,
+                                                                vocab_size=self._vocab_size, 
+                                                                seed=self._SEED) 
 
 
 
@@ -184,6 +180,11 @@ class Word2VecRunner:
         print(f"contexts.shape: {contexts.shape}")
         print(f"labels.shape: {labels.shape}")
 
+        return targets, contexts, labels
+
+    #Configure the dataset for performance
+    def get_dataset(self, targets, contexts, labels):
+        AUTOTUNE = tf.data.experimental.AUTOTUNE
 
         dataset = tf.data.Dataset.from_tensor_slices(((targets, contexts), labels))
         dataset = dataset.shuffle(self._BUFFER_SIZE).batch(self._BATCH_SIZE, drop_remainder=True)
@@ -193,7 +194,7 @@ class Word2VecRunner:
         dataset = dataset.cache().prefetch(buffer_size=AUTOTUNE)
         print(dataset)
 
-        return dataset, vectorize_layer
+        return dataset
 
 
     class Word2Vec(tf.keras.Model):
@@ -225,9 +226,9 @@ class Word2VecRunner:
     def custom_loss(x_logit, y_true):
         return tf.nn.sigmoid_cross_entropy_with_logits(logits=x_logit, labels=y_true)
 
-    def get_embedding(self): 
-        dataset, vectorize_layer = self.get_vecotrized_layer()
-        word2vec = self.Word2Vec(self, _vocab_size, _embedding_dim)
+    def get_embedding(self,dataset, vectorize_layer ): 
+       
+        word2vec = self.Word2Vec(self._vocab_size, self._embedding_dim)
         word2vec.compile(optimizer='adam',
                         loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True),
                         metrics=['accuracy'])

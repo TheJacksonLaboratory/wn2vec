@@ -42,9 +42,12 @@ runner = Word2VecRunner(input_file=input_file_path, vector=vector_name, metadata
 
 runner.input_file()
 
-runner.get_vecotrized_layer()
+vectorize_layer, text_ds, inverse_vocab = runner.get_vecotrized_layer()
+targets, contexts, labels = runner.get_sequences(vectorize_layer, text_ds, inverse_vocab)
 
-runner.get_embedding()
+dataset = runner.get_dataset
+
+runner.get_embedding(dataset,vectorize_layer )
 
 
 
