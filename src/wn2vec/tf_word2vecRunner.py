@@ -46,13 +46,6 @@ class Word2VecRunner:
     # and vocabulary size.
     def generate_training_data(self, sequences, window_size, num_ns, vocab_size, seed):
         # Elements of each training example are appended to these lists.
-        print(" generate_training_data Input .......................")
-        print("sequences:  ",len(sequences) )
-        print("window_size:  ",window_size )
-        print("num_ns:  ",num_ns )
-        print("vocab_size:  ",vocab_size )
-        print("seed:  ",seed )
-        print(" generate_training_data Input .......................")
         
         targets = []
         contexts = []
@@ -100,12 +93,6 @@ class Word2VecRunner:
                 targets.append(target_word)
                 contexts.append(context)
                 labels.append(label)
-
-            print(" Round One: targets : .................")
-            print(" Count: targets : .................", count)
-            print(" Count1: targets : .................", count1)
-            print(len(targets))
-            print(type(targets))
             return targets, contexts, labels
 
     
@@ -175,11 +162,6 @@ class Word2VecRunner:
         #Obtain sequences from the dataset
         sequences = list(text_vector_ds.as_numpy_iterator())
         print(len(sequences))
-               
-        print(" Sequences: .....................")
-        print(type(sequences))
-        print(sequences)
-        print(len(sequences))
          
         for seq in sequences[:5]:
             print(f"{seq} => {[inverse_vocab[i] for i in seq]}")
@@ -191,20 +173,6 @@ class Word2VecRunner:
                                                                 vocab_size=self._vocab_size, 
                                                                 seed=self._SEED) 
 
-        print("ROUND Two.......................")
-        print(" Target: .....................")
-        print(type(targets))
-        print(len(targets))
-
-        print(" contexts: .....................")
-        print(type(contexts))
-        print(len(contexts))
-
-        print(" labels: .....................")
-        print(type(labels))
-        print(len(labels))
-        
-        print(" data: .....................")
 
         targets = np.array(targets)
         contexts = np.array(contexts)[:,:,0]
@@ -224,21 +192,10 @@ class Word2VecRunner:
         dataset = tf.data.Dataset.from_tensor_slices(((targets, contexts), labels))
         dataset = dataset.shuffle(self._BUFFER_SIZE).batch(self._BATCH_SIZE, drop_remainder=True)
         print(dataset)
-        print(" dataset0: .....................")
-        print(type(dataset))
-        print(dataset)
         
-        print(" dataset1: .....................")
-
 
         dataset = dataset.cache().prefetch(buffer_size=AUTOTUNE)
         print(dataset)
-
-        print(" dataset1: .....................")
-        print(type(dataset))
-        print(dataset)
-        
-        print(" dataset1: .....................")
 
         return dataset
     
@@ -280,14 +237,7 @@ class Word2VecRunner:
                         metrics=['accuracy'])
 
         tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir="logs")
-        print(" dataset2: .....................")
-        print(type(dataset))
-        print(dataset)
-
-        print(" Tensor callback : .....................")
-        print(type(tensorboard_callback))
-        print(tensorboard_callback)
-        print("  .........................")
+        
         history_all = word2vec.fit(dataset, epochs=10, callbacks=[tensorboard_callback])
 
 
