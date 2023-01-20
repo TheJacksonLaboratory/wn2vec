@@ -9,7 +9,13 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras import layers
 import argparse
-#from tf_word2vec import Word2Vec
+
+today_date = datetime.date.today().strftime("%b_%d_%Y")
+logname = f"wn2vec_{today_date}.log"
+
+logging.basicConfig(level=logging.INFO, filename=logname, filemode='w', datefmt='%Y-%m-%d %H:%M:%S', 
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
 
 class Word2VecRunner:
 
