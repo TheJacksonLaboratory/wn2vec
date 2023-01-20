@@ -9,7 +9,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras import layers
 import argparse
-
+#from tf_word2vec import Word2Vec
 
 class Word2VecRunner:
 
@@ -29,7 +29,8 @@ class Word2VecRunner:
         self._num_ns = num_ns
         self._SEED= SEED
         self._lines = []
-    
+
+   
     # Load the TensorBoard notebook extension
     #%load_ext tensorboard
 
@@ -43,16 +44,28 @@ class Word2VecRunner:
     # Generates skip-gram pairs with negative sampling for a list of sequences
     # (int-encoded sentences) based on window size, number of negative samples
     # and vocabulary size.
-    def generate_training_data(sequences, window_size, num_ns, vocab_size, seed):
+    def generate_training_data(self, sequences, window_size, num_ns, vocab_size, seed):
         # Elements of each training example are appended to these lists.
-        targets, contexts, labels = [], [], []
-
+        print(" generate_training_data Input .......................")
+        print("sequences:  ",len(sequences) )
+        print("window_size:  ",window_size )
+        print("num_ns:  ",num_ns )
+        print("vocab_size:  ",vocab_size )
+        print("seed:  ",seed )
+        print(" generate_training_data Input .......................")
+        
+        targets = []
+        contexts = []
+        labels = []
+      
         # Build the sampling table for `vocab_size` tokens.
         sampling_table = tf.keras.preprocessing.sequence.make_sampling_table(vocab_size)
 
         # Iterate over all sequences (sentences) in the dataset.
+        count = 0
+        count1 = 0
         for sequence in tqdm.tqdm(sequences):
-
+            count += 1
             # Generate positive skip-gram pairs for a sequence (sentence).
             positive_skip_grams, _ = tf.keras.preprocessing.sequence.skipgrams(
                 sequence,
@@ -64,6 +77,7 @@ class Word2VecRunner:
             # Iterate over each positive skip-gram pair to produce training examples
             # with a positive context word and negative samples.
             for target_word, context_word in positive_skip_grams:
+                count1 +=1
                 context_class = tf.expand_dims(
                     tf.constant([context_word], dtype="int64"), 1)
                 negative_sampling_candidates, _, _ = tf.random.log_uniform_candidate_sampler(
@@ -87,6 +101,11 @@ class Word2VecRunner:
                 contexts.append(context)
                 labels.append(label)
 
+            print(" Round One: targets : .................")
+            print(" Count: targets : .................", count)
+            print(" Count1: targets : .................", count1)
+            print(len(targets))
+            print(type(targets))
             return targets, contexts, labels
 
     
@@ -115,7 +134,7 @@ class Word2VecRunner:
 
     # Now, create a custom standardization function to lowercase the text and
     # remove punctuation.
-    def custom_standardization(input_data):
+    def custom_standardization(self,input_data):
         lowercase = tf.strings.lower(input_data)
         return tf.strings.regex_replace(lowercase,
                                         '[%s]' % re.escape(string.punctuation), '')
@@ -131,7 +150,7 @@ class Word2VecRunner:
         AUTOTUNE = tf.data.experimental.AUTOTUNE
 
         vectorize_layer = tf.keras.layers.TextVectorization(
-            #standardize=self.custom_standardization,
+            standardize=self.custom_standardization,
             max_tokens=self._vocab_size,
             output_mode='int',
             output_sequence_length=self._sequence_length)
@@ -148,7 +167,7 @@ class Word2VecRunner:
         
         return vectorize_layer, text_ds, inverse_vocab,
 
-    def get_sequences(vectorize_layer, text_ds, inverse_vocab):
+    def get_sequences(self, vectorize_layer, text_ds, inverse_vocab):
         AUTOTUNE = tf.data.experimental.AUTOTUNE
         # Vectorize the data in text_ds.
         text_vector_ds = text_ds.batch(1024).prefetch(AUTOTUNE).map(vectorize_layer).unbatch()
@@ -156,8 +175,12 @@ class Word2VecRunner:
         #Obtain sequences from the dataset
         sequences = list(text_vector_ds.as_numpy_iterator())
         print(len(sequences))
-
-
+               
+        print(" Sequences: .....................")
+        print(type(sequences))
+        print(sequences)
+        print(len(sequences))
+         
         for seq in sequences[:5]:
             print(f"{seq} => {[inverse_vocab[i] for i in seq]}")
 
@@ -168,8 +191,20 @@ class Word2VecRunner:
                                                                 vocab_size=self._vocab_size, 
                                                                 seed=self._SEED) 
 
+        print("ROUND Two.......................")
+        print(" Target: .....................")
+        print(type(targets))
+        print(len(targets))
 
+        print(" contexts: .....................")
+        print(type(contexts))
+        print(len(contexts))
 
+        print(" labels: .....................")
+        print(type(labels))
+        print(len(labels))
+        
+        print(" data: .....................")
 
         targets = np.array(targets)
         contexts = np.array(contexts)[:,:,0]
@@ -189,17 +224,28 @@ class Word2VecRunner:
         dataset = tf.data.Dataset.from_tensor_slices(((targets, contexts), labels))
         dataset = dataset.shuffle(self._BUFFER_SIZE).batch(self._BATCH_SIZE, drop_remainder=True)
         print(dataset)
+        print(" dataset0: .....................")
+        print(type(dataset))
+        print(dataset)
+        
+        print(" dataset1: .....................")
 
 
         dataset = dataset.cache().prefetch(buffer_size=AUTOTUNE)
         print(dataset)
 
-        return dataset
+        print(" dataset1: .....................")
+        print(type(dataset))
+        print(dataset)
+        
+        print(" dataset1: .....................")
 
+        return dataset
+    
 
     class Word2Vec(tf.keras.Model):
-        def __init__(self, vocab_size, embedding_dim):
-            super(Word2Vec, self).__init__()
+        def __init__(self, vocab_size, embedding_dim, num_ns):
+            super().__init__()
             self.target_embedding = layers.Embedding(vocab_size,
                                             embedding_dim,
                                             input_length=1,
@@ -222,18 +268,26 @@ class Word2VecRunner:
             dots = tf.einsum('be,bce->bc', word_emb, context_emb)
             # dots: (batch, context)
             return dots
+    
 
-    def custom_loss(x_logit, y_true):
+    def custom_loss(self, x_logit, y_true):
         return tf.nn.sigmoid_cross_entropy_with_logits(logits=x_logit, labels=y_true)
 
-    def get_embedding(self,dataset, vectorize_layer ): 
-       
-        word2vec = self.Word2Vec(self._vocab_size, self._embedding_dim)
+    def get_embedding(self, dataset, vectorize_layer):
+        word2vec = self.Word2Vec(self._vocab_size, self._embedding_dim, self._num_ns)
         word2vec.compile(optimizer='adam',
                         loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True),
                         metrics=['accuracy'])
 
         tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir="logs")
+        print(" dataset2: .....................")
+        print(type(dataset))
+        print(dataset)
+
+        print(" Tensor callback : .....................")
+        print(type(tensorboard_callback))
+        print(tensorboard_callback)
+        print("  .........................")
         history_all = word2vec.fit(dataset, epochs=10, callbacks=[tensorboard_callback])
 
 
