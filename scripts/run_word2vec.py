@@ -6,7 +6,8 @@ import argparse
 import time
 import io
 
-from tf_word2vecRunner import Word2VecRunner
+import wn2vec 
+from wn2vec import Word2VecRunner
 
 
 today_date = datetime.date.today().strftime("%b_%d_%Y")
@@ -15,6 +16,8 @@ logname = f"wn2vec_{today_date}.log"
 logging.basicConfig(level=logging.INFO, filename=logname, filemode='w', datefmt='%Y-%m-%d %H:%M:%S', 
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
+# record start time
+start_time = time.time()
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', type=str, default='/Users/niyone/Desktop/word2vector/data/10ktest.tsv', help ='address of the .tsv file with abstracts') 
@@ -55,13 +58,7 @@ logging.info(f"BATCH_SIZE: {BATCH_SIZE}")
 logging.info(f"BUFFER_SIZE: {BUFFER_SIZE}")
 logging.info(f"SEED: {SEED}")
 
-
-
-
- 
-                              
-
-
+      
 runner.input_file()
 
 vectorize_layer, text_ds, inverse_vocab = runner.get_vecotrized_layer()

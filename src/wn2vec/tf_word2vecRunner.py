@@ -3,18 +3,10 @@ import re
 import string
 import tqdm
 import os
-import logging
-import datetime
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras import layers
 import argparse
-
-today_date = datetime.date.today().strftime("%b_%d_%Y")
-logname = f"wn2vec_{today_date}.log"
-
-logging.basicConfig(level=logging.INFO, filename=logname, filemode='w', datefmt='%Y-%m-%d %H:%M:%S', 
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 
 class Word2VecRunner:
@@ -44,7 +36,8 @@ class Word2VecRunner:
     AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 
-    #Compile all the steps described above into a function that can be called on a list of vectorized sentences obtained from any text dataset. Notice that the sampling table is built before sampling skip-gram word pairs. You will 
+    #Compile all the steps described above into a function that can be called on a list of vectorized sentences obtained from any text dataset. Notice that the sampling table is built 
+    #before sampling skip-gram word pairs. You will 
      #use this function in the later sections.
 
     # Generates skip-gram pairs with negative sampling for a list of sequences
@@ -59,12 +52,10 @@ class Word2VecRunner:
       
         # Build the sampling table for `vocab_size` tokens.
         sampling_table = tf.keras.preprocessing.sequence.make_sampling_table(vocab_size)
-
         # Iterate over all sequences (sentences) in the dataset.
-        count = 0
-        count1 = 0
-        for sequence in tqdm.tqdm(sequences):
-            count += 1
+
+        for sequence in sequences:
+        #for sequence in tqdm.tqdm(sequences):
             # Generate positive skip-gram pairs for a sequence (sentence).
             positive_skip_grams, _ = tf.keras.preprocessing.sequence.skipgrams(
                 sequence,
@@ -76,7 +67,6 @@ class Word2VecRunner:
             # Iterate over each positive skip-gram pair to produce training examples
             # with a positive context word and negative samples.
             for target_word, context_word in positive_skip_grams:
-                count1 +=1
                 context_class = tf.expand_dims(
                     tf.constant([context_word], dtype="int64"), 1)
                 negative_sampling_candidates, _, _ = tf.random.log_uniform_candidate_sampler(
@@ -99,7 +89,7 @@ class Word2VecRunner:
                 targets.append(target_word)
                 contexts.append(context)
                 labels.append(label)
-            return targets, contexts, labels
+        return targets, contexts, labels
 
     
     def input_file(self, verbose=False):
@@ -262,9 +252,9 @@ class Word2VecRunner:
         for index, word in enumerate(vocab):
             if index == 0:
                 continue  # skip 0, it's padding.
-        vec = weights[index]
-        out_v.write('\t'.join([str(x) for x in vec]) + "\n")
-        out_m.write(word + "\n")
+            vec = weights[index]
+            out_v.write('\t'.join([str(x) for x in vec]) + "\n")
+            out_m.write(word + "\n")
         out_v.close()
         out_m.close()
 
@@ -275,4 +265,5 @@ class Word2VecRunner:
             files.download(metadata_file)
         except Exception:
             pass
+
 
