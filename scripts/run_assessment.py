@@ -37,54 +37,28 @@ out_fname = args.o
 dir = args.i
 
 
-"""
-pm_meta = os.path.join(dir, '2018_filt_metadata.tsv')
-pm_vectors = os.path.join(dir, '2018_filt_vector.tsv')
 
-wn_meta = os.path.join(dir, '2018_wn_metadata.tsv')
-wn_vectors = os.path.join(dir, '2018_wn_vector.tsv')
-
-"""
 #100000
 pm_meta = os.path.join(dir, '100000_filt_metadata.tsv')
 pm_vectors = os.path.join(dir, '100000_filt_vector.tsv')
 
 wn_meta = os.path.join(dir, '100000_wn_metadata.tsv')
 wn_vectors = os.path.join(dir, '100000_wn_vector.tsv')
-"""
-#2015
-pm_meta = os.path.join(dir, '2015_filt_sumner_metadata.tsv')
-pm_vectors = os.path.join(dir, '2015_filt_sumner_vector.tsv')
 
-wn_meta = os.path.join(dir, '2015_wn_sumner_metadata.tsv')
-wn_vectors = os.path.join(dir, '2015_wn_sumner_vector.tsv')
-
-
-#2010
-pm_meta = os.path.join(dir, '2010_filt_sumner_metadata.tsv')
-pm_vectors = os.path.join(dir, '2010_filt_sumner_vector.tsv')
-
-wn_meta = os.path.join(dir, '2010_wn_sumner_metadata.tsv')
-wn_vectors = os.path.join(dir, '2010_wn_sumner_vector.tsv')
-"""
 
 # Intended purpose -- file with ALL of gene sets we are interested in
 
 
-#our_mesh_concept_file = '../data/0_mesh_sets.tsv'
+
 our_mesh_concept_file = '../data/mesh_sets.tsv'
 mesh_concept_set_parser = ConceptSetParser(concept_file_path=our_mesh_concept_file)
 all_concept_sets = mesh_concept_set_parser.get_all_concepts()
 concept_set_list = mesh_concept_set_parser.get_concept_set_list()
 log.info(f"We got {len(concept_set_list)} MeSH concepts")
 
-#our_gene_concept_file = '../data/gene_sets_100.tsv'
-#our_gene_concept_file = '../data/gene_sets_biocarta.tsv'
-#our_gene_concept_file = '../data/gene_sets_kegg.tsv'
-#our_gene_concept_file = '../data/gene_sets_bp.tsv'
-our_gene_concept_file = '../data/gene_sets_pid.tsv'
 
-#our_gene_concept_file = 'data/gene_sets.tsv'
+
+our_gene_concept_file = 'data/gene_sets.tsv'
 gene_concept_set_parser = ConceptSetParser(concept_file_path=our_gene_concept_file)
 gene_concept_sets = gene_concept_set_parser.get_all_concepts()
 gene_concept_set_list = gene_concept_set_parser.get_concept_set_list()

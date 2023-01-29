@@ -10,7 +10,7 @@
 
 source ../ myenv/bin/activate
 
-python ../scripts/wntransformer.py /projects/robinson-lab/wn2vec/current/data/pubmed_filt/100pubmed_filt.tsv  /projects/robinson-lab/wn2vec/current/data/pubmed_wn/100pubmed_wn.tsv
+python ../scripts/run_wn_replacement.py -i ../data/pubmed_filt/100pubmed_filt.tsv -o ../data/pubmed_wn/100pubmed_wn.tsv
 
 
 

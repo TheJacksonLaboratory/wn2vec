@@ -20,13 +20,13 @@ logging.basicConfig(level=logging.INFO, filename=logname, filemode='w', datefmt=
 start_time = time.time()
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-i', type=str, default='/Users/niyone/Desktop/word2vector/data/10ktest.tsv', help ='address of the .tsv file with abstracts') 
-parser.add_argument('-v', type=str, default='vector', help='name of vector file output')
-parser.add_argument('-m', type=str, default='metadata', help='name of metadata file')
+parser.add_argument('-i', type=str, default='../data/pubmed_filt.tsv', help ='address of the .tsv file with abstracts') 
+parser.add_argument('-v', type=str, default='vector_file', help='name of vector file output')
+parser.add_argument('-m', type=str, default='metadata_file', help='name of metadata file')
 parser.add_argument('-w', '--window_size', type=int, default=2, help='size of embedding window')
 
 parser.add_argument('--embedding_dim', type=int, default=128)
-parser.add_argument('--vocab_size', type=int, default=5000)
+parser.add_argument('--vocab_size', type=int, default=100000)
 args = parser.parse_args()
 
 

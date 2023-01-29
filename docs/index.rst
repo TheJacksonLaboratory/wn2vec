@@ -39,7 +39,7 @@ See :ref:`rst_marea` for instructions in how to run marea to perform biomedical 
 WordNet-based synonym Replacement
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The XYZ script from the wn2vec package is used to replace non-biomedical synonyms with WordNet identifiers.
+The /run_wn_replacement.py script from the wn2vec package is used to replace non-biomedical synonyms with WordNet identifiers.
 
 See :ref:`wnreplacement` for details.
 
@@ -51,6 +51,8 @@ We perform word2vec embedding using TensorFlow2 with the XYZ script from the wn2
 compare the results of embedding with and without WordNet replacment, embedding is performed on both datasets.
 
 See :ref:`w2v` for details.
+
+This step has to be run twice, first for pubmed_filt.tsv and second for wordnet.tsv before going to the following step 
 
 
 Evaluating concept sets 
