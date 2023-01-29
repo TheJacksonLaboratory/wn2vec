@@ -134,7 +134,6 @@ def process_MSigDb_file(fname):
 
 gene_set_list = []
 
-#dir_list = os.listdir(input_dir)
 dir_list = os.listdir(input_dir) # this is to eliminate '.DS_Store' as part of the files to be read
 
 for f in dir_list:
@@ -156,8 +155,8 @@ fh.close()
     
 # sample way of running the code using arparse:
 """
-locate the file you are running + python + mSigDBgeneSetTransformer.py  + '-i' +  address of gene sets files  + address of output_file (optional)
+locate the file you are running + python + mSigDBgeneSetTransformer.py  + '-i' +  address of gene sets files  + '-o' + address of output_file (optional)
 example: 
-> python mSigDBgeneSetTransformer.py -i /Users/niyone/Desktop/testing/gene_sets/kegg_canonical_gene_set -o data/gene_sets.tsv
+> python mSigDBgeneSetTransformer.py -i ../data/gene_sets/kegg_canonical_gene_set -o data/gene_sets.tsv
 
 """
