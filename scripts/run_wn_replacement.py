@@ -245,9 +245,10 @@ if __name__ == "__main__":
     #running code using command line
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('input', type=str) #address of the marea file
-    parser.add_argument('output', type=str) #address of output file
+    parser.add_argument('-i', type=str, help ='address of marea_file') #address of the filtred marea file
+    parser.add_argument('-o', type=str, help ='address of output_file') #address of output file
     args = parser.parse_args()
+
 
 
     def all_replaced_words(dict):
@@ -257,7 +258,7 @@ if __name__ == "__main__":
                 replaced.append(i)
         return replaced
 
-    app = WordNetTransformer(args.input, args.output)
+    app = WordNetTransformer(args.i, args.o)
 
     threshold = app._do_not_replace_threshold
     print('Threshold: ', threshold)
@@ -271,6 +272,6 @@ if __name__ == "__main__":
     """
     locate the file you are running + python + run_wn_replacement.py + address of marea_file + address of output_file
     example: 
-    > python run_wn_replacement.py 'marea_file location' 'output_file location'
+    > python ../scripts/run_wn_replacement.py -i ../data/pubmed_filt/100pubmed_filt.tsv -o ../data/pubmed_wn/100pubmed_wn.tsv
 
     """
