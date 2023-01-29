@@ -39,11 +39,11 @@ dir = args.i
 
 
 #100000
-pm_meta = os.path.join(dir, '100000_filt_metadata.tsv')
-pm_vectors = os.path.join(dir, '100000_filt_vector.tsv')
+pm_meta = os.path.join(dir, 'filt_metadata.tsv')
+pm_vectors = os.path.join(dir, 'filt_vector.tsv')
 
-wn_meta = os.path.join(dir, '100000_wn_metadata.tsv')
-wn_vectors = os.path.join(dir, '100000_wn_vector.tsv')
+wn_meta = os.path.join(dir, 'wn_metadata.tsv')
+wn_vectors = os.path.join(dir, 'wn_vector.tsv')
 
 
 # Intended purpose -- file with ALL of gene sets we are interested in
@@ -58,7 +58,7 @@ log.info(f"We got {len(concept_set_list)} MeSH concepts")
 
 
 
-our_gene_concept_file = 'data/gene_sets.tsv'
+our_gene_concept_file = '../data/gene_sets.tsv'
 gene_concept_set_parser = ConceptSetParser(concept_file_path=our_gene_concept_file)
 gene_concept_sets = gene_concept_set_parser.get_all_concepts()
 gene_concept_set_list = gene_concept_set_parser.get_concept_set_list()
@@ -147,6 +147,6 @@ df.to_csv(out_fname, sep='\t')
 """
 locate the file you are running + python + run_assessment.py  + '-i' +  address of word2vector output (metadata & vectors) + address of output_file (optional)
 example: 
-> python run_assessment.py  -i /Users/niyone/Desktop/testing/metadata_vectors -o comn_concepts.tsv
+> python run_assessment.py  -i /data/metadata_vectors -o /data/comn_concepts.tsv
 
 """
