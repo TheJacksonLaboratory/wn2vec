@@ -68,12 +68,6 @@ The XYZ script from wn2vec is used to assess the mean intracluster cosine distan
 
 See :ref:`conceptseteval` for details.
 
---------
-Feedback
---------
-
-The best place to leave feedback, ask questions, and report bugs is the `WN2vec Issue Tracker <https://github.com/TheJacksonLaboratory/wn2vec/issues>`_.
-
 
 
 
@@ -93,4 +87,12 @@ The best place to leave feedback, ask questions, and report bugs is the `WN2vec 
     authors
     history
     LICENSE
-  #  release_howto
+
+ 
+
+--------
+Feedback
+--------
+
+The best place to leave feedback, ask questions, and report bugs is the `WN2vec Issue Tracker <https://github.com/TheJacksonLaboratory/wn2vec/issues>`_.
+
