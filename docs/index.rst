@@ -1,3 +1,5 @@
+.. _home:
+
 ======
 WN2Vec
 ======
@@ -15,7 +17,9 @@ groups synonyms from the same lexical category (nouns, verbs, adjectives, and ad
 Running the WN2Vec pipeline
 ---------------------------
 
-To reproduce the results in the manuscript, the following steps should be performed.
+To reproduce the results in the manuscript, the following steps should be performed. Additionally,
+a detailed start to finish :ref:`tutorial` is provided
+with a relatively small input dataset.
 
 Installation
 ^^^^^^^^^^^^
@@ -70,24 +74,21 @@ Feedback
 
 The best place to leave feedback, ask questions, and report bugs is the `WN2vec Issue Tracker <https://github.com/TheJacksonLaboratory/wn2vec/issues>`_.
 
+
+
+
+
 .. toctree::
-    :caption: Installation & Tutorial
-    :name: tutorial
+    :caption: wn2vec
+    :name: wn2vec
     :maxdepth: 1
-    :hidden:
 
     install
     marea
     wordnetreplacement
     word2vec
     conceptset_evaluation
-
-.. toctree::
-    :caption: Project Info
-    :name: project-info
-    :maxdepth: 1
-    :hidden:
-
+    tutorial
     contributing
     authors
     history
