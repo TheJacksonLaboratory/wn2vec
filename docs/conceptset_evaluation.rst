@@ -26,7 +26,7 @@ i.e., name, id, and semicolon-separated list of concept identifiers. For instanc
         * locate the file you are running + python + mSigDBgeneSetTransformer.py  + '-i' +  address of gene sets files  + '-o' + address of output_file (optional)
         * example: python mSigDBgeneSetTransformer.py -i ../data/gene_sets/kegg_canonical_gene_set -o data/gene_sets.tsv
     * To test different genesets, alternate the input directory to a specific geneset directory
-* scripts/meshImporter.py : this file downloads he mesh set in the same hierarchy from https://meshb.nlm.nih.gov/ (link)
+* scripts/meshImporter.py : this file downloads he mesh set in the same hierarchy from https://meshb.nlm.nih.gov/ 
     * Reads a file data/mesh_target_ids.tsv' with target mesh ids
     * Transforms the meshsets into a required format for WN2VEC
     * Saves the output in default file '../data/mesh_sets.tsv’) 

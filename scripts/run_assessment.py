@@ -37,8 +37,6 @@ out_fname = args.o
 dir = args.i
 
 
-
-#100000
 pm_meta = os.path.join(dir, 'filt_metadata.tsv')
 pm_vectors = os.path.join(dir, 'filt_vector.tsv')
 
@@ -47,7 +45,6 @@ wn_vectors = os.path.join(dir, 'wn_vector.tsv')
 
 
 # Intended purpose -- file with ALL of gene sets we are interested in
-
 
 
 our_mesh_concept_file = '../data/mesh_sets.tsv'
