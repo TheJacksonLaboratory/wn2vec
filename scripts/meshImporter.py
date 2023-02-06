@@ -33,7 +33,7 @@ class MeSHEntry:
 
     """
 
-    def __init__(self, id, label) -> None:
+     def __init__(self, id, label) -> None:
         """
         Constructs all the necessary attributes for the  class MeSHEntry class
         
@@ -48,28 +48,28 @@ class MeSHEntry:
         self._id = id
         self._label = label
 
-    @property
-    def id(self):
+     @property
+     def id(self):
         """
         returns the mesh id
         """
         return self._id
 
-    @property
-    def label(self):
+     @property
+     def label(self):
         """
         returns the label corresponding to the mesh id
         """
         return self._label
 
-    @property
-    def meshlabel(self):
+     @property
+     def meshlabel(self):
         """
         returns the string with mesh label
         """
         return "meshd" + self._id[1:]
 
-    def __str__(self):
+     def __str__(self):
         """
         returns a string with mesh id and mesh label 
         """
@@ -136,7 +136,7 @@ def get_mesh_entries(meshid: str):
 
 
 def get_target_mesh_ids():
-    fname = 'data/mesh_target_ids.tsv'
+    fname = '../data/mesh_target_ids.tsv'
     mesh_entries = []
     with open(fname) as f:
         next(f) # header
@@ -149,7 +149,7 @@ def get_target_mesh_ids():
     return mesh_entries
 
 
-outname = "data/mesh_sets.tsv" 
+outname = "../data/mesh_sets.tsv" 
 
 fh = open(outname, 'wt')
 

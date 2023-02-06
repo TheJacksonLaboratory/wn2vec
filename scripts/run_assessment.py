@@ -53,9 +53,18 @@ all_concept_sets = mesh_concept_set_parser.get_all_concepts()
 concept_set_list = mesh_concept_set_parser.get_concept_set_list()
 log.info(f"We got {len(concept_set_list)} MeSH concepts")
 
+""" 
+our_gene_concept_file =  '../data/bio_geneset.tsv'
 
 
+our_gene_concept_file =  '../data/bp_geneset.tsv'
+
+our_gene_concept_file =  '../data/kegg_geneset.tsv'
+""" 
+our_gene_concept_file =  '../data/pid_geneset.tsv'
+""" 
 our_gene_concept_file = '../data/gene_sets.tsv'
+"""
 gene_concept_set_parser = ConceptSetParser(concept_file_path=our_gene_concept_file)
 gene_concept_sets = gene_concept_set_parser.get_all_concepts()
 gene_concept_set_list = gene_concept_set_parser.get_concept_set_list()
