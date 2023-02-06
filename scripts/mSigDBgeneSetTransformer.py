@@ -12,7 +12,7 @@ import argparse
 
 parser = argparse.ArgumentParser(description='Process MSigDb genesets into wn2vec concept set format.')
 parser.add_argument('-i',  type=str, required=True, help='input directory with MSigDb files')
-parser.add_argument('-o', type=str, default='data/gene_sets.tsv',
+parser.add_argument('-o', type=str, default='../data/gene_sets.tsv',
                     help='name of output file (default=\'data/gene_sets.tsv\'')
 args = parser.parse_args()
 input_dir = args.i
@@ -21,7 +21,7 @@ out_fname = args.o
 
 
 hgncUrl = "http://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/tsv/non_alt_loci_set.txt"
-hgncFilename = "/data/non_alt_loci_set.txt"
+hgncFilename = "../data/non_alt_loci_set.txt"
 
 # download file if needed
 if not os.path.isfile(hgncFilename):
