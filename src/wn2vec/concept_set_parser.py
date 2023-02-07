@@ -2,6 +2,19 @@ import os
 from .concept_set import ConceptSet
 
 
+import logging
+log = logging.getLogger("wn2vec.log")
+log.setLevel(logging.INFO)
+
+MINIMUM_CONCEPT_SET_SIZE = 5
+
+ch = logging.StreamHandler() # console handler
+ch.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+log.addHandler(ch)
+
+
 class ConceptSetParser:
     """
     creates an object of concept set from the .tsv files from their path of both geneset or meshset
@@ -37,7 +50,6 @@ class ConceptSetParser:
         if not os.path.isfile(concept_file_path):
             raise FileNotFoundError(f"Could not find concept file at {concept_file_path}")
         self._concept_set_list = []
-        self._all_concepts = set()
         with open(concept_file_path) as f:
             for line in f:
                 fields = line.rstrip().split('\t')
@@ -48,9 +60,8 @@ class ConceptSetParser:
                 concept_list = fields[2].split(";")
                 cs = ConceptSet(name=name, id=id, concept_list=concept_list)
                 self._concept_set_list.append(cs)
-                self._all_concepts.update(concept_list)
 
-    def get_all_concepts(self):
+    def get_all_concepts(self, meta1, meta2):
         """
         returns all the concepts sets in a file (with 3 clolumns: name, id, concept list )
         """

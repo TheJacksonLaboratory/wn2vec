@@ -65,3 +65,6 @@ class ConceptSet:
         returns a list of concepts in a  concept set
         """
         return self._concepts
+
+    def get_concept_count(self):
+        return len(self._concepts)

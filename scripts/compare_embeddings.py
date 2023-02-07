@@ -6,7 +6,7 @@ import pandas as pd
 import sys
 
 sys.path.insert(0, os.path.abspath('../src/'))
-from wn2vec import TfConceptParser, TfConcept, Ttest, ConceptSetParser, ConceptSet
+from wn2vec import TfConceptParser, TfConcept, Ttest, ConceptSetParser2, ConceptSet
 
 
 import logging
@@ -23,60 +23,58 @@ log.addHandler(ch)
 
 
 
+def get_intput_files(pubtator, wordnet):
+    pubtator_vector_file = pubtator
+    wordnet_vector_file = wordnet
+    for f in [pubtator_vector_file, wordnet_vector_file]:
+        if not os.path.isfile(f):
+            raise FileNotFoundError(f"Could not find input file {f}")
+    pubtator_meta_file = pubtator_vector_file.replace("vectors", "metadata")
+    wordnet_meta_file = wordnet_vector_file.replace("vectors", "metadata")
+    for f in [pubtator_meta_file, wordnet_meta_file]:
+        if not os.path.isfile(f):
+            raise FileNotFoundError(f"Could not find input file {f}")
+    return pubtator_vector_file,  pubtator_meta_file, wordnet_vector_file, wordnet_meta_file
+
+
+## Input the embedding files with vectors and metadata for the two embeddings (pubtator and wordnet) that we want to compare
 parser = argparse.ArgumentParser(description='Process MSigDb genesets into wn2vec concept set format.')
-parser.add_argument('-i',  type=str, required=True, help='input directory with word2vector.py output files')
-parser.add_argument('-o', type=str, default='../data/comn_concepts.tsv',
+parser.add_argument('-p', '--pubtator',  type=str, required=True, help='vector embedding file for pubtator replaced concepts')
+parser.add_argument('-w', '--wordnet',  type=str, required=True, help='vector embedding file for wordnet replaced concepts')
+parser.add_argument('-o', type=str, default='comn_concepts.tsv',
                     help='name of output file (default=\'comn_concepts.tsv\'')
 args = parser.parse_args()
-input_dir = args.i
 out_fname = args.o
+pubtator_vector_file,  pubtator_meta_file, wordnet_vector_file, wordnet_meta_file = get_intput_files(args.pubtator, args.wordnet)
 
-dir = args.i
-
-
-pm_meta = os.path.join(dir, 'filt_metadata.tsv')
-pm_vectors = os.path.join(dir, 'filt_vector.tsv')
-
-wn_meta = os.path.join(dir, 'wn_metadata.tsv')
-wn_vectors = os.path.join(dir, 'wn_vector.tsv')
-
-
-# Intended purpose -- file with ALL of gene sets we are interested in
+concept_set_parser = ConceptSetParser2(meta1=pubtator_meta_file, meta2=wordnet_meta_file)
 
 
 our_mesh_concept_file = '../data/mesh_sets.tsv'
-mesh_concept_set_parser = ConceptSetParser(concept_file_path=our_mesh_concept_file)
-all_concept_sets = mesh_concept_set_parser.get_all_concepts()
-concept_set_list = mesh_concept_set_parser.get_concept_set_list()
-log.info(f"We got {len(concept_set_list)} MeSH concepts")
 
-""" 
-our_gene_concept_file =  '../data/bio_geneset.tsv'
+meshs_conceptsets_list = concept_set_parser.get_concept_set_list(concept_file_path=our_mesh_concept_file)
+log.info(f"We got {len(meshs_conceptsets_list)} MeSH concepts")
 
-
-our_gene_concept_file =  '../data/bp_geneset.tsv'
-
-our_gene_concept_file =  '../data/kegg_geneset.tsv'
-""" 
-our_gene_concept_file =  '../data/pid_geneset.tsv'
-""" 
 our_gene_concept_file = '../data/gene_sets.tsv'
-"""
-gene_concept_set_parser = ConceptSetParser(concept_file_path=our_gene_concept_file)
-gene_concept_sets = gene_concept_set_parser.get_all_concepts()
-gene_concept_set_list = gene_concept_set_parser.get_concept_set_list()
+gene_concept_set_list = concept_set_parser.get_concept_set_list(concept_file_path=our_gene_concept_file)
 log.info(f"We got {len(gene_concept_set_list)} gene concepts")
 
-all_concept_sets.update(gene_concept_sets)
-concept_set_list.extend(gene_concept_set_list)
+all_concept_sets = set()
+all_concept_sets.update(meshs_conceptsets_list)
+all_concept_sets.update(gene_concept_set_list)
 
 
-parser = TfConceptParser(meta_file=pm_meta, vector_file=pm_vectors, concept_set=all_concept_sets)
+
+parser = TfConceptParser(meta_file=pubtator_meta_file, vector_file=pubtator_vector_file, concept_set=all_concept_sets)
 concept_set_d_pm = parser.get_active_concept_d()
+log.info(f"We got {len(concept_set_d_pm)} PubTator concepts from the TF2 metadata")
 
 
-parser = TfConceptParser(meta_file=wn_meta, vector_file=wn_vectors, concept_set=all_concept_sets)
+
+parser = TfConceptParser(meta_file=wordnet_meta_file, vector_file=wordnet_vector_file, concept_set=all_concept_sets)
 concept_set_d_wn = parser.get_active_concept_d()
+log.info(f"We got {len(concept_set_d_wn)} WordNet concepts from the TF2 metadata")
+
 
 pm_relevant_concepts = list(concept_set_d_pm.keys())
 wn_relevant_concepts = list(concept_set_d_wn.keys())
@@ -106,9 +104,12 @@ sig_pm = 0
 wn_less = 0
 pm_less = 0
 
-for cs in concept_set_list:
-    
-    print(cs)
+for cs in all_concept_sets:
+    count = cs.get_concept_count()
+    if count < MINIMUM_CONCEPT_SET_SIZE:
+        logging.warning(f"Skipping concept {cs.name} because it had only {count} concepts, less than the threshold of {MINIMUM_CONCEPT_SET_SIZE}")
+        continue
+    print(f"Evaluating {cs.name}: n={cs.get_concept_count()}")
     pm_vecs = np.array([concept_set_d_pm.get(c).vector for c in cs.concepts if c in concept_set_d_pm])
     
     wn_vecs = np.array([concept_set_d_wn.get(c).vector for c in cs.concepts if c in concept_set_d_wn])
