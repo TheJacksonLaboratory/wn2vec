@@ -68,6 +68,9 @@ class TfConceptParser:
                 values = vector_line.rstrip().split('\t')
                 fvals = np.array([float(v) for v in values])
                 self._d[c] = TfConcept(name=c, vctor=fvals)
+            else:
+                pass
+                #print(f"Could not fine TF concept \"{c}\"")
         meta_fh.close()
         vector_fh.close()
 
