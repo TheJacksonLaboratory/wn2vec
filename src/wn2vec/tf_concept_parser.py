@@ -1,5 +1,5 @@
 import os
-
+from typing import Set
 from .tf_concept import TfConcept
 from collections import defaultdict
 import numpy as np
@@ -31,19 +31,19 @@ class TfConceptParser:
 
 
 
-    def __init__(self, meta_file, vector_file, concept_set) -> None:
+    def __init__(self, meta_file, vector_file, concept_set:Set[str]) -> None:
         """
         Constructs all the necessary attributes for the  TfConceptParser class
         
         Parameters
         ----------
-        meta_file: str
+        meta_file: str (representing file file)
                    output of tensorflow word2vec, metadata file with names of concepts
         
-        vector_file: str
+        vector_file: str (representing file path)
                     output of tensorflow word2vec, metadata file with vectors (same order as concepts)
         
-        concept_set: str
+        concept_set: Set[str]
                    set of concept ids we are interested in
        
         """
