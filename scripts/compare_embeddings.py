@@ -60,9 +60,10 @@ gene_concept_set_list = concept_set_parser.get_concept_set_list(concept_file_pat
 log.info(f"We got {len(gene_concept_set_list)} gene concepts")
 
 all_concept_sets = set()
-all_concept_sets.update(meshs_conceptsets_list)
-all_concept_sets.update(gene_concept_set_list)
-
+for cs in meshs_conceptsets_list:
+    all_concept_sets.add(cs.name)
+for cs in gene_concept_set_list:
+    all_concept_sets.add(cs.name)
 
 
 parser = TfConceptParser(meta_file=pubtator_meta_file, vector_file=pubtator_vector_file, concept_set=all_concept_sets)
