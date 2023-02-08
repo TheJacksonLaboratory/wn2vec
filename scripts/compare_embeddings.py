@@ -60,10 +60,10 @@ log.info(f"We got {len(gene_concept_set_list)} gene concepts")
 all_concept_sets = set()
 all_concept_set_objects = set()
 for cs in mesh_conceptsets_list:
-    all_concept_sets.add(cs.id)
+    all_concept_sets.update(cs.concepts)
     all_concept_set_objects.add(cs)
 for cs in gene_concept_set_list:
-    all_concept_sets.add(cs.id)
+    all_concept_sets.update(cs.concepts)
     all_concept_set_objects.add(cs)
 
 log.info(f"All concepts {len(all_concept_sets)}")
