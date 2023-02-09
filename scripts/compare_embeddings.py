@@ -70,29 +70,19 @@ log.info(f"All concepts {len(all_concept_sets)}")
 
 
 parser = TfConceptParser(meta_file=pubtator_meta_file, vector_file=pubtator_vector_file, concept_set=all_concept_sets)
-concept_set_d_pm = parser.get_active_concept_d()
-log.info(f"We got {len(concept_set_d_pm)} PubTator concepts from the TF2 metadata")
-if len(concept_set_d_pm) == 0:
-    print("concept_set_d_pm EMPTY")
-    exit(1)
+pubtator_concept_set_d = parser.get_active_concept_d()
+log.info(f"We got {len(pubtator_concept_set_d)} PubTator concepts from the TF2 metadata")
 
 parser = TfConceptParser(meta_file=wordnet_meta_file, vector_file=wordnet_vector_file, concept_set=all_concept_sets)
-concept_set_d_wn = parser.get_active_concept_d()
-log.info(f"We got {len(concept_set_d_wn)} WordNet concepts from the TF2 metadata")
+wordnet_concept_set_d = parser.get_active_concept_d()
+log.info(f"We got {len(wordnet_concept_set_d)} WordNet concepts from the TF2 metadata")
 
 
-pm_relevant_concepts = list(concept_set_d_pm.keys())
-wn_relevant_concepts = list(concept_set_d_wn.keys())
+pubtator_relevant_concepts = list(pubtator_concept_set_d.keys())
+wn_relevant_concepts = list(wordnet_concept_set_d.keys())
 
-pm_relevant_concepts_length= len(pm_relevant_concepts)
+pm_relevant_concepts_length= len(pubtator_relevant_concepts)
 wn_relevant_concepts_length = len(wn_relevant_concepts)
-
-
-for  concept in wn_relevant_concepts:
-    if concept in pm_relevant_concepts:
-        continue
-    else:
-        del concept_set_d_wn[concept]
 
 
 
@@ -115,9 +105,8 @@ for cs in all_concept_set_objects:
         #logging.warning(f"Skipping concept {cs.name} because it had only {count} concepts, less than the threshold of {MINIMUM_CONCEPT_SET_SIZE}")
         continue
     print(f"Evaluating {cs.name}: n={cs.get_concept_count()}")
-    pm_vecs = np.array([concept_set_d_pm.get(c).vector for c in cs.concepts if c in concept_set_d_pm])
-    
-    wn_vecs = np.array([concept_set_d_wn.get(c).vector for c in cs.concepts if c in concept_set_d_wn])
+    pm_vecs = np.array([pubtator_concept_set_d.get(c).vector for c in cs.concepts if c in pubtator_concept_set_d])
+    wn_vecs = np.array([wordnet_concept_set_d.get(c).vector for c in cs.concepts if c in wordnet_concept_set_d])
     pm_concept = TfConcept(name=cs.name, vctor=pm_vecs)
     wn_concept = TfConcept(name=cs.name, vctor=wn_vecs)
     comparison = Ttest(pm_common_genes=pm_vecs, wn_common_genes=wn_vecs)
@@ -142,12 +131,11 @@ for cs in all_concept_set_objects:
             pm_less += 1
 
 log.info(f"WN relevant concepts {wn_relevant_concepts_length} and PM relevant concepts {pm_relevant_concepts_length}")
-
 log.info(f"WN sig {sig_wn} and PM sig {sig_pm}")
 log.info(f"WN LESS  {wn_less} and PM LESS {pm_less} (irregardless of pvalue)")
 
 df = pd.DataFrame(comparison_dictionary_list) 
-
+df.set_index('name', inplace=True)
 log.info(f"Outputting results to {out_fname}")
 
 df.to_csv(out_fname, sep='\t')
