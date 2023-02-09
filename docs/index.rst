@@ -81,6 +81,7 @@ See :ref:`conceptseteval` for details.
     marea
     wordnetreplacement
     word2vec
+    concept_sets
     conceptset_evaluation
     tutorial
     contributing

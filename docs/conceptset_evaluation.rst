@@ -8,7 +8,9 @@ At this stage we have runed the script run_word2vec.py twice first for the filte
 
 The goal of this step is to evaluate whether the replacement of non-medical vocabularies with their synonyms would increase the efficiency of embedding of medical terms.
 
-Concept sets:
+Concept sets
+^^^^^^^^^^^^
+See :ref"`concept_sets`_ for background information on how we generated biomedical concept sets for testing.
 
 The wn2vec scripts require a list of concept sets in order to assess the quality of concept embeddings. The source of gene sets for wn2vec are selected genesets from MSigDB. The source of clinical concept sets were selected concepts from MeSH
 
