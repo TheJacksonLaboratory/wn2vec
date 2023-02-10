@@ -132,6 +132,20 @@ class WordNetTransformer:
                                                 influence: influence
                                                 study: study 
         """""
+        """
+        TEST THIS
+        synonyms_used_for_replacements = set()
+        word_to_synonyms_d = {}
+        for word, most_frequent_synonym in dictionary.items():
+            if word in synonyms_used_for_replacements:
+                word_to_synonyms_d[word] = word
+            else:
+                synonyms_used_for_replacements.add(word)
+                word_to_synonyms_d[word] = most_frequent_synonym
+        return word_to_synonyms_d
+        """
+
+
         # dictionary to tuple
         dict_tuple = [(k, v) for k, v in dictionary.items()]
 
@@ -158,11 +172,15 @@ class WordNetTransformer:
                 if (dict_tuple[i][0] == word) and (dict_tuple[i][0] == dict_tuple[i][1]):
                     status = False
             return status
+        # check if the synym for a word is the word itself
+        word = "test"
+        is_the_same = word in dictionary and word == dictionary.get(word) 
 
         for i in range(len(value_list)):
             if (value_list[i] != key_list[i]):
                 if (check_same_key_value(value_list[i], dict_tuple) == True):
                     value_list[i] = key_list[i]
+                
 
         # list to dictionary
         word_to_synonyms_d = {}
