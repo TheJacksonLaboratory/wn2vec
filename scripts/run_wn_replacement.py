@@ -132,8 +132,8 @@ class WordNetTransformer:
                                                 influence: influence
                                                 study: study 
         """""
-        """
-        TEST THIS
+    
+        #TEST THIS
         synonyms_used_for_replacements = set()
         word_to_synonyms_d = {}
         for word, most_frequent_synonym in dictionary.items():
@@ -143,6 +143,7 @@ class WordNetTransformer:
                 synonyms_used_for_replacements.add(word)
                 word_to_synonyms_d[word] = most_frequent_synonym
         return word_to_synonyms_d
+
         """
 
 
@@ -159,14 +160,14 @@ class WordNetTransformer:
 
         
         def check_same_key_value(word, dict_tuple):
-            """
+          
             check if there is a pair of the unique value with a smiliar key
             @ parameter: dict_tuple: tuple
                 a dictionary maped to a tuple, where the key is a word and the value is a list of a word's synonym
             
             @ return: status: Boolean
                 returns false if the key and the values are not the same, true otherwise
-            """
+        
             status = True
             for i in range(len(dict_tuple)):
                 if (dict_tuple[i][0] == word) and (dict_tuple[i][0] == dict_tuple[i][1]):
@@ -192,7 +193,8 @@ class WordNetTransformer:
 
         return word_to_synonyms_d
 
-
+        """
+       
     def get_highest_occuring_synonym(self, synonym_list) -> str:
         """
         gets the highest occuring word in the synonym list of the whole dataset (all the bastracts being transformed)
