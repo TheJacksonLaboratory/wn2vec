@@ -6,6 +6,7 @@ from .tf2_file_parser import Tf2FileParser
 from .tf_concept_parser import TfConceptParser
 from .tf_concept import TfConcept
 from .tTest import Ttest
+from .wordnet_transformer import WordNetTransformer
 
 
 __all__ = ['ConceptSet',
@@ -14,4 +15,5 @@ __all__ = ['ConceptSet',
            'TfConceptParser',
            'TfConcept',
            'TfFileParser',
-           'Ttest']
+           'Ttest',
+           'WordNetTransformer']
