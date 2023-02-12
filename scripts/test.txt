@@ -1,4 +1,0 @@
-Threshold:  2
-Number of replaced words:  18
-All replaced words: 
- ['use', 'measure', 'instrument', 'point', 'issue', 'end', 'sign', 'learn', 'pattern', 'link', 'consider', 'function', 'modification', 'induce', 'result', 'confirms', 'affirms', 'support']
