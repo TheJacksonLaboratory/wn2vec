@@ -38,7 +38,7 @@ class WordNetTransformer:
 
     """
 
-    def __init__(self, marea_file, percentile=0.5) -> None:
+    def __init__(self, marea_file, percentile=50) -> None:
         """
         Constructs all the necessary attributes for the  WordNetTransformer class
         
@@ -68,7 +68,7 @@ class WordNetTransformer:
                 for w in words:
                     self._counter_d[w] += 1
         print(f"Got {len(self._counter_d)} words")
-        value_at_percentile = np.percentile(list(self._counter_d.values()), 50)
+        value_at_percentile = np.percentile(list(self._counter_d.values()), percentile)
 
         # Create synonym dictionary with NLTK
         # only downloads if needed
@@ -198,12 +198,15 @@ class WordNetTransformer:
                 fh.writelines(new_abstract)
         fh.close()
 
+    def get_total_word_count(self):
+        return len(self._word_to_synonym_d)
+
     def get_replaced_word_count(self):
         """
         return the number of words in our corpus that we replaced using WordNet
         """
         replaced = 0
-        for k, v in self._counter_d.items():
+        for k, v in self._word_to_synonym_d.items():
             if k != v:
                 replaced += 1
         return replaced
