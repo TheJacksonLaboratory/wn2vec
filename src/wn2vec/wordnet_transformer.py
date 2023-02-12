@@ -1,11 +1,12 @@
 import os
 from collections import defaultdict
 import nltk
+from nltk.corpus import wordnet as wn
 from typing import List, Dict
 import numpy as np
 
+
 class WordNetTransformer:
-    
     """
     A class to represent a transofrmation of Pubmed Abstracts by reducing vocabulary size through replacing words with their synonyms from Wordnet.
 
@@ -37,8 +38,6 @@ class WordNetTransformer:
 
     """
 
-
-
     def __init__(self, marea_file, percentile=0.5) -> None:
         """
         Constructs all the necessary attributes for the  WordNetTransformer class
@@ -54,7 +53,6 @@ class WordNetTransformer:
         """
         if not os.path.exists(marea_file):
             raise FileNotFoundError("Could not find marea file")
-        
 
         self._marea_file = marea_file
         self._counter_d = defaultdict(int)
@@ -65,30 +63,23 @@ class WordNetTransformer:
                 columns = line.split('\t')
                 if len(columns) != 3:
                     raise ValueError(f'Malformed marea line: {line}')
-                payload = columns[2]  #columns[0]: pmid,  columns[1] year, columns[2] abstract text
+                payload = columns[2]  # columns[0]: pmid,  columns[1] year, columns[2] abstract text
                 words = payload.split()
                 for w in words:
                     self._counter_d[w] += 1
         print(f"Got {len(self._counter_d)} words")
-       
-        ar = [self._counter_d.values()]
-        #ar = [20, 2, 7, 1, 34]
-        print(f"ar {type(ar)}")
-        x = np.percentile(ar, 50)
-        print(f"x={x}")
+        value_at_percentile = np.percentile(list(self._counter_d.values()), 50)
 
         # Create synonym dictionary with NLTK
         # only downloads if needed
-        nltk.download("wordnet", download_dir = '../data')
+        nltk.download("wordnet", download_dir='../data')
 
         words_sorted_by_frequency = [k for k, v in
                                      sorted(self._counter_d.items(), key=lambda item: item[1], reverse=True)]
-        value_at_percentile = np.percentile(list(self._counter_d.values()), 50)
+
         self._do_not_replace_threshold = round(value_at_percentile)
 
-       
         self._word_to_synonym_d = self.get_word_to_synonyms_d(words_sorted_by_frequency)
-
 
     def get_word_to_synonyms_d(self, unique_words_list) -> Dict:
         """
@@ -108,7 +99,7 @@ class WordNetTransformer:
         for i in range(len(unique_words_list)):
             this_word = unique_words_list[i]
             # skip common words not replaced 
-            this_word_count = self._counter.get(this_word, 0)
+            this_word_count = self._counter_d.get(this_word, 0)
             if this_word_count > self._do_not_replace_threshold:
                 dictionary[this_word] = this_word
             else:
@@ -128,8 +119,8 @@ class WordNetTransformer:
                                                 influence: influence
                                                 study: study 
         """""
-    
-        #TEST THIS
+
+        # TEST THIS
         synonyms_used_for_replacements = set()
         word_to_synonyms_d = {}
         for word, most_frequent_synonym in dictionary.items():
@@ -139,7 +130,7 @@ class WordNetTransformer:
                 synonyms_used_for_replacements.add(word)
                 word_to_synonyms_d[word] = most_frequent_synonym
         return word_to_synonyms_d
-       
+
     def get_highest_occuring_synonym(self, synonym_list) -> str:
         """
         gets the highest occuring word in the synonym list of the whole dataset (all the bastracts being transformed)
@@ -149,14 +140,14 @@ class WordNetTransformer:
         if len(synonym_list) == 0:
             raise ValueError("synonym_list was length zero, should never happen")
         max_count = 0
-        highest_occuring_synonym = synonym_list[0]
+        most_frequent_synonym = synonym_list[0]
         for s in synonym_list:
-            #check frequency of a word in whole dataset
-            c = self._counter.get(s, 0)
+            # check frequency of a word in whole dataset
+            c = self._counter_d.get(s, 0)
             if c > max_count:
-                highest_occuring_synonym = s
+                most_frequent_synonym = s
                 max_count = c
-        return highest_occuring_synonym
+        return most_frequent_synonym
 
     def get_synonym_list(self, word: str) -> List:
         """
@@ -191,7 +182,6 @@ class WordNetTransformer:
         trans_abstract = columns[0] + '\t' + columns[1] + '\t' + columns[2] + '\n'
         return (trans_abstract)
 
-
     def get_threshold(self) -> int:
         """
         returns the threshold count 
@@ -204,7 +194,7 @@ class WordNetTransformer:
         fh = open(output_file, 'w')
         with open(self._marea_file, "r") as f:
             for line in f:
-                new_abstract = self.transform(line, self._word_to_synonym_d)
+                new_abstract = self.transform(line)
                 fh.writelines(new_abstract)
         fh.close()
 
