@@ -1,28 +1,43 @@
 import os
 import sys
 import argparse
-import numpy as np
-
+import logging
+import datetime
+import time
 sys.path.insert(0, os.path.abspath('../src/'))
 from wn2vec import WordNetTransformer
+
+
+today_date = datetime.date.today().strftime("%b_%d_%Y")
+logname = f"wn2vec_{today_date}.log"
+logging.basicConfig(level=logging.INFO, filename=logname, filemode='w', datefmt='%Y-%m-%d %H:%M:%S',
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+# record start time
+start_time = time.time()
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', type=str, required=True, help='path to filtered marea_file')
 parser.add_argument('-o', type=str, required=True, help='path to of output_file')
-parser.add_argument('--threshold', type=float, help="threshold (0-1, default median word threshold)")
+parser.add_argument('--threshold', type=int, help="threshold (1-99, default 50, i.e., median word threshold)")
 args = parser.parse_args()
 
 marea_input_file = args.i
 output_file = args.o
 threshold = args.threshold
+logging.info(f"wordnet replacement infile: {marea_input_file}; outfile: {output_file}; threshold: {threshold}")
 if not os.path.isfile(marea_input_file):
     raise FileNotFoundError(f"Could not find marea [intput] file at {marea_input_file}")
+if threshold < 1 or threshold > 99:
+    raise ValueError(f"--threshold argument must be an integer between 1 and 99 (default 50), but was {threshold}")
 
 transformer = WordNetTransformer(marea_file=marea_input_file, percentile=threshold)
 threshold = transformer.get_threshold()
 print(f'Threshold: {threshold} at percentile {100 * threshold}')
 replaced_words = transformer.get_replaced_word_count()
-print("Number of replaced words: ", replaced_words)
+total_words = transformer.get_total_word_count()
+print(f"Number of replaced words: {replaced_words} of {total_words}")
+logging.info(f"Number of replaced words: {replaced_words} of {total_words}")
 transformer.transform_and_write(output_file=output_file)
 
 
