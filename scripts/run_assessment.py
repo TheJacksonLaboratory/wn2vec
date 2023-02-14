@@ -62,6 +62,7 @@ our_gene_concept_file =  '../data/pid_geneset.tsv'
 """ 
 our_gene_concept_file = '../data/gene_sets.tsv'
 """
+
 gene_concept_set_parser = ConceptSetParser(concept_file_path=our_gene_concept_file)
 gene_concept_sets = gene_concept_set_parser.get_all_concepts()
 gene_concept_set_list = gene_concept_set_parser.get_concept_set_list()
@@ -70,6 +71,21 @@ log.info(f"We got {len(gene_concept_set_list)} gene concepts")
 all_concept_sets.update(gene_concept_sets)
 concept_set_list.extend(gene_concept_set_list)
 
+
+
+"""
+
+
+
+our_concept_file = '../data/mesh_sets.tsv'
+concept_set_parser = ConceptSetParser(concept_file_path=our_concept_file)
+all_concept_sets = concept_set_parser.get_all_concepts()
+concept_set_list = concept_set_parser.get_concept_set_list()
+log.info(f"We got {len(gene_concept_set_list)} concepts")
+
+
+
+"""
 
 parser = TfConceptParser(meta_file=pm_meta, vector_file=pm_vectors, concept_set=all_concept_sets)
 concept_set_d_pm = parser.get_active_concept_d()
