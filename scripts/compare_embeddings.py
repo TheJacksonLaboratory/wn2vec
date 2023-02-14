@@ -28,6 +28,7 @@ MINIMUM_CONCEPT_SET_SIZE = 5
 ## Input the embedding files with vectors and metadata for the two embeddings (pubtator and wordnet) that we want to compare
 parser = argparse.ArgumentParser(description='Process MSigDb genesets into wn2vec concept set format.')
 parser.add_argument('-i', '--indir', type=str, required=True, help='input directory for tensorflow files')
+parser.add_argument('-c', '--concepts', type=str, required=True, help='input directory for concept sets (MeSH sets / Gene sets)')
 parser.add_argument('-p', '--pubtator',  type=str, required=True, help='prefix for pubtator tensorflow output files, e.g., pubt')
 parser.add_argument('-w', '--wordnet',  type=str, required=True, help='prefix for pubtator tensorflow output files, e.g., wn')
 parser.add_argument('-o', type=str, default='comn_concepts.tsv',
@@ -47,6 +48,7 @@ log.info(f"wordnet_meta_file: {wordnet_meta_file}")
 
 concept_set_parser = ConceptSetParser2(meta1=pubtator_meta_file, meta2=wordnet_meta_file)
 
+"""
 
 our_mesh_concept_file = '../data/mesh_sets.tsv'
 
@@ -57,6 +59,7 @@ our_gene_concept_file = '../data/gene_sets.tsv'
 gene_concept_set_list = concept_set_parser.get_concept_set_list(concept_file_path=our_gene_concept_file)
 log.info(f"We got {len(gene_concept_set_list)} gene concepts")
 
+
 all_concept_sets = set()
 all_concept_set_objects = set()
 for cs in mesh_conceptsets_list:
@@ -65,6 +68,23 @@ for cs in mesh_conceptsets_list:
 for cs in gene_concept_set_list:
     all_concept_sets.update(cs.concepts)
     all_concept_set_objects.add(cs)
+
+
+"""
+# Pass in the concept set directory, 4 gene sets & 1 meshset 
+
+our_concept_file = args.concepts
+
+conceptsets_list = concept_set_parser.get_concept_set_list(concept_file_path=our_concept_file)
+log.info(f"We got {len(conceptsets_list)} concepts")
+
+all_concept_sets = set()
+all_concept_set_objects = set()
+for cs in conceptsets_list:
+    all_concept_sets.update(cs.concepts)
+    all_concept_set_objects.add(cs)
+
+
 
 log.info(f"All concepts {len(all_concept_sets)}")
 
