@@ -38,7 +38,7 @@ class WordNetTransformer:
 
     """
 
-    def __init__(self, marea_file, percentile=50) -> None:
+    def __init__(self, marea_file, threshold=0) -> None:
         """
         Constructs all the necessary attributes for the  WordNetTransformer class
         
@@ -48,15 +48,19 @@ class WordNetTransformer:
                     path to .tsv file with abstracts from marea output
         output_file: str
                     path to .tsv file that will contain the output after abstracts are transformed
-        percentile: float
-                    percentile for threshold frequency. Default is 0.5 (i.e. 50%), the median
+        threshold: float
+                    A signal for the threshold choice to use ( 
+                            threshold = 0: for the mean of frequencies of vocabularies
+                            1 < threshold <100 : The frequecy of a vocabulary at a percentile
+                            threshold >100 : The custom threshold 
+
         """
         if not os.path.exists(marea_file):
             raise FileNotFoundError("Could not find marea file")
 
         self._marea_file = marea_file
         self._counter_d = defaultdict(int)
-        self._percentile = percentile
+        self._threshold = threshold
         # Get count of words in corpus
         with open(marea_file) as f:
             for line in f:
@@ -68,8 +72,22 @@ class WordNetTransformer:
                 for w in words:
                     self._counter_d[w] += 1
         print(f"Got {len(self._counter_d)} words")
-        value_at_percentile = np.percentile(list(self._counter_d.values()), percentile)
+        
 
+        
+
+        if threshold == 0 :  ## To Use Mean 
+            value_at_mean = np.mean(list(self._counter_d.values()))
+            self._do_not_replace_threshold = round(value_at_mean)
+        elif (threshold > 1 and threshold < 100 ): ## Use Percentile
+            value_at_percentile = np.percentile(list(self._counter_d.values()), threshold)
+            self._do_not_replace_threshold = round(value_at_percentile)
+        elif(threshold > 100): ## A custom Threshold  
+            self._do_not_replace_threshold = round(threshold)
+
+
+
+    
         # Create synonym dictionary with NLTK
         # only downloads if needed
         nltk.download("wordnet", download_dir='../data')
@@ -77,7 +95,9 @@ class WordNetTransformer:
         words_sorted_by_frequency = [k for k, v in
                                      sorted(self._counter_d.items(), key=lambda item: item[1], reverse=True)]
 
-        self._do_not_replace_threshold = round(value_at_percentile)
+        
+
+         
 
         self._word_to_synonym_d = self.get_word_to_synonyms_d(words_sorted_by_frequency)
 
