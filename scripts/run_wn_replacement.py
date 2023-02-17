@@ -31,7 +31,7 @@ if not os.path.isfile(marea_input_file):
 if threshold < 0 :
     raise ValueError(f"--threshold argument must be an integer above 0 1  (default 0), but was {threshold}")
 
-transformer = WordNetTransformer(marea_file=marea_input_file, percentile=threshold)
+transformer = WordNetTransformer(marea_file=marea_input_file, threshold=threshold)
 threshold = transformer.get_threshold()
 print(f'Threshold: {threshold} ')
 replaced_words = transformer.get_replaced_word_count()
