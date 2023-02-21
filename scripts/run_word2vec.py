@@ -7,7 +7,7 @@ import time
 import io
 
 import wn2vec 
-from wn2vec import Word2VecRunner
+from tf_word2vecRunner import Word2VecRunner
 
 
 today_date = datetime.date.today().strftime("%b_%d_%Y")
