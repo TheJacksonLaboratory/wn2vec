@@ -44,7 +44,7 @@ BUFFER_SIZE= 10000
 SEED = 42
 
 
-runner = Word2VecRunner(input_file=input_file_path, vector=vector_name, metadata=metadata_name, vocab_size=5000, 
+runner = Word2VecRunner(input_file=input_file_path, vector=vector_name, metadata=metadata_name, vocab_size=100000, 
                              embedding_dim=embed_dim, sequence_length = sequence_length, window_size = window_size, 
                               BATCH_SIZE = 128, BUFFER_SIZE= 10000, num_ns = 4, SEED = 42 )
 
