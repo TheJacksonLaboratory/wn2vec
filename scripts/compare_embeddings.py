@@ -162,8 +162,5 @@ df.to_csv(out_fname, sep='\t')
 
 # sample way of running the code using arparse:
 """
-locate the file you are running + python + run_assessment.py  + '-i' +  address of word2vector output (metadata & vectors) + address of output_file (optional)
-example: 
-> python run_assessment.py  -i /data/metadata_vectors -o /data/comn_concepts.tsv
 
 """
