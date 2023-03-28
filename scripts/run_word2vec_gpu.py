@@ -6,20 +6,30 @@ import logging
 import datetime
 import numpy as np
 import tensorflow as tf
+from tensorflow import keras
 from tensorflow.keras import layers
+from tensorflow.keras.layers.experimental.preprocessing import TextVectorization
 import argparse
 import time
+import dill
 
 
 today_date = datetime.date.today().strftime("%b_%d_%Y")
 start_time = time.time()
 start_time_fmt= time.strftime("%H:%M:%S", time.gmtime(start_time))
 
-logname = f"wn2vec_{today_date} {start_time_fmt}.log"
+logname = f"wn2vec_{today_date}{start_time_fmt}.log"
 
-logging.basicConfig(level=logging.INFO, filename=logname, filemode='w', datefmt='%Y-%m-%d %H:%M:%S', 
+logging.basicConfig(level=logging.INFO, filename=logname, filemode='w', datefmt='%Y-%m-%d %H:%M:%S',
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
+"""
+vector = "/projects/robinson-lab/wn2vec/current/others/metadata_vectors/2018_filt_vector.tsv"
+metadata = "/projects/robinson-lab/wn2vec/current/others/metadata_vectors/2018_filt_metadata.tsv"
+input = "/projects/researchit/yanicr/Robinson/data/pubmed_filt/2018pubmed_filt.tsv"
+
+vocab_size = 100000
+"""
 
 
 parser = argparse.ArgumentParser()
@@ -29,7 +39,21 @@ parser.add_argument('metadata', type=str) #name of metadata file
 parser.add_argument('vocab_size', type=int, default=100000)
 args = parser.parse_args()
 
+tf.config.experimental.list_physical_devices('GPU')
 
+
+tf.__version__
+BATCH_SIZE = 8192*2
+
+GPUS = ["GPU:1"]
+
+
+strategy = tf.distribute.MirroredStrategy( GPUS )
+print('Number of devices: %d' % strategy.num_replicas_in_sync)
+
+batch_size = BATCH_SIZE * strategy.num_replicas_in_sync
+
+optimizer = keras.optimizers.RMSprop()
 
 logging.info(f"Starting word2vec run on {today_date}")
 
@@ -40,26 +64,28 @@ logging.info(f"Starting word2vec run on {today_date}")
 vocab_size = args.vocab_size
 sequence_length = 10
 
-
-
 logging.info(f"vocab_size: {vocab_size}")
 
-
 # Load the TensorBoard notebook extension
-#%load_ext tensorboard
-
-
+%load_ext tensorboard
 
 SEED = 42
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 num_ns = 4
 
-#Compile all the steps described above into a function that can be called on a list of vectorized sentences obtained from any text dataset. Notice that the sampling table is built before sampling skip-gram word pairs. You will use this function in the later sections.
+"""
+Compile all the steps described above into a function that can be called on 
+a list of vectorized sentences obtained from any text dataset. 
+Notice that the sampling table is built before sampling skip-gram word pairs. 
+You will use this function in the later sections.
 
+"""
+### ---- Run this if it is for the first time
 # Generates skip-gram pairs with negative sampling for a list of sequences
 # (int-encoded sentences) based on window size, number of negative samples
 # and vocabulary size.
+
 def generate_training_data(sequences, window_size, num_ns, vocab_size, seed):
   # Elements of each training example are appended to these lists.
   targets, contexts, labels = [], [], []
@@ -68,7 +94,9 @@ def generate_training_data(sequences, window_size, num_ns, vocab_size, seed):
   sampling_table = tf.keras.preprocessing.sequence.make_sampling_table(vocab_size)
 
   # Iterate over all sequences (sentences) in the dataset.
-  for sequence in tqdm.tqdm(sequences):
+
+  #for sequence in tqdm.tqdm(sequences):
+  for sequence in sequences:
 
     # Generate positive skip-gram pairs for a sequence (sentence).
     positive_skip_grams, _ = tf.keras.preprocessing.sequence.skipgrams(
@@ -131,32 +159,41 @@ def custom_standardization(input_data):
                                   '[%s]' % re.escape(string.punctuation), '')
 
 
-
 # Use the `TextVectorization` layer to normalize, split, and map strings to
 # integers. Set the `output_sequence_length` length to pad all samples to the
 # same length.
-vectorize_layer = tf.keras.layers.TextVectorization(
+
+
+vectorize_layer = TextVectorization(
     standardize=custom_standardization,
     max_tokens=vocab_size,
     output_mode='int',
-    output_sequence_length=sequence_length)
+    output_sequence_length=10)
 
-vectorize_layer.adapt(text_ds.batch(1024))
+with strategy.scope():
+    vectorize_layer.adapt(text_ds.batch(batch_size))
 
 # Save the created vocabulary for reference.
 inverse_vocab = vectorize_layer.get_vocabulary()
 print(inverse_vocab[:20])
 
 # Vectorize the data in text_ds.
-text_vector_ds = text_ds.batch(1024).prefetch(AUTOTUNE).map(vectorize_layer).unbatch()
+with strategy.scope():
+    text_vector_ds = text_ds.batch(batch_size).prefetch(AUTOTUNE).map(vectorize_layer).unbatch()
 
-sequences = list(text_vector_ds.as_numpy_iterator())
-print(len(sequences))
-
+with strategy.scope():
+    sequences = list(text_vector_ds.as_numpy_iterator())
+    print(len(sequences))
 
 for seq in sequences[:5]:
  print(f"{seq} => {[inverse_vocab[i] for i in seq]}")
 
+# record time to generate training data
+now_time = time.time()
+duration = time.strftime("%H:%M:%S", time.gmtime(now_time - start_time))
+logging.info(f"Time to generate training data {duration} ")
+
+### --- Run this if it is for the first time 
 targets, contexts, labels = generate_training_data(
     sequences=sequences,
     window_size=2,
@@ -164,30 +201,33 @@ targets, contexts, labels = generate_training_data(
     vocab_size=vocab_size,
     seed=SEED)
 
-# record time to generate training data
-now_time = time.time()
-duration = time.strftime("%H:%M:%S", time.gmtime(now_time - start_time))
-logging.info(f"Time to generate training data {duration} ")
-
-
-
-targets = np.array(targets)
+targets = np.asarray(targets)
 contexts = np.array(contexts)[:,:,0]
-labels = np.array(labels)
+labels = np.asarray(labels)
+
+###  --- Run this if it is for the first time 
+#SAVE the arrays after converting this will save time if you want to rerun.
+
+#Save the file
+dill.dump(targets, file = open("2018_targets.pickle", "wb"))
+dill.dump(contexts, file = open("2018_contexts.pickle", "wb"))
+dill.dump(labels, file = open("2018_labels.pickle", "wb"))
+
+# print(type(targets))
+# print(type(contexts))
+# print(type(labels))
 
 print('\n')
 print(f"targets.shape: {targets.shape}")
 print(f"contexts.shape: {contexts.shape}")
 print(f"labels.shape: {labels.shape}")
 
+BUFFER_SIZE = 1024
 
-BATCH_SIZE = 1024
-BUFFER_SIZE = 10000
 
 dataset = tf.data.Dataset.from_tensor_slices(((targets, contexts), labels))
 dataset = dataset.shuffle(BUFFER_SIZE).batch(BATCH_SIZE, drop_remainder=True)
 print(dataset)
-
 
 dataset = dataset.cache().prefetch(buffer_size=AUTOTUNE)
 print(dataset)
@@ -217,23 +257,28 @@ class Word2Vec(tf.keras.Model):
     dots = tf.einsum('be,bce->bc', word_emb, context_emb)
     # dots: (batch, context)
     return dots
-
+  
 def custom_loss(x_logit, y_true):
   return tf.nn.sigmoid_cross_entropy_with_logits(logits=x_logit, labels=y_true)
 
-embedding_dim = 128
-word2vec = Word2Vec(vocab_size, embedding_dim)
-word2vec.compile(optimizer='adam',
+
+embedding_dim = 4096
+
+with strategy.scope():
+##### model.fit(dataset, epochs=EPOCHS)
+    word2vec = Word2Vec(vocab_size, embedding_dim)
+    word2vec.compile(optimizer='adam',
                  loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True),
                  metrics=['accuracy'])
 
-tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir="logs")
-history_all = word2vec.fit(dataset, epochs=10, callbacks=[tensorboard_callback])
+##word2vec.fit(dataset, epochs=EPOCHS)
 
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir="logs")
+#history_all = word2vec.fit(dataset, epochs=10, callbacks=[tensorboard_callback])
+history_all = word2vec.fit(dataset, epochs=10, callbacks=[tensorboard_callback], workers=4, use_multiprocessing=True )
 
 #docs_infra: no_execute
-#%tensorboard --logdir logs
-
+%tensorboard --logdir logs
 
 weights = word2vec.get_layer('w2v_embedding').get_weights()[0]
 vocab = vectorize_layer.get_vocabulary()
@@ -242,6 +287,7 @@ vector_file = args.vector
 metadata_file = args.metadata
 out_v = io.open(vector_file, 'w', encoding='utf-8')
 out_m = io.open(metadata_file, 'w', encoding='utf-8')
+
 
 for index, word in enumerate(vocab):
   if index == 0:
@@ -252,7 +298,6 @@ for index, word in enumerate(vocab):
 out_v.close()
 out_m.close()
 
-
 try:
   from google.colab import files
   files.download(vector_file)
@@ -260,9 +305,14 @@ try:
 except Exception:
   pass
 
+
 # record end time
 end_time = time.time()
 duration_time = time.strftime("%H:%M:%S", time.gmtime(end_time - start_time))
 logging.info(f"Execution time: {duration_time} ")
+
+
+
+
 
 

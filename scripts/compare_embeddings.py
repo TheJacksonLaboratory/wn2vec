@@ -23,8 +23,6 @@ MINIMUM_CONCEPT_SET_SIZE = 5
 
 
 
-
-
 ## Input the embedding files with vectors and metadata for the two embeddings (pubtator and wordnet) that we want to compare
 parser = argparse.ArgumentParser(description='Process MSigDb genesets into wn2vec concept set format.')
 parser.add_argument('-i', '--indir', type=str, required=True, help='input directory for tensorflow files')
@@ -48,29 +46,7 @@ log.info(f"wordnet_meta_file: {wordnet_meta_file}")
 
 concept_set_parser = ConceptSetParser2(meta1=pubtator_meta_file, meta2=wordnet_meta_file)
 
-"""
 
-our_mesh_concept_file = '../data/mesh_sets.tsv'
-
-mesh_conceptsets_list = concept_set_parser.get_concept_set_list(concept_file_path=our_mesh_concept_file)
-log.info(f"We got {len(mesh_conceptsets_list)} MeSH concepts")
-
-our_gene_concept_file = '../data/gene_sets.tsv'
-gene_concept_set_list = concept_set_parser.get_concept_set_list(concept_file_path=our_gene_concept_file)
-log.info(f"We got {len(gene_concept_set_list)} gene concepts")
-
-
-all_concept_sets = set()
-all_concept_set_objects = set()
-for cs in mesh_conceptsets_list:
-    all_concept_sets.update(cs.concepts)
-    all_concept_set_objects.add(cs)
-for cs in gene_concept_set_list:
-    all_concept_sets.update(cs.concepts)
-    all_concept_set_objects.add(cs)
-
-
-"""
 # Pass in the concept set directory, 4 gene sets & 1 meshset 
 
 our_concept_file = args.concepts
@@ -162,5 +138,7 @@ df.to_csv(out_fname, sep='\t')
 
 # sample way of running the code using arparse:
 """
+python compare_embeddings.py -i /Users/niyone/Desktop/march_2023/metadata_threshold -c /Users/niyone/Documents/GitHub/wn2vec/data/bio_geneset.tsv -p 2010_filt_sumner -w 0_2010_wn -o bio_0_comn_concepts.tsv
+
 
 """
