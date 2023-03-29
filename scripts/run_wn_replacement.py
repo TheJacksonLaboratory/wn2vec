@@ -20,6 +20,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-i', type=str, required=True, help='path to filtered marea_file')
 parser.add_argument('-o', type=str, required=True, help='path to of output_file')
 parser.add_argument('--threshold', type=int, help="threshold (0 for mean, 1<threshold <100  for percentile, above 100 for custom threshold)")
+
 args = parser.parse_args()
 
 marea_input_file = args.i
