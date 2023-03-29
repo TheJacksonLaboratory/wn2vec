@@ -41,7 +41,6 @@ vocab_size = args.vocab_size
 sequence_length = 10
 
 
-
 logging.info(f"vocab_size: {vocab_size}")
 
 
@@ -68,7 +67,7 @@ def generate_training_data(sequences, window_size, num_ns, vocab_size, seed):
   sampling_table = tf.keras.preprocessing.sequence.make_sampling_table(vocab_size)
 
   # Iterate over all sequences (sentences) in the dataset.
-  for sequence in tqdm.tqdm(sequences):
+  for sequence in sequences:
 
     # Generate positive skip-gram pairs for a sequence (sentence).
     positive_skip_grams, _ = tf.keras.preprocessing.sequence.skipgrams(

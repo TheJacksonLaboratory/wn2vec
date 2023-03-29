@@ -23,13 +23,7 @@ logname = f"wn2vec_{today_date}{start_time_fmt}.log"
 logging.basicConfig(level=logging.INFO, filename=logname, filemode='w', datefmt='%Y-%m-%d %H:%M:%S',
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-"""
-vector = "/projects/robinson-lab/wn2vec/current/others/metadata_vectors/2018_filt_vector.tsv"
-metadata = "/projects/robinson-lab/wn2vec/current/others/metadata_vectors/2018_filt_metadata.tsv"
-input = "/projects/researchit/yanicr/Robinson/data/pubmed_filt/2018pubmed_filt.tsv"
 
-vocab_size = 100000
-"""
 
 
 parser = argparse.ArgumentParser()
