@@ -138,7 +138,8 @@ df.to_csv(out_fname, sep='\t')
 
 # sample way of running the code using arparse:
 """
-python compare_embeddings.py -i /Users/niyone/Desktop/march_2023/metadata_threshold -c /Users/niyone/Documents/GitHub/wn2vec/data/bio_geneset.tsv -p 2010_filt_sumner -w 0_2010_wn -o bio_0_comn_concepts.tsv
+
+python compare_embeddings.py -i ../data/metadata_vectors -c ../data/bio_geneset.tsv -p pubt -w wn -o comn_concepts.tsv
 
 
 """
