@@ -45,7 +45,7 @@ WordNet-based synonym Replacement
 
 The /run_wn_replacement.py script from the wn2vec package is used to replace non-biomedical synonyms with WordNet identifiers.
 
-See :ref:`wnreplacement` for details.
+See :ref:`wordnetreplacement` for details.
 
 
 word2vec
@@ -54,7 +54,7 @@ word2vec
 We perform word2vec embedding using TensorFlow2 with the XYZ script from the wn2vec package. In order to 
 compare the results of embedding with and without WordNet replacment, embedding is performed on both datasets.
 
-See :ref:`w2v` for details.
+See :ref:`word2vec` for details.
 
 This step has to be run twice, first for pubmed_filt.tsv and second for wordnet.tsv before going to the following step 
 
@@ -66,7 +66,7 @@ Our hypothesis is that non-biomedical concept replacement will improve embedding
 concepts to each other. TO assess this, we defined XYZ concept sets representing genetic and genomic functions (gene sets) and biomedical concepts taken from MeSH.
 The XYZ script from wn2vec is used to assess the mean intracluster cosine distances of the corresponding concepts.
 
-See :ref:`conceptseteval` for details.
+See :ref:`conceptset_evaluation` for details.
 
 
 
