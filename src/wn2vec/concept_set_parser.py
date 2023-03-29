@@ -7,6 +7,7 @@ import logging
 log = logging.getLogger("wn2vec.log")
 log.setLevel(logging.INFO)
 
+
 MINIMUM_CONCEPT_SET_SIZE = 5
 
 ch = logging.StreamHandler() # console handler
@@ -16,7 +17,7 @@ ch.setFormatter(formatter)
 log.addHandler(ch)
 
 
-class ConceptSetParser2:
+class ConceptSetParser:
     """
     Parsers the concept sets and creates sets of concepts that are contained in both the metadata files. The reason is that we want to 
     restrict the comparison to identical sets of vectors when we do the t test for pairwaise distances to compare PubTator and Wordnet

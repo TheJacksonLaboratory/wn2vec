@@ -37,19 +37,18 @@ i.e., name, id, and semicolon-separated list of concept identifiers. For instanc
         * locate the file you are running + python + meshImporter.py 
         * example:  python meshImporter.py 
 
-* cripts/run_assessment.py: Takes in vectors and metadata files from word2vec  of both filtered marea output (pubmed_filt.tsv) and word net transformed abstracts (wordnet.tsv)  and assess using both selected Mesh sets and gene sets from the above steps. 
+* cripts/compare_embeddings.py: Takes in vectors and metadata files from word2vec  of both filtered marea output (pubmed_filt.tsv) and word net transformed abstracts (wordnet.tsv)  and assess using both selected Mesh sets and gene sets from the above steps. 
+
 
 * Parameters:
-    * ‘-i’ : input directory of 4 files (filt_metadata.tsv, filt_vectors.tsv, wn_metadata.tsv, wn_vectors.tsv)
-    * ‘-o’ :  address of output_file (optional)  
+    * ‘-i’ : input directory for tensorflow files (4 files) 
+    * '-c' : input directory for concept sets (MeSH sets / Gene sets)
+    * ‘-p’ : prefix for pubtator tensorflow output files, e.g., pubt
+    * '-w' : prefix for pubtator tensorflow output files, e.g., wn'
+    * '-o' : name of output file, e.g comn_concepts.tsv
 * To run the script:
-    * locate the file you are running + python + run_assessment.py  + '-i' +  address of word2vector output (metadata & vectors) + address of output_file (optional)
-    * example:  python run_assessment.py  -i  ../data/metadata_vectors -o /data/comn_concepts.tsv
+    * example: python compare_embeddings.py -i ../data/metadata_threshold -c ../data/bio_geneset.tsv -p pubt -w wn -o comn_concepts.tsv
 
-* Make sure:
-    * The Meshsets is are in '../data/mesh_sets.tsv'
-    * The Geneses are in '../data/gene_sets.tsv’
-    * The naming of 4 word2vec output files in the ‘-i’ directory are (filt_metadata.tsv, filt_vectors.tsv, wn_metadata.tsv, wn_vectors.tsv)
 
 
 
