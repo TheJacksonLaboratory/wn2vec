@@ -6,7 +6,7 @@ import pandas as pd
 import sys
 
 sys.path.insert(0, os.path.abspath('../src/'))
-from wn2vec import Tf2FileParser,TfConceptParser, TfConcept, Ttest, ConceptSetParser2, ConceptSet
+from wn2vec import Tf2FileParser,TfConceptParser, TfConcept, Ttest, ConceptSetParser, ConceptSet
 
 
 import logging
@@ -44,7 +44,7 @@ log.info(f"wordnet_meta_file: {wordnet_meta_file}")
 
 
 
-concept_set_parser = ConceptSetParser2(meta1=pubtator_meta_file, meta2=wordnet_meta_file)
+concept_set_parser = ConceptSetParser(meta1=pubtator_meta_file, meta2=wordnet_meta_file)
 
 
 # Pass in the concept set directory, 4 gene sets & 1 meshset 
