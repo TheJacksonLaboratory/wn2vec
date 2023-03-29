@@ -31,5 +31,4 @@ After you have downloaded the pubmed_cr.tsv file (or prepared your own input fil
 the next step is to perform the wondnet non-biomedical concept replacement.
 
 
-TODO describe
 

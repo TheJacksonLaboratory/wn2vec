@@ -4,7 +4,7 @@
 Running marea
 =============
 
-`marea <https://github.com/TheJacksonLaboratory/marea>`_` (marea adamantly resists egregious acronyms) 
+`marea <https://github.com/TheJacksonLaboratory/marea/tree/v1.0.2>`_ (marea adamantly resists egregious acronyms) 
 is a tool for processing PubMed abstracts (See `Ravanmehr et al` <https://pubmed.ncbi.nlm.nih.gov/34888523/>`_ 
 for additional information).
 
