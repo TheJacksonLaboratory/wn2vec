@@ -1,4 +1,3 @@
-
 library("ggplot2")
 library("ggsci")
  
@@ -21,11 +20,11 @@ ggplot(data, aes(x = concept_set_name,
             theme(axis.title.x = element_blank(),
                     axis.title.y = element_blank(),
                     axis.text = element_text(size = 14)) +
-        scale_fill_npg()
+         scale_fill_nejm()
+
 
 
 ggsave('P_mean_significant.pdf')
-
 
 
 
@@ -47,7 +46,8 @@ ggplot(data, aes(x = concept_set_name,
             geom_bar(stat = "identity", position = "dodge") +
             theme(axis.title.x = element_blank(),
                     axis.title.y = element_blank(),
-                    axis.text = element_text(size = 14, face = "bold"))
+                    axis.text = element_text(size = 14)) +
+         scale_fill_nejm()
 
 
 ggsave('Regardless_P_mean_significant.pdf')
