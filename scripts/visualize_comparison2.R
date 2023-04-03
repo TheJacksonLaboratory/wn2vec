@@ -1,7 +1,12 @@
+
 library("ggplot2")
 library("ggsci")
 
- 
+if(!require('ggpubr')) {
+  install.packages('ggpubr')
+  library('ggpubr')
+}
+
 # Considering P-Value for significancy
 sets_counts_per_concept_set <- c(10, 0, 54, 9, 36, 4, 25, 10, 27, 6)
 
@@ -23,21 +28,11 @@ p1 <- ggplot(data, aes(x = concept_set_name,
                     axis.text = element_text(size = 14)) +
          scale_fill_nejm() + theme_bw()
 
-# print(p1)
-
-ggsave('P_mean_significant.pdf')
-
-
 
 #Rregardless of P-Value for Significancy 
 
 sets_counts_per_concept_set <- c(57, 24, 178, 104, 120, 53, 133, 93, 124, 70)
 
-concept_set_name <- rep(c( 'Mesh Sets','biocarta', 'kegg_canonical', 
-                                   'bp_gene_ontology', 'pid_canonical'),each = 2)
-
-
-subgroup <- rep(c("Wordnet" , "Pubtator" ))
 
 data <- data.frame(sets_counts_per_concept_set, concept_set_name, subgroup)
 
@@ -51,18 +46,16 @@ p2 <- ggplot(data, aes(x = concept_set_name,
          scale_fill_nejm() + theme_bw()
 
 
-# print(p2)
 
-# ggarrange(p1, p2)
-
-ggsave('Regardless_P_mean_significant.pdf')
+ggarrange(p1,p2, common.legend = TRUE)
 
 
-
-# # --- Regardless of P-Value 
-
+ggsave('mean_comparision.pdf')
 
  
+
+
+
  # Create DataFrame from CSV file
 data = read.table('/Users/niyone/Desktop/Results_visualization/bio_0_comn_concepts.tsv', sep="\t", header=T)
 
