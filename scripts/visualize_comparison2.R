@@ -1,5 +1,6 @@
 library("ggplot2")
 library("ggsci")
+
  
 # Considering P-Value for significancy
 sets_counts_per_concept_set <- c(10, 0, 54, 9, 36, 4, 25, 10, 27, 6)
@@ -12,7 +13,7 @@ subgroup <- rep(c("Wordnet" , "Pubtator" ))
 
 data <- data.frame(sets_counts_per_concept_set, concept_set_name, subgroup)
 
-ggplot(data, aes(x = concept_set_name,
+p1 <- ggplot(data, aes(x = concept_set_name,
            y = sets_counts_per_concept_set,
            fill = subgroup)) +
   geom_bar(stat = "identity",
@@ -20,9 +21,9 @@ ggplot(data, aes(x = concept_set_name,
             theme(axis.title.x = element_blank(),
                     axis.title.y = element_blank(),
                     axis.text = element_text(size = 14)) +
-         scale_fill_nejm()
+         scale_fill_nejm() + theme_bw()
 
-
+# print(p1)
 
 ggsave('P_mean_significant.pdf')
 
@@ -40,21 +41,25 @@ subgroup <- rep(c("Wordnet" , "Pubtator" ))
 
 data <- data.frame(sets_counts_per_concept_set, concept_set_name, subgroup)
 
-ggplot(data, aes(x = concept_set_name,
+p2 <- ggplot(data, aes(x = concept_set_name,
            y = sets_counts_per_concept_set,
            fill = subgroup)) +
             geom_bar(stat = "identity", position = "dodge") +
             theme(axis.title.x = element_blank(),
                     axis.title.y = element_blank(),
                     axis.text = element_text(size = 14)) +
-         scale_fill_nejm()
+         scale_fill_nejm() + theme_bw()
 
+
+# print(p2)
+
+# ggarrange(p1, p2)
 
 ggsave('Regardless_P_mean_significant.pdf')
 
 
 
-# --- Regardless of P-Value 
+# # --- Regardless of P-Value 
 
 
  
@@ -75,7 +80,7 @@ count_concept_set <- 1:df_size
 
 p <- (ggplot() +
   geom_point(data = data, aes(count_concept_set, mean_distance_wn), colour = 'blue') +
-  geom_point(data = data , aes(count_concept_set, mean_distance_pm), colour = 'red'))
+  geom_point(data = data , aes(count_concept_set, mean_distance_pm), colour = 'red') + theme_bw())
 
 
 print(p + geom_jitter())
@@ -105,7 +110,7 @@ count_concept_set <- 1:(dim(data_frame_mod)[1])
 
 p <- (ggplot() +
   geom_point(data = data_frame_mod, aes(count_concept_set, mean_distance_wn), colour = 'blue') +
-  geom_point(data = data_frame_mod , aes(count_concept_set, mean_distance_pm), colour = 'red'))
+  geom_point(data = data_frame_mod , aes(count_concept_set, mean_distance_pm), colour = 'red') + theme_bw())
 
 
 print(p + geom_jitter())
