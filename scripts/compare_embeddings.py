@@ -28,7 +28,7 @@ parser = argparse.ArgumentParser(description='Process MSigDb genesets into wn2ve
 parser.add_argument('-i', '--indir', type=str, required=True, help='input directory for tensorflow files')
 parser.add_argument('-c', '--concepts', type=str, required=True, help='input directory for concept sets (MeSH sets / Gene sets)')
 parser.add_argument('-p', '--pubtator',  type=str, required=True, help='prefix for pubtator tensorflow output files, e.g., pubt')
-parser.add_argument('-w', '--wordnet',  type=str, required=True, help='prefix for pubtator tensorflow output files, e.g., wn')
+parser.add_argument('-w', '--wordnet',  type=str, required=True, help='prefix for wornet transform tensorflow output files, e.g., wn')
 parser.add_argument('-o', type=str, default='comn_concepts.tsv',
                     help='name of output file (default=\'comn_concepts.tsv\'')
 args = parser.parse_args()
