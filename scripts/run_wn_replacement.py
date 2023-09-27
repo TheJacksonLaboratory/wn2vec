@@ -19,18 +19,18 @@ start_time = time.time()
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', type=str, required=True, help='path to filtered marea_file')
 parser.add_argument('-o', type=str, required=True, help='path to of output_file')
-parser.add_argument('-t', '--threshold_multiple', type=float, help="threshold_multiple (the a number you wish to multiply to the mean of the unique word's frequency and the threshold)")
+parser.add_argument('-t', '--threshold', type=float, default=1.0,  help="threshold (the a number you wish to multiply to the mean of the unique word's frequency and the threshold)")
 
 args = parser.parse_args()
 
 marea_input_file = args.i
 output_file = args.o
-threshold_multiple = args.t
+threshold_multiple = args.threshold
 logging.info(f"wordnet replacement infile: {marea_input_file}; outfile: {output_file}; threshold: {threshold_multiple}")
 if not os.path.isfile(marea_input_file):
     raise FileNotFoundError(f"Could not find marea [intput] file at {marea_input_file}")
 if threshold_multiple <=0 :
-    raise ValueError(f"--threshold argument must be a flaot above 0 (default 1), but was {threshold_multiple}")
+    raise ValueError(f"--threshold argument must be a float above 0 (default 1), but was {threshold_multiple}")
 
 
 

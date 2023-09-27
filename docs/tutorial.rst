@@ -22,13 +22,48 @@ The file can be downloaded from zenodo: `https://zenodo.org/record/7588919/files
    :header-rows: 1
    :widths: 20, 20, 260
 
-To use the wn2vec pipeline, you may need to use a script to reformat your input data to have an analogous format.
+
+
+Using your own data 
+^^^^^^^^^^^^^^^^^^^
+
+For our experiments, we used `PubTator <https://pubmed.ncbi.nlm.nih.gov/31114887/>`_ to perform concept replacement, and the above file already 
+has been processed with PubTator. You can use any analogous file and perform concept replacement by any method. To use the scripts in this tutorial,
+make sure the output is formated in three tab-separated columns with column 1 being the PubMed identifier, column 2 being the year of publication, and column 3 being the 
+abstract text with concept replacements.
+
+
+
+Setting up the environment
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There are several ways to run the code but the simplest is to set up a virtual environment. For this example, we call the environment ``wn2v_env`` but you can use any name you like.
+
+.. code-block:: shell
+
+   python3 -m venv wn2v_env
+   source wn2v_env/bin/activate
+   pip install .
+
+
+
 
 wordnet replacement
 ^^^^^^^^^^^^^^^^^^^
 
 After you have downloaded the pubmed_cr.tsv file (or prepared your own input file to have the same format),
-the next step is to perform the wondnet non-biomedical concept replacement.
+the next step is to perform the wordnet non-biomedical concept replacement (for details see :ref:`wnreplacement`). Run the following script (which is in
+the ``scripts`` directory -- note that the example does not show full paths).
+
+
+.. code-block:: shell
+   
+   python3  python run_wn_replacement.py -i pubmed_cr.tsv -o pubmed_cr_wn.tsv [--threshold <float>]
+
+the `-i` argument points to the input file. The ``-o`` argument creates a new output file with the result. The ``--threshold`` argument controls ....
+
+
+
 
 
 
