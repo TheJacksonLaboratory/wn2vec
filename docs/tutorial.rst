@@ -60,7 +60,35 @@ the ``scripts`` directory -- note that the example does not show full paths).
    
    python3  python run_wn_replacement.py -i pubmed_cr.tsv -o pubmed_cr_wn.tsv [--threshold <float>]
 
-the `-i` argument points to the input file. The ``-o`` argument creates a new output file with the result. The ``--threshold`` argument controls ....
+the `-i` argument points to the input file. The ``-o`` argument creates a new output file with the result. The ``--threshold`` is a floating number that controls
+the minimum (threshold) count of a synonym to be replaced. First, the mean word count of all words (tokens) in the entire corpus is determined. For eaxample, the mean could be 
+$\mu = 400$, meaning that the average word occurs 400 times in the entire corpus of texts. For instance, if  the threshold is set to $\tau = 2.0$, then, the minimum count for being replaced 
+would be $\tau\cdot \mu = 800$.
+
+
+The output file has the same overall format as the input file, except that some words are replaced by more common synonyms.
+
+.. admonition:: input text (excerpt)
+   :class: tip
+
+   33500803	2020	colloid cyst curtail case report spontaneous colloid cyst regression (...) discover colloid cyst image perform transient meshd009461 ct mri brain reveal 5mm lesion 
+   
+
+
+.. admonition:: Wordnet-replaced text (excerpt)
+   :class: tip
+
+   33500803	2020	colloid cyst restrict case report spontaneous colloid cyst regression (...) discover colloid cyst image perform transient meshd009461 ct mri brain reveal 5mm lesion
+   
+   
+Thus, the relatively rare word ``curtail`` was replaced by the more common synonym ``restrict``.
+
+
+word2vec
+^^^^^^^^
+
+The next step is to run word2vec on the replaced input file. If desired, word2vec can be run on both files for comparison purposes; the steps are analogous.
+
 
 
 

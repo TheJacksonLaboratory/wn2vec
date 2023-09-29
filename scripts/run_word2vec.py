@@ -17,31 +17,35 @@ start_time_fmt= time.strftime("%H:%M:%S", time.gmtime(start_time))
 
 logname = f"wn2vec_{today_date} {start_time_fmt}.log"
 
-logging.basicConfig(level=logging.INFO, filename=logname, filemode='w', datefmt='%Y-%m-%d %H:%M:%S', 
+logging.basicConfig(level=logging.INFO, filename=logname, filemode='w', datefmt='%Y-%m-%d %H:%M:%S',
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('input', type=str) #address of the marea file
-parser.add_argument('vector', type=str) #name of vector file
-parser.add_argument('metadata', type=str) #name of metadata file
-parser.add_argument('vocab_size', type=int, default=100000)
+parser.add_argument('-i', '--input', type=str, help="path to input (marea) file")
+parser.add_argument('-v', '--vector', type=str, help="name of output vector file")
+parser.add_argument('-m', '--metadata', type=str, help="name of output metadata file")
+parser.add_argument('-s', '--vocab_size', type=int, default=100000, help="size of vocabulary for word2vec")
 args = parser.parse_args()
-
-
-
-logging.info(f"Starting word2vec run on {today_date}")
-
-##########
-# #### Word2vec parameters
-##########
 # the vocabulary size and the number of words in a sequence.
 vocab_size = args.vocab_size
+path_to_file = args.input
+vector_file = args.vector
+metadata_file = args.metadata
+
+# Other arguments
 sequence_length = 10
+SEED = 42
+AUTOTUNE = tf.data.experimental.AUTOTUNE
+num_ns = 4
+BATCH_SIZE = 1024
+BUFFER_SIZE = 10000
+embedding_dim = 128
 
-
+logging.info(f"Starting word2vec run on {today_date}")
 logging.info(f"vocab_size: {vocab_size}")
+logging.info(f"sequence_length: {sequence_length}")
 
 
 # Load the TensorBoard notebook extension
@@ -49,10 +53,7 @@ logging.info(f"vocab_size: {vocab_size}")
 
 
 
-SEED = 42
-AUTOTUNE = tf.data.experimental.AUTOTUNE
 
-num_ns = 4
 
 #Compile all the steps described above into a function that can be called on a list of vectorized sentences obtained from any text dataset. Notice that the sampling table is built before sampling skip-gram word pairs. You will use this function in the later sections.
 
@@ -105,9 +106,20 @@ def generate_training_data(sequences, window_size, num_ns, vocab_size, seed):
 
   return targets, contexts, labels
 
-path_to_file = args.input
+
+def custom_standardization(input_data):
+  """
+  :param input_data: an input string
+  :return: same string, lower-cased with punctuation removed
+  """
+  lowercase = tf.strings.lower(input_data)
+  return tf.strings.regex_replace(lowercase, '[%s]' % re.escape(string.punctuation), '')
 
 
+
+
+## 1. Ingest input file and extract the third field of each line (i.e., the replaced PubMed abstract)
+## TODO do we need this?
 lines = []
 with open(path_to_file) as f:
     for line in f:
@@ -116,18 +128,11 @@ with open(path_to_file) as f:
            raise ValueError(f'Malformed marea line: {line}')
         abstract = columns[2]  #columns[0]: pmid,  columns[1] year, columns[2] abstract text
         lines.append(abstract)
-for line in lines[:20]:
-   print(line)
 
 
 text_ds = tf.data.TextLineDataset(path_to_file).filter(lambda x: tf.cast(tf.strings.length(x), bool))
 
-# Now, create a custom standardization function to lowercase the text and
-# remove punctuation.
-def custom_standardization(input_data):
-  lowercase = tf.strings.lower(input_data)
-  return tf.strings.regex_replace(lowercase,
-                                  '[%s]' % re.escape(string.punctuation), '')
+
 
 
 
@@ -144,7 +149,7 @@ vectorize_layer.adapt(text_ds.batch(1024))
 
 # Save the created vocabulary for reference.
 inverse_vocab = vectorize_layer.get_vocabulary()
-print(inverse_vocab[:20])
+# print(inverse_vocab[:20])
 
 # Vectorize the data in text_ds.
 text_vector_ds = text_ds.batch(1024).prefetch(AUTOTUNE).map(vectorize_layer).unbatch()
@@ -180,8 +185,7 @@ print(f"contexts.shape: {contexts.shape}")
 print(f"labels.shape: {labels.shape}")
 
 
-BATCH_SIZE = 1024
-BUFFER_SIZE = 10000
+
 
 dataset = tf.data.Dataset.from_tensor_slices(((targets, contexts), labels))
 dataset = dataset.shuffle(BUFFER_SIZE).batch(BATCH_SIZE, drop_remainder=True)
@@ -220,7 +224,7 @@ class Word2Vec(tf.keras.Model):
 def custom_loss(x_logit, y_true):
   return tf.nn.sigmoid_cross_entropy_with_logits(logits=x_logit, labels=y_true)
 
-embedding_dim = 128
+
 word2vec = Word2Vec(vocab_size, embedding_dim)
 word2vec.compile(optimizer='adam',
                  loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True),
@@ -237,8 +241,8 @@ history_all = word2vec.fit(dataset, epochs=10, callbacks=[tensorboard_callback])
 weights = word2vec.get_layer('w2v_embedding').get_weights()[0]
 vocab = vectorize_layer.get_vocabulary()
 
-vector_file = args.vector
-metadata_file = args.metadata
+## Output the vector and metadata files representing the embeddings
+
 out_v = io.open(vector_file, 'w', encoding='utf-8')
 out_m = io.open(metadata_file, 'w', encoding='utf-8')
 
@@ -248,16 +252,9 @@ for index, word in enumerate(vocab):
   vec = weights[index]
   out_v.write('\t'.join([str(x) for x in vec]) + "\n")
   out_m.write(word + "\n")
+
 out_v.close()
 out_m.close()
-
-
-try:
-  from google.colab import files
-  files.download(vector_file)
-  files.download(metadata_file)
-except Exception:
-  pass
 
 # record end time
 end_time = time.time()

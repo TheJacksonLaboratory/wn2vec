@@ -1,9 +1,11 @@
 import os
+import sys
 from collections import defaultdict
 import nltk
 from nltk.corpus import wordnet as wn
 from typing import List, Dict
 import numpy as np
+from tqdm import tqdm
 
 
 class WordNetTransformer:
@@ -106,7 +108,8 @@ class WordNetTransformer:
 
         """
         dictionary = {}
-        for i in range(len(unique_words_list)):
+        n_words = len(unique_words_list)
+        for i in tqdm(range(n_words), "getting unique words"):
             this_word = unique_words_list[i]
             # skip common words not replaced 
             this_word_count = self._counter_d.get(this_word, 0)
@@ -133,7 +136,7 @@ class WordNetTransformer:
      
         synonyms_used_for_replacements = set()
         word_to_synonyms_d = {}
-        for word, most_frequent_synonym in dictionary.items():
+        for word, most_frequent_synonym in tqdm(dictionary.items(), "getting most frequent synonym"):
             if word in synonyms_used_for_replacements:
                 word_to_synonyms_d[word] = word
             else:
@@ -188,9 +191,33 @@ class WordNetTransformer:
             else:
                 raise ValueError("the word is not in the dictionary")
             abstract = ' '.join([str(item) for item in abst_list])
-        columns[2] = abstract
-        trans_abstract = columns[0] + '\t' + columns[1] + '\t' + columns[2] + '\n'
-        return (trans_abstract)
+        #columns[2] = abstract
+        #trans_abstract = columns[0] + '\t' + columns[1] + '\t' + columns[2] + '\n'
+        return abstract + '\n'
+
+    def output_abstract_only(self):
+        """
+        The marea input file has three fields - PMID - Year - Abstract
+        For word2vec, we want to have just the Abstract text
+        :return: The third field (abstract) with new line symbol
+        """
+        path, filename = os.path.split(self._marea_file)
+        filename = os.path.splitext(filename)[0]
+        newfilename = 'abstracts-%s.txt' % filename
+        newpath = os.path.join(path, newfilename)
+        fh = open(newpath, 'w')
+        file_size = os.path.getsize(self._marea_file)
+        pbar = tqdm(total=file_size, unit="MB", desc="output abstracts of input marea file")
+        with open(self._marea_file, "r") as f:
+            for line in f:
+                pbar.update(sys.getsizeof(line) - sys.getsizeof('\n'))
+                columns = line.split('\t')
+                if len(columns) != 3:
+                    raise ValueError(f'Malformed marea line: {line}')
+                abstract = columns[2]
+                fh.writelines(abstract)
+        pbar.close()
+        fh.close()
 
     def get_threshold(self) -> int:
         """
@@ -201,11 +228,16 @@ class WordNetTransformer:
         return self._do_not_replace_threshold
 
     def transform_and_write(self, output_file):
+
         fh = open(output_file, 'w')
+        file_size = os.path.getsize(self._marea_file)
+        pbar = tqdm(total=file_size, unit="MB", desc="replacing words in text")
         with open(self._marea_file, "r") as f:
             for line in f:
+                pbar.update(sys.getsizeof(line) - sys.getsizeof('\n'))
                 new_abstract = self.transform(line)
                 fh.writelines(new_abstract)
+        pbar.close()
         fh.close()
 
     def get_total_word_count(self):
