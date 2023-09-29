@@ -35,6 +35,7 @@ dependencies = [
     "SPARQLWrapper",
     "scipy",
     "tdqm",
+    "tensorflow"
 ]
 
 
