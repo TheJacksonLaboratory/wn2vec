@@ -4,6 +4,9 @@ from typing import List
 import numpy as np
 import tensorflow as tf
 
+# also defined in dataset.py, needs to be in synch
+OOV_ID = -1
+
 class WordTokenizer(object):
     """Vanilla word tokenizer
 
