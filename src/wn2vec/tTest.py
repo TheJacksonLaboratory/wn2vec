@@ -4,43 +4,25 @@ import scipy.stats as stats
 import numpy as np
 
 
-
 class Ttest:
     """
-    Using Ttest to measure the singnificance between cluster mean distance of concepts of the same set
-    comparing those transformed with wordnet (wn_common_genes) vs the concepts without transformation of wornet (pm_common_genes)
-    ...
+    Performs T-test on clusters to compare distances of concepts, considering wordnet-transformed and non-transformed clusters.
+
+    This class calculates the mean cosine distances between transformed and non-transformed clusters and performs a T-test 
+    to determine the significance of the difference between them.
 
     Attributes
     ----------
-        pm_common_genes: np.ndarray
-                    an array of concept vectors without wordnet transformation (marea output)
-        wn_common_genes: np.ndarray
-                    an array of transformed concept vectors which were transformed through wordnet
-                   
-    Methods
-    -------
-    def get_all_pairwise_distances_in_cluster(cluster):
-        Creates a dictionary from the whole data set, keys are unique words, and the values are synonyms of keys from synset
-    def wn_distance_smaller_than_pm(self):
-        checks whether mean cosine distance between worndet transformed cluster's concept  is smaller than untranformend  cluster's concepts
-    def pm_distance_smaller_than_wn(self):
-        checks whether mean cosine distance between untranformend cluster's concept  is smaller than worndet transformed cluster's concepts
-    def is_significant(self, alpha_threshold=0.05):
-         checks whether p_value from statistical ttest is ginificant differece for the distance between transromed vs untransformed through wordnet
+    :param pm_common_genes: Concept vectors without wordnet transformation (marea output).
+    :type pm_common_genes: np.ndarray
+    :param wn_common_genes: Transformed concept vectors through wordnet.
+    :type wn_common_genes: np.ndarray
     """
 
     def __init__(self, pm_common_genes, wn_common_genes) -> None:
         """
-        Constructs all the necessary attributes for the  Ttest class
-        
-        Parameters
-        ----------
-        pm_common_genes: np.ndarray
-                    an array of concept vectors without wordnet transformation (marea output)
-        wn_common_genes: np.ndarray
-                    an array of transformed concept vectors which were transformed through wordnet
-                   
+        Initializes the Ttest object and computes mean distances for clusters.
+
         """
 
         if not isinstance(pm_common_genes, np.ndarray):
@@ -59,15 +41,15 @@ class Ttest:
         self._n_concepts = len(pm_common_genes)
         self._pvalue = stats.ttest_ind(a=pw_dist1, b=pw_dist2, equal_var=True)
 
-
     @staticmethod
     def get_all_pairwise_distances_in_cluster(cluster):
         """
-        Creates a dictionary from the whole data set, keys are unique words, and the values are synonyms of keys from synset
-        @parameter: 
-            cluster: np.ndarray
-             an array of vectors of conncepts of the same genesets or meshsets
-        @return: returns a pair wise distance list from the vectors of the same cluster using cosine similarity 
+        Computes pairwise cosine distances for a given cluster.
+
+        :param cluster: An array of vectors representing concepts within a cluster (either genesets or meshsets).
+        :type cluster: np.ndarray
+        :return: A list of pairwise distances within the cluster using cosine similarity.
+        :rtype: List[float]
 
         """
 
@@ -79,41 +61,72 @@ class Ttest:
             cosine_similarity = np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
             pairwise_distance_list.append(cosine_similarity)
         return pairwise_distance_list
-
+    
     @property
-    def p_value(self):
+    def p_value(self) -> float:
+        """ 
+        :return: The p-value from the T-test.
+        :rtype: float
+        """
         return self._pvalue[1]
 
     @property
-    def mean_dist_pubmed(self):
+    def mean_dist_pubmed(self) -> float:
+        """ 
+        :return: Mean distance of non-transformed cluster's concepts.
+        :rtype: float
+        """
         return self._mean_dist_pubmed
 
     @property
-    def mean_dist_wordnet(self):
+    def mean_dist_wordnet(self) -> float:
+        """ 
+        :return: Mean distance of wordnet-transformed cluster's concepts.
+        :rtype: float
+        """
         return self._mean_dist_wordnet
 
     @property
-    def n_comparisons(self):
+    def n_comparisons(self) -> int:
+        """ 
+        :return: Number of pairwise comparisons performed.
+        :rtype: int
+        """
         return self._n_comparisons
 
     @property
-    def n_concepts(self):
+    def n_concepts(self) -> int:
+        """ 
+        :return: Number of concepts in the cluster.
+        :rtype: int
+        """
         return self._n_concepts
 
-    def wn_distance_smaller_than_pm(self):
+    def wn_distance_smaller_than_pm(self) -> bool:
         """
-        checks whether mean cosine distance between worndet transformed cluster's concept  is smaller than untranformend  cluster's concepts
+        Determines if mean cosine distance between wordnet-transformed cluster's concepts is smaller than that of the non-transformed cluster's concepts.
+        
+        :return: True if wordnet-transformed distance is smaller, otherwise False.
+        :rtype: bool
         """
-        return self.mean_dist_wordnet  < self._mean_dist_pubmed
+        return self.mean_dist_wordnet < self._mean_dist_pubmed
 
-    def pm_distance_smaller_than_wn(self):
+    def pm_distance_smaller_than_wn(self) -> bool:
         """
-        checks whether mean cosine distance between untranformend cluster's concept  is smaller than worndet transformed cluster's concepts
+        Determines if mean cosine distance between non-transformed cluster's concepts is smaller than that of the wordnet-transformed cluster's concepts.
+        
+        :return: True if non-transformed distance is smaller, otherwise False.
+        :rtype: bool
         """
         return self._mean_dist_pubmed < self._mean_dist_wordnet
 
-    def is_significant(self, alpha_threshold=0.05):
+    def is_significant(self, alpha_threshold=0.05) -> bool:
         """
-         checks whether p_value from statistical ttest is ginificant differece for the distance between transromed vs untransformed through wordnet
+        Checks if the difference in distances between transformed and non-transformed clusters is statistically significant.
+        
+        :param alpha_threshold: The significance level for the T-test.
+        :type alpha_threshold: float
+        :return: True if the p-value is less than or equal to the alpha threshold, otherwise False.
+        :rtype: bool
         """
         return self._pvalue[1] <= alpha_threshold

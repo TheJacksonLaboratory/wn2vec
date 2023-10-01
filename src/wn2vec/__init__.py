@@ -1,4 +1,3 @@
-
 from .concept_set import ConceptSet
 from .concept_set_parser import ConceptSetParser
 from .tf2_file_parser import Tf2FileParser
@@ -8,10 +7,12 @@ from .tTest import Ttest
 from .wordnet_transformer import WordNetTransformer
 
 
-__all__ = ['ConceptSet',
-           'ConceptSetParser',
-           'TfConceptParser',
-           'TfConcept',
-           'TfFileParser',
-           'Ttest',
-           'WordNetTransformer']
+__all__ = [
+    "ConceptSet",
+    "ConceptSetParser",
+    "TfConceptParser",
+    "TfConcept",
+    "TfFileParser",
+    "Ttest",
+    "WordNetTransformer",
+]
