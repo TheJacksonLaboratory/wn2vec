@@ -4,17 +4,18 @@ import pandas as pd
 
 class FilterAbstracts:
     """
-    A class that filter marea output by year
-    ...
-
-    Attributes
-    ----------
-    path_to_pubmed_cr: str
-                        path to .tsv file with abstracts from marea output
-    path_to_output_file: str
-                        path to .tsv file that will contain the output after abstracts are filtered
-    threshold_year: int 
-                        a year to be used to filter all the abstracts published below that year
+    Filter Marea Output by Year
+    
+    The class is designed to filter the output of Marea by a threshold year. It initializes with paths to the
+    input and output files and a threshold year and processes the input file, writing the lines that meet
+    the threshold to the output file.
+    
+    :param path_to_pubmed_cr: Path to .tsv file with abstracts from Marea output.
+    :type path_to_pubmed_cr: str
+    :param path_to_output_file: Path to .tsv file that will contain the output after abstracts are filtered.
+    :type path_to_output_file: str
+    :param threshold_year: A year to be used to filter all the abstracts published below that year.
+    :type threshold_year: int
 
     Methods
     -------
@@ -24,18 +25,20 @@ class FilterAbstracts:
 
     def __init__(self, path_to_pubmed_cr, path_to_output_file, threshold_year) -> None:
             """
-            Constructs all the necessary attributes for the  WordNetTransformer class
-            
-            Parameters
-            ----------
-            path_to_pubmed_cr: str
-                        path to .tsv file with abstracts from marea output
-            path_to_output_file: str
-                        path to .tsv file that will contain the output after abstracts are filtered
-            threshold_year: int 
-                        a year to be used to filter all the abstracts published below that year
 
+            Initializes the FilterAbstracts object and processes the input file immediately to filter out abstracts
+            published below the specified threshold year.
+
+            :param path_to_pubmed_cr: Path to the .tsv file containing abstracts from Marea output.
+            :type path_to_pubmed_cr: str
+            :param path_to_output_file: Path to the .tsv file where the filtered abstracts will be written.
+            :type path_to_output_file: str
+            :param threshold_year: Abstracts published below this year will be filtered out.
+            :type threshold_year: int
+            
+            :raises FileNotFoundError: if either path_to_pubmed_cr or path_to_output_file do not exist.
             """
+
             if not os.path.exists(path_to_pubmed_cr):
                 raise FileNotFoundError("Could not find marea file")
             if not os.path.exists(path_to_output_file):
@@ -55,16 +58,20 @@ class FilterAbstracts:
             f.close()
 
 
-    def check_abstract_above_threshold (self,line_abstract, _threshold_year):
-        """
-        check if the abstract of the article was published after the threshold year
-        @ parameter: line_abstract: string
-            a tsv row from the whole dataset with 3 columns (pubmedID, publication year, abstract)
-        @ parameter: _threshold_year: int
-            a year to be used for selecting all abstracts published above that year
 
-        @ return: above_threshold_year: Boolean
-            returns true if the article was published above that year, false otherwise
+    def check_abstract_above_threshold(self, line_abstract, _threshold_year):
+        """
+        Check if the abstract of the article was published after the threshold year.
+        
+        :param line_abstract: a tsv row from the whole dataset with 3 columns (pubmedID, publication year, abstract)
+        :type line_abstract: str
+        :param _threshold_year: a year to be used for selecting all abstracts published above that year
+        :type _threshold_year: int
+        
+        :returns: above_threshold_year: whether the article was published after the threshold year
+        :rtype: bool
+        
+        :raises ValueError: if the line_abstract does not have exactly 3 columns
         """
         above_threshold_year = False
         columns = line_abstract.split('\t')
@@ -73,7 +80,6 @@ class FilterAbstracts:
         if columns[1] > str(_threshold_year):
             above_threshold_year = True
         return above_threshold_year
-
 
 
 
