@@ -5,7 +5,7 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 
 class MeSHEntry:
 
-     """
+    """
     reads a list of targeted mesh ids and their labels and creates a formated file with mesh sets required for WN2VEC output
     ...
 
@@ -15,7 +15,7 @@ class MeSHEntry:
             mesh id (ex: D007674)	Kidney Diseases
         label: str
             a lable corresponding to mesh id (ex "Kidney Diseases")
-                   
+
 
     Methods
     -------
@@ -29,58 +29,56 @@ class MeSHEntry:
         returns the string with mesh label
 
     def __str__(self):
-        returns a string with mesh id and mesh label 
+        returns a string with mesh id and mesh label
 
     """
 
-     def __init__(self, id, label) -> None:
+    def __init__(self, id, label) -> None:
         """
         Constructs all the necessary attributes for the  class MeSHEntry class
-        
+
         Parameters
         ----------
         id: str
             mesh id (ex: D007674)	Kidney Diseases
         label: str
             a lable corresponding to mesh id (ex "Kidney Diseases")
-                   
+
         """
         self._id = id
         self._label = label
 
-     @property
-     def id(self):
+    @property
+    def id(self):
         """
         returns the mesh id
         """
         return self._id
 
-     @property
-     def label(self):
+    @property
+    def label(self):
         """
         returns the label corresponding to the mesh id
         """
         return self._label
 
-     @property
-     def meshlabel(self):
+    @property
+    def meshlabel(self):
         """
         returns the string with mesh label
         """
         return "meshd" + self._id[1:]
 
-     def __str__(self):
+    def __str__(self):
         """
-        returns a string with mesh id and mesh label 
+        returns a string with mesh id and mesh label
         """
         return f"{self._id}: {self._label}"
 
 
-
 def get_query(meshid):
-
-    
-    return """
+    return (
+        """
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -102,9 +100,9 @@ def get_query(meshid):
     }
 
     ORDER BY ?label
-    """ % meshid
-
-
+    """
+        % meshid
+    )
 
 
 def extract_MeSH_id(mesh_uri):
@@ -117,6 +115,7 @@ def extract_MeSH_id(mesh_uri):
     mesh = mesh_uri[27:]
     return mesh
 
+
 def get_mesh_entries(meshid: str):
     mesh_entries = []
     if not meshid.startswith("D"):
@@ -128,20 +127,19 @@ def get_mesh_entries(meshid: str):
     results = sparql.query().convert()
     for result in results["results"]["bindings"]:
         mesh_label = result["label"]["value"]
-        mesh_id = extract_MeSH_id(result['descriptor']['value'])
+        mesh_id = extract_MeSH_id(result["descriptor"]["value"])
         me = MeSHEntry(id=mesh_id, label=mesh_label)
         mesh_entries.append(me)
     return mesh_entries
 
 
-
 def get_target_mesh_ids():
-    fname = '../data/mesh_target_ids.tsv'
+    fname = "../data/mesh_target_ids.tsv"
     mesh_entries = []
     with open(fname) as f:
-        next(f) # header
+        next(f)  # header
         for line in f:
-            fields = line.rstrip().split('\t')
+            fields = line.rstrip().split("\t")
             if len(fields) == 2:
                 meshid = fields[0]
                 label = fields[1]
@@ -149,23 +147,22 @@ def get_target_mesh_ids():
     return mesh_entries
 
 
-outname = "../data/mesh_sets.tsv" 
+outname = "../data/mesh_sets.tsv"
 
-fh = open(outname, 'wt')
+fh = open(outname, "wt")
 
 mesh_ids = get_target_mesh_ids()
 for me in mesh_ids:
     target_mesh_id = me.id
     target_mesh_label = me.label
     entries = get_mesh_entries(target_mesh_id)
-    if len(entries) < 3: 
+    if len(entries) < 3:
         continue
     entry_id_list = [e.meshlabel for e in entries]
     entry_str = ";".join(entry_id_list)
     fh.write(f"{target_mesh_label}\t{target_mesh_id}\t{entry_str}\n")
 
 fh.close()
-
 
 
 # sample way of running the code using arparse:
