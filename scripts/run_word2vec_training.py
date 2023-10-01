@@ -25,7 +25,7 @@ from wn2vec import WordTokenizer, Word2VecDatasetBuilder, Word2VecModel, WordVec
 flags.DEFINE_string('arch', 'skip_gram', 'Architecture (skip_gram or cbow).')
 flags.DEFINE_string('algm', 'negative_sampling', 'Training algorithm '
                                                  '(negative_sampling or hierarchical_softmax).')
-flags.DEFINE_integer('epochs', 1, 'Num of epochs to iterate thru corpus.')
+flags.DEFINE_integer('epochs', 1, 'Num of epochs to iterate through corpus.')
 flags.DEFINE_integer('batch_size', 256, 'Batch size.')
 flags.DEFINE_integer('max_vocab_size', 0, 'Maximum vocabulary size. If > 0, '
                                           'the top `max_vocab_size` most frequent words will be kept in vocabulary.')
@@ -53,18 +53,14 @@ FLAGS = flags.FLAGS
 
 def get_train_step_signature(
     arch, algm, batch_size, window_size=None, max_depth=None):
-  """Get the training step signatures for `inputs`, `labels` and `progress`
-  tensor.
+  """Get the training step signatures for `inputs`, `labels` and `progress`  tensor.
 
-  Args:
-    arch: string scalar, architecture ('skip_gram' or 'cbow').
-    algm: string scalar, training algorithm ('negative_sampling' or
-      'hierarchical_softmax').
-
-  Returns:
-    train_step_signature: a list of three tf.TensorSpec instances,
-      specifying the tensor spec (shape and dtype) for `inputs`, `labels` and
-      `progress`.
+  :param arch: string scalar, architecture ('skip_gram' or 'cbow').
+  :type arch: str
+  :param   algm: training algorithm ('negative_sampling' or 'hierarchical_softmax').
+  :type algm: str
+  :returns: train_step_signature: a list of three tf.TensorSpec instances, \
+    specifying the tensor spec (shape and dtype) for `inputs`, `labels` and  `progress`.
   """
   if arch=='skip_gram':
     inputs_spec = tf.TensorSpec(shape=(batch_size,), dtype='int64')
@@ -160,7 +156,8 @@ def main(_):
             zip(gradients, word2vec.trainable_variables))
 
         return loss, learning_rate
-
+    num_batches = tf.data.experimental.cardinality(dataset=dataset)
+    print(f"number of batches {num_batches}")
     average_loss = 0.
     for step, (inputs, labels, progress) in enumerate(dataset):
         loss, learning_rate = train_step(inputs, labels, progress)
@@ -170,6 +167,7 @@ def main(_):
                 average_loss /= log_per_steps
             print('step:', step, 'average_loss:', average_loss,
                   'learning_rate:', learning_rate.numpy())
+            print(f"progress: {progress}")
             average_loss = 0.
 
     syn0_final = word2vec.weights[0].numpy()

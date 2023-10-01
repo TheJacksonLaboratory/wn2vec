@@ -70,7 +70,7 @@ class Word2VecDatasetBuilder(object):
         # 3. left child
         # 4. right child
         # and leaf nodes store
-        # 1. key (frequencey)
+        # 1. key (frequency)
         # 2. vocab index
 
         # Traverse the Huffman tree rooted at `heap[0]` in the order of
@@ -114,22 +114,18 @@ class Word2VecDatasetBuilder(object):
     def build_dataset(self, filenames):
         """Generates tensor dict mapping from tensor names to tensors.
 
-        Args:
-          filenames: list of strings, holding names of text files.
-
-        Returns:
-          dataset: a tf.data.Dataset instance, holding the a tuple of tensors
-            (inputs, labels, progress)
-            when arch=='skip_gram', algm=='negative_sampling'
-              inputs: [N],                    labels: [N]
-            when arch=='cbow', algm=='negative_sampling'
-              inputs: [N, 2*window_size+1],   labels: [N]
-            when arch=='skip_gram', algm=='hierarchical_softmax'
-              inputs: [N],                    labels: [N, 2*max_depth+1]
-            when arch=='cbow', algm=='hierarchical_softmax'
-              inputs: [N, 2*window_size+1],   labels: [N, 2*max_depth+1]
-            progress: [N], the percentage of sentences covered so far. Used to
-              compute learning rate.
+        :param filenames: names of text files.
+        :type filenames: List[str]
+        :returns: dataset: a tf.data.Dataset instance, holding a tuple of tensors (inputs, labels, progress)\
+            when arch=='skip_gram', algm=='negative_sampling'\
+              inputs: [N],                    labels: [N]\
+            when arch=='cbow', algm=='negative_sampling'\
+              inputs: [N, 2*window_size+1],   labels: [N]\
+            when arch=='skip_gram', algm=='hierarchical_softmax'\
+              inputs: [N],                    labels: [N, 2*max_depth+1]\
+            when arch=='cbow', algm=='hierarchical_softmax'\
+              inputs: [N, 2*window_size+1],   labels: [N, 2*max_depth+1]\
+            progress: [N], the percentage of sentences covered so far. Used to compute learning rate.
         """
         unigram_counts = self._tokenizer._unigram_counts
         keep_probs = self._tokenizer._keep_probs
