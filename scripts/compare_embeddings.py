@@ -15,13 +15,6 @@ log.setLevel(logging.INFO)
 
 MINIMUM_CONCEPT_SET_SIZE = 5
 
-#ch = logging.StreamHandler() # console handler
-#ch.setLevel(logging.DEBUG)
-#formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-#ch.setFormatter(formatter)
-#log.addHandler(ch)
-
-
 
 ## Input the embedding files with vectors and metadata for the two embeddings (pubtator and wordnet) that we want to compare
 parser = argparse.ArgumentParser(description='Process MSigDb genesets into wn2vec concept set format.')
