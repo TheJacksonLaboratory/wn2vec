@@ -2,9 +2,6 @@
 """
 import tensorflow as tf
 
-from dataset import WordTokenizer
-from dataset import Word2VecDatasetBuilder
-
 
 class Word2VecModel(tf.keras.Model):
     """Word2Vec model.
