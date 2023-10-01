@@ -7,8 +7,24 @@ from dataset import Word2VecDatasetBuilder
 
 
 class Word2VecModel(tf.keras.Model):
-    """Word2Vec model."""
+    """Word2Vec model.
 
+    adapted from https://github.com/chao-ji
+
+    :param unigram_counts: a list of ints, the counts of word tokens in the corpus.
+    :param arch: string scalar, architecture ('skip_gram' or 'cbow').
+    :param algm: string scalar, training algorithm ('negative_sampling' or 'hierarchical_softmax').
+    :param hidden_size: int scalar, length of word vector.
+    :param batch_size: int scalar, batch size.
+    :param negatives: int scalar, num of negative words to sample.
+    :param power: float scalar, distortion for negative sampling.
+    :param alpha: float scalar, initial learning rate.
+    :param min_alpha: float scalar, final learning rate.
+    :param add_bias:  whether to add bias term to dotproduct between syn0 and syn1 vectors.
+    :type add_bias: bool
+    :param random_seed: random_seed.
+    :type random_seed: int
+    """
     def __init__(self,
                  unigram_counts,
                  arch='skip_gram',
@@ -22,21 +38,6 @@ class Word2VecModel(tf.keras.Model):
                  add_bias=True,
                  random_seed=0):
         """Constructor.
-
-        Args:
-          unigram_counts: a list of ints, the counts of word tokens in the corpus.
-          arch: string scalar, architecture ('skip_gram' or 'cbow').
-          algm: string scalar, training algorithm ('negative_sampling' or
-            'hierarchical_softmax').
-          hidden_size: int scalar, length of word vector.
-          batch_size: int scalar, batch size.
-          negatives: int scalar, num of negative words to sample.
-          power: float scalar, distortion for negative sampling.
-          alpha: float scalar, initial learning rate.
-          min_alpha: float scalar, final learning rate.
-          add_bias: bool scalar, whether to add bias term to dotproduct
-            between syn0 and syn1 vectors.
-          random_seed: int scalar, random_seed.
         """
         super(Word2VecModel, self).__init__()
         self._unigram_counts = unigram_counts
@@ -73,14 +74,12 @@ class Word2VecModel(tf.keras.Model):
     def call(self, inputs, labels):
         """Runs the forward pass to compute loss.
 
-        Args:
-          inputs: int tensor of shape [batch_size] (skip_gram) or
-            [batch_size, 2*window_size+1] (cbow)
-          labels: int tensor of shape [batch_size] (negative_sampling) or
-            [batch_size, 2*max_depth+1] (hierarchical_softmax)
-
-        Returns:
-          loss: float tensor, cross entropy loss.
+        :param inputs: int tensor of shape [batch_size] (skip_gram) or [batch_size, 2*window_size+1] (cbow)
+        :type inputs: tensor
+        :param labels: int tensor of shape [batch_size] (negative_sampling) or [batch_size, 2*max_depth+1] (hierarchical_softmax)
+        :type labels: tensor
+        :returns: loss: cross entropy loss.
+        :rtype: float tensor
         """
         if self._algm == 'negative_sampling':
             loss = self._negative_sampling_loss(inputs, labels)
@@ -138,13 +137,11 @@ class Word2VecModel(tf.keras.Model):
     def _hierarchical_softmax_loss(self, inputs, labels):
         """Builds the loss for hierarchical softmax.
 
-        Args:
-          inputs: int tensor of shape [batch_size] (skip_gram) or
-            [batch_size, 2*window_size+1] (cbow)
-          labels: int tensor of shape [batch_size, 2*max_depth+1]
-
-        Returns:
-          loss: float tensor of shape [sum_of_code_len]
+        :param inputs: int tensor of shape [batch_size] (skip_gram) or [batch_size, 2*window_size+1] (cbow)
+        :type inputs: int tensor
+        :param labels: int tensor of shape [batch_size, 2*max_depth+1]
+        :type labels: int tensor
+        :returns: loss: float tensor of shape [sum_of_code_len]
         """
         _, syn1, biases = self.weights
 
