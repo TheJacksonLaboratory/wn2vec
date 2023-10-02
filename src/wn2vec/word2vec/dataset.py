@@ -6,8 +6,9 @@ import heapq
 import numpy as np
 import tensorflow as tf
 from typing import List
-from .word_tokenizer import WordTokenizer
-OOV_ID = -1
+from .word_tokenizer import WordTokenizer, OOV_ID
+
+
 
 
 class Word2VecDatasetBuilder(object):
