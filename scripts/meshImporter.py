@@ -11,38 +11,15 @@ class MeSHEntry:
 
     Attributes
     ----------
-        id: str
-            mesh id (ex: D007674)	Kidney Diseases
-        label: str
-            a lable corresponding to mesh id (ex "Kidney Diseases")
-
-
-    Methods
-    -------
-    def id(self):
-        returns the mesh id
-
-    def label(self):
-        returns the label corresponding to the mesh id
-
-    def meshlabel(self):
-        returns the string with mesh label
-
-    def __str__(self):
-        returns a string with mesh id and mesh label
-
+    :param id: mesh id (ex: D007674)	Kidney Diseases
+    :type id: str
+    :param label: a lable corresponding to mesh id (ex "Kidney Diseases")
+    :type label: str
     """
 
     def __init__(self, id, label) -> None:
         """
         Constructs all the necessary attributes for the  class MeSHEntry class
-
-        Parameters
-        ----------
-        id: str
-            mesh id (ex: D007674)	Kidney Diseases
-        label: str
-            a lable corresponding to mesh id (ex "Kidney Diseases")
 
         """
         self._id = id

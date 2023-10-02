@@ -5,14 +5,19 @@ from .tf_concept_parser import TfConceptParser
 from .tf_concept import TfConcept
 from .tTest import Ttest
 from .wordnet_transformer import WordNetTransformer
-
+from .word2vec import *
 
 __all__ = [
     "ConceptSet",
     "ConceptSetParser",
     "TfConceptParser",
     "TfConcept",
-    "TfFileParser",
+    "Tf2FileParser",
     "Ttest",
     "WordNetTransformer",
+    "generate_instances",
+    "subsample",
+    "Word2VecDatasetBuilder",
+    "WordTokenizer",
+    "Word2VecModel"
 ]
