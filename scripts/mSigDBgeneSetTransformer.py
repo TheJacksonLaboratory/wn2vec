@@ -40,41 +40,21 @@ class MSigDbGeneSet:
     """
     creates an object of MSigDb gene sets
     ...
-
     Attributes
     ----------
-        name: str
-            a name of a gene set
 
-        id: str
-            an id of a gene set
-
-        symbols: list
-            a list of genes in the gene set of the corresponding name and id
-
-
-    Methods
-    -------
-    def name(self)
-    def id(self)
-    def symbols(self)
+    :param name: a name of a gene set
+    :type name: str
+    :param id: an id of a gene set
+    :type id: str
+    :param symbols: a list of genes in the gene set of the corresponding name and id
+    :type symbols: str
 
     """
 
     def __init__(self, name, id, symbols):
         """
         Constructs all the necessary attributes for the  MSigDbGeneSet class
-
-        Parameters
-        ----------
-        name: str
-            a name of a gene set
-
-        id: str
-            an id of a gene set
-
-        symbols: list
-            a list of genes in the gene set of the corresponding name and id
 
         """
 
@@ -98,11 +78,12 @@ class MSigDbGeneSet:
 def process_MSigDb_file(fname):
     """
     Transforms selected gene sets from MSigDb into the format required for WN2VEC
-    @ parameter: fname: str
-        the name of the gene set
-
-    @ return: status: Boolean
-        returns a transformed gene set in the format required for WN2VEC
+    
+    :param fname: the name of the gene set
+    :type fname: str
+    :return status: returns a transformed gene set in the format required for WN2VEC
+    :rtype: Boolean
+  
     """
     print(f"Processing {fname}")
     if not os.path.isfile(fname):
