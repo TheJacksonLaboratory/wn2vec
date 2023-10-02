@@ -11,6 +11,4 @@
 ### SLURM HEADER
 
 
-
-python ../scripts/filter_by_year.py   /projects/robinson-lab/wn2vec/marea1.0/data/pubmed_cr  /projects/robinson-lab/wn2vec/wn2vec1.0/data/pubmed_cr/pubmed_filt.tsv 2007
-
+python  /scripts/filter_by_year.py  -i ../data/pubmed_cr  -o ../data/pubmed_filt.tsv  -y 2015

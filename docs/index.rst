@@ -1,3 +1,5 @@
+.. _home:
+
 ======
 WN2Vec
 ======
@@ -15,10 +17,12 @@ groups synonyms from the same lexical category (nouns, verbs, adjectives, and ad
 Running the WN2Vec pipeline
 ---------------------------
 
-To reproduce the results in the manuscript, the following steps should be performed.
+To reproduce the results in the manuscript, the following steps should be performed. Additionally,
+a detailed start to finish :ref:`tutorial` is provided
+with a relatively small input dataset.
 
-Installation
-^^^^^^^^^^^^
+1. Installation & Downlaod data
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 See :ref:`installation` for instructions on how to set up the package. 
 
 PubMed abstracts
@@ -27,7 +31,7 @@ PubMed abstracts
 To obtain PubMed abstracts, following the instructions
 of the NCBI `Download PubMed Data <https://pubmed.ncbi.nlm.nih.gov/download/>`_ website. 
 
-Replacement of biomedical concepts
+2. Replacement of biomedical concepts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We use the `marea <https://github.com/TheJacksonLaboratory/marea>`_ package to replace 
@@ -36,31 +40,55 @@ single- or multi-word biomedical concepts with concept identifiers.
 See :ref:`rst_marea` for instructions in how to run marea to perform biomedical concept replacement.
 
 
-WordNet-based synonym Replacement
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+3. WordNet-based synonym Replacement
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+To replace non-biomedical synonyms with WordNet identifiers, run /scripts/run_wn_replacement.py script from the wn2vec package. 
 
-The XYZ script from the wn2vec package is used to replace non-biomedical synonyms with WordNet identifiers.
-
-See :ref:`wnreplacement` for details.
-
-
-word2vec
-^^^^^^^^
-
-We perform word2vec embedding using TensorFlow2 with the XYZ script from the wn2vec package. In order to 
-compare the results of embedding with and without WordNet replacment, embedding is performed on both datasets.
-
-See :ref:`w2v` for details.
+See :ref:`wordnetreplacement` for details and instructions.
 
 
-Evaluating concept sets 
-^^^^^^^^^^^^^^^^^^^^^^^
+4. word2vec embedding
+^^^^^^^^^^^^^^^^^^^^^
+
+We perform word2vec embedding using TensorFlow2 with the /scripts/run_word2vec.py. In order to 
+compare the results of embedding with and without WordNet replacment, embedding is performed on both datasets separately.
+
+See :ref:`word2vec` for details and instructions.
+
+This step has to be run twice, first for marea output (pubtator) and second for step3 output, where concepts were replaced by their synonyms, before going to the following step 
+
+
+5. Evaluating concept sets 
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Our hypothesis is that non-biomedical concept replacement will improve embeddings as judged by a smaller distance of related 
-concepts to each other. TO assess this, we defined XYZ concept sets representing genetic and genomic functions (gene sets) and biomedical concepts taken from MeSH.
-The XYZ script from wn2vec is used to assess the mean intracluster cosine distances of the corresponding concepts.
+concepts to each other. To assess this, we defined: biocarta_canonical_gene_set, kegg_canonical_gene_set, bp_gene_ontology_gene_set and pid_canonical_gene_set concept sets representing genetic and genomic functions (gene sets) and biomedical concepts taken from MeSH.
+The /scripts/compare_embeddings.py script from wn2vec is used to assess the mean intracluster cosine distances of the corresponding concepts.
 
-See :ref:`conceptseteval` for details.
+See :ref:`conceptset_evaluation` for details.
+
+
+
+
+
+.. toctree::
+    :caption: wn2vec
+    :name: wn2vec
+    :maxdepth: 1
+
+    install
+    marea
+    wordnetreplacement
+    word2vec
+    concept_sets
+    conceptset_evaluation
+    tutorial
+    contributing
+    authors
+    history
+    LICENSE
+
+ 
 
 --------
 Feedback
@@ -68,26 +96,3 @@ Feedback
 
 The best place to leave feedback, ask questions, and report bugs is the `WN2vec Issue Tracker <https://github.com/TheJacksonLaboratory/wn2vec/issues>`_.
 
-.. toctree::
-    :caption: Installation & Tutorial
-    :name: tutorial
-    :maxdepth: 1
-    :hidden:
-
-    install
-    marea
-    wordnetreplacement
-    word2vec
-    conceptset_evaluation
-
-.. toctree::
-    :caption: Project Info
-    :name: project-info
-    :maxdepth: 1
-    :hidden:
-
-    contributing
-    authors
-    history
-    LICENSE
-  #  release_howto

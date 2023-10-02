@@ -1,5 +1,5 @@
 import os
-
+from typing import Set
 from .tf_concept import TfConcept
 from collections import defaultdict
 import numpy as np
@@ -8,46 +8,29 @@ import numpy as np
 
 class TfConceptParser:
     """
-    creates a dictionary of concepts that are both interested in (genes or mesh) and are present in the word2vec output (key: metadata, value: vector)
-    ...
+    Parses and manages TensorFlow word2vec output concepts and vectors.
+
+    This class creates a dictionary of concepts (genes or mesh) that we are interested in and are present in the word2vec output.
+    The resulting dictionary has the format: {metadata: vector}.
 
     Attributes
     ----------
-        meta_file: str
-                   output of tensorflow word2vec, metadata file with names of concepts
-        
-        vector_file: str
-                    output of tensorflow word2vec, metadata file with vectors (same order as concepts)
-        
-        concept_set: str
-                   set of concept ids we are interested in
+        :param meta_file: Output metadata file from TensorFlow word2vec, containing names of concepts.
+        :type meta_file: str
+        :param vector_file: Output metadata file from TensorFlow word2vec, containing vectors.
+        :type vector_file: str
+        :param concept_set: A set of concept IDs we are interested in.
+        :type concept_set: set[str]
+  
 
-    Methods
-    -------
-    def get_active_concept_d(self):
-        Dictionary of all concepts used at least once in the concept_set passed to the constructor
 
     """
 
 
-
-    def __init__(self, meta_file, vector_file, concept_set) -> None:
+    def __init__(self, meta_file, vector_file, concept_set:Set[str]) -> None:
         """
-        Constructs all the necessary attributes for the  TfConceptParser class
-        
-        Parameters
-        ----------
-        meta_file: str
-                   output of tensorflow word2vec, metadata file with names of concepts
-        
-        vector_file: str
-                    output of tensorflow word2vec, metadata file with vectors (same order as concepts)
-        
-        concept_set: str
-                   set of concept ids we are interested in
-       
+        constructor
         """
-
 
         self._d = defaultdict(TfConcept)
         self._vectors = []
@@ -67,14 +50,19 @@ class TfConceptParser:
             if c in concept_set:
                 values = vector_line.rstrip().split('\t')
                 fvals = np.array([float(v) for v in values])
-                #self._d[c] = fvals
                 self._d[c] = TfConcept(name=c, vctor=fvals)
+            else:
+                pass
+                #print(f"Could not fine TF concept \"{c}\"")
         meta_fh.close()
         vector_fh.close()
 
     def get_active_concept_d(self):
         """
-        creates a dictionary of all concepts used at least once in the concept_set passed to the constructor
+        Retrieves the dictionary of active concepts.
+
+        :return: Dictionary containing all concepts used at least once in the `concept_set` passed to the constructor.
+        :rtype: dict
         """
         return self._d
 
