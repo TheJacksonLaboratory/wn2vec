@@ -11,15 +11,34 @@ training algorithm
   - negative_sampling
   - hierarchical_softmax
 """
+import logging
 import os
-
+import sys
+import datetime
 import tensorflow as tf
 import numpy as np
 from absl import app
 from absl import flags
 
-from wn2vec import WordTokenizer, Word2VecDatasetBuilder, Word2VecModel, WordVectors
+from wn2vec import WordTokenizer, Word2VecDatasetBuilder, Word2VecModel, EarlyStoppingMonitor
 
+import time
+
+
+today_date = datetime.date.today().strftime("%b_%d_%Y")
+start_time = time.time()
+start_time_fmt = time.strftime("%H:%M:%S", time.gmtime(start_time))
+
+logname = f"wn2vec_{today_date}.log"
+
+logging.basicConfig(
+    level=logging.INFO,
+    filename=logname,
+    filemode="w",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
+logging.getLogger().addHandler(logging.StreamHandler(sys.stderr))
 
 
 flags.DEFINE_string('arch', 'skip_gram', 'Architecture (skip_gram or cbow).')
@@ -47,7 +66,7 @@ flags.DEFINE_integer('log_per_steps', 10000, 'Every `log_per_steps` steps to '
                                              ' log the value of loss to be minimized.')
 flags.DEFINE_list(
     'filenames', None, 'Names of comma-separated input text files.')
-flags.DEFINE_string('out_dir', '/tmp/word2vec', 'Output directory.')
+flags.DEFINE_string('out_dir', 'word2vec_out', 'Output directory.')
 
 FLAGS = flags.FLAGS
 
@@ -104,6 +123,33 @@ def main(_):
     filenames = FLAGS.filenames
     out_dir = FLAGS.out_dir
 
+    logging.info("arch={arch}")
+    logging.info("algm={algm}")
+    logging.info("epochs={epochs}")
+    logging.info("batch_size={batch_size}")
+    logging.info("max_vocab_size={max_vocab_size}")
+    logging.info("min_count={min_count}")
+    logging.info("sample={sample}")
+    logging.info("window_size={window_size}")
+    logging.info("hidden_size={hidden_size}")
+    logging.info("negatives={negatives}")
+    logging.info("power={power}")
+    logging.info("alpha={alpha}")
+    logging.info("min_alpha={min_alpha}")
+    logging.info("add_bias={add_bias}")
+    logging.info("log_per_steps={log_per_steps}")
+    logging.info("filenames={filenames}")
+    logging.info("out_dir={out_dir}")
+
+
+    # create out directory if needed
+    if not os.path.exists(out_dir):
+        # Create a new directory because it does not exist
+        os.makedirs(out_dir)
+        logging.info(f"created directory for output files at {out_dir}")
+    else:
+        logging.info(f"Using existing directory for output files at {out_dir}")
+
     tokenizer = WordTokenizer(
         max_vocab_size=max_vocab_size, min_count=min_count, sample=sample)
     tokenizer.build_vocab(filenames)
@@ -157,27 +203,49 @@ def main(_):
 
         return loss, learning_rate
     num_batches = tf.data.experimental.cardinality(dataset=dataset)
-    print(f"number of batches {num_batches}")
+    logging.info(f"number of batches {num_batches}")
     average_loss = 0.
-    for step, (inputs, labels, progress) in enumerate(dataset):
-        loss, learning_rate = train_step(inputs, labels, progress)
-        average_loss += loss.numpy().mean()
-        if step % log_per_steps == 0:
-            if step > 0:
-                average_loss /= log_per_steps
-            print('step:', step, 'average_loss:', average_loss,
-                  'learning_rate:', learning_rate.numpy())
-            print(f"progress: {progress}")
-            average_loss = 0.
+    """
+    monitor='val_loss', min_delta=0, patience=0, verbose=0,
+    mode='auto', baseline=None, restore_best_weights=False
+    """
+    restore_best_weights = True
+    earlyStopper = EarlyStoppingMonitor(min_delta = 0.001, patience=2, verbose=True)
+    shouldStop = False
+    for epoch in range(epochs):
+        logging.info(f"[INFO] epoch {epoch}/{epochs}")
+        for step, (inputs, labels, progress) in enumerate(dataset):
+            loss, learning_rate = train_step(inputs, labels, progress)
+            average_loss += loss.numpy().mean()
+            if step % log_per_steps == 0:
+                if step > 0:
+                    average_loss /= log_per_steps
+                learning_r = learning_rate.numpy()
+                logging.info(f"step: {step}; average_loss: {average_loss:.4f}; learning_rate: {learning_r:.4f}")
+                logging.info(f"progress: {progress}")
+                average_loss = 0.
+        shouldStop = earlyStopper.should_stop(average_loss=average_loss, weights=word2vec.weights, epoch=epoch)
+        logging.info(earlyStopper.display())
+        if shouldStop:
+            break
+    if restore_best_weights:
+        weights = earlyStopper.get_best_weights()
+        if weights is None:
+            raise ValueError("Unable to retrieve best weights (None)")
+    else:
+        weights = word2vec.weights
 
-    syn0_final = word2vec.weights[0].numpy()
+
+    #syn0_final = word2vec.weights[0].numpy()
+    syn0_final = weights[0].numpy()
     np.save(os.path.join(FLAGS.out_dir, 'syn0_final'), syn0_final)
     with tf.io.gfile.GFile(os.path.join(FLAGS.out_dir, 'vocab.txt'), 'w') as f:
         for w in tokenizer.table_words:
             f.write(w + '\n')
-    print('Word embeddings saved to',
-          os.path.join(FLAGS.out_dir, 'syn0_final.npy'))
-    print('Vocabulary saved to', os.path.join(FLAGS.out_dir, 'vocab.txt'))
+    logging.info(f"Done training for input {filenames}")
+    logging.info(f"Word embeddings saved to {os.path.join(out_dir, 'syn0_final.npy')}")
+    logging.info(f"Vocabulary saved to {os.path.join(out_dir, 'vocab.txt')}")
+    print("DONE")
 
 
 if __name__ == '__main__':
