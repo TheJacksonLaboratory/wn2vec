@@ -92,6 +92,12 @@ sig_pm = 0
 wn_less = 0
 pm_less = 0
 
+sig_wn_pair = 0
+sig_pm_pair = 0
+wn_less_pair = 0
+pm_less_pair = 0
+
+
 for cs in all_concept_set_objects:
     count = cs.get_concept_count()
     if count < MINIMUM_CONCEPT_SET_SIZE:
@@ -100,9 +106,10 @@ for cs in all_concept_set_objects:
     print(f"Evaluating {cs.name}: n={cs.get_concept_count()}")
     pm_vecs = np.array([pubtator_concept_set_d.get(c).vector for c in cs.concepts if c in pubtator_concept_set_d])
     wn_vecs = np.array([wordnet_concept_set_d.get(c).vector for c in cs.concepts if c in wordnet_concept_set_d])
-    pm_concept = TfConcept(name=cs.name, vctor=pm_vecs)
-    wn_concept = TfConcept(name=cs.name, vctor=wn_vecs)
+    pm_concept = TfConcept(name=cs.name, vector=pm_vecs)
+    wn_concept = TfConcept(name=cs.name, vector=wn_vecs)
     comparison = Ttest(pm_common_genes=pm_vecs, wn_common_genes=wn_vecs)
+
 
     if comparison.n_concepts > MINIMUM_CONCEPT_SET_SIZE:
         d = {
@@ -124,9 +131,27 @@ for cs in all_concept_set_objects:
         else:
             pm_less += 1
 
+        # PAIR WISE COMPARISON
+        results = comparison.compare_gene_modifications()
+
+        wn_smaller_count = results["wn_smaller_count"]
+        pm_smaller_count = results["pm_smaller_count"]
+        wn_smaller_count_significant = results["wn_smaller_count_significant"]
+        pm_smaller_count_significant = results["pm_smaller_count_significant"]
+
+        wn_less_pair = wn_less_pair + wn_smaller_count
+        pm_less_pair = pm_less_pair + pm_smaller_count
+        sig_wn_pair = sig_wn_pair + wn_smaller_count_significant
+        sig_pm_pair = sig_pm_pair + pm_smaller_count_significant
+
+
+
+
 log.info(f"WN relevant concepts {wn_relevant_concepts_length} and PM relevant concepts {pm_relevant_concepts_length}")
 log.info(f"WN sig {sig_wn} and PM sig {sig_pm}")
 log.info(f"WN LESS  {wn_less} and PM LESS {pm_less} (irregardless of pvalue)")
+log.info(f"WN sig PairTest {sig_wn_pair} and PM sig PairTest {sig_pm_pair}")
+log.info(f"WN LESS PairTest {wn_less_pair} and PM LESS PairTest {pm_less_pair} (irregardless of pvalue)")
 
 df = pd.DataFrame(comparison_dictionary_list)
 df.set_index("name", inplace=True)
