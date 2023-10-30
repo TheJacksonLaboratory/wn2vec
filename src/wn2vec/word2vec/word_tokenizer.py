@@ -4,7 +4,10 @@ from typing import List
 import numpy as np
 import tensorflow as tf
 
-# also defined in dataset.py, needs to be in synch
+
+"""
+Out of vocabulary identifier
+"""
 OOV_ID = -1
 
 class WordTokenizer(object):
