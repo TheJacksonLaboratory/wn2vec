@@ -1,6 +1,7 @@
 import numpy as np
 from itertools import combinations
 import scipy.stats as stats
+from scipy.stats import ttest_rel
 import numpy as np
 
 
@@ -29,9 +30,11 @@ class Ttest:
             raise ValueError("Need to be numpy array")
         if not isinstance(wn_common_genes, np.ndarray):
             raise ValueError("Need to be numpy array")
-
+        self._pm_common_genes = pm_common_genes
+        self._wn_common_genes = wn_common_genes
         pw_dist1 = Ttest.get_all_pairwise_distances_in_cluster(pm_common_genes)
         pw_dist2 = Ttest.get_all_pairwise_distances_in_cluster(wn_common_genes)
+
         self._mean_dist_pubmed = np.mean(pw_dist1)
         self._mean_dist_wordnet = np.mean(pw_dist2)
         n_comparisons_pm = len(pw_dist1)
@@ -130,3 +133,34 @@ class Ttest:
         :rtype: bool
         """
         return self._pvalue[1] <= alpha_threshold
+    
+    # PAIR WISE COMPARISON 
+    def compare_gene_modifications(self):
+        # Compute pairwise cosine similarities
+        pw_dist1 = Ttest.get_all_pairwise_distances_in_cluster(self._pm_common_genes)
+        pw_dist2 = Ttest.get_all_pairwise_distances_in_cluster(self._wn_common_genes)
+
+        # Compute the differences between the cosine similarities
+        differences = [a - b for a, b in zip(pw_dist1, pw_dist2)]
+
+        # Perform paired sample t-test
+        t_stat, p_value = ttest_rel(pw_dist1, pw_dist2)
+
+        # Count how many times wn_common_genes is smaller than pm_common_genes
+        wn_smaller_count = sum(1 for a, b in zip(pw_dist1, pw_dist2) if b < a)
+
+        # Count how many times pm_common_genes is smaller than wn_common_genes
+        pm_smaller_count = sum(1 for a, b in zip(pw_dist1, pw_dist2) if a < b)
+
+        # Check statistical significance
+        is_significant = p_value < 0.05
+
+        # Results
+        results = {
+            "wn_smaller_count": wn_smaller_count,
+            "pm_smaller_count": pm_smaller_count,
+            "wn_smaller_count_significant": wn_smaller_count if is_significant else 0,
+            "pm_smaller_count_significant": pm_smaller_count if is_significant else 0
+        }
+
+        return results  
