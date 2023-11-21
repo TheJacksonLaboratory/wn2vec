@@ -36,7 +36,8 @@ dependencies = [
     "scipy",
     "tdqm",
     "tensorflow",
-    "pandas"
+    "pandas",
+    "gensim"
 ]
 
 
