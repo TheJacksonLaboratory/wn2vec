@@ -4,6 +4,8 @@ import argparse
 import logging
 import datetime
 import time
+import nltk
+nltk.download('wordnet')
 
 sys.path.insert(0, os.path.abspath("../src/"))
 from wn2vec import WordNetTransformer
@@ -57,6 +59,7 @@ transformer.output_abstract_only()
 print(f"[INFO] running run_wn_replacement.py with input file {marea_input_file}.")
 print(f"[INFO] outputput file {output_file}.")
 print(f"[INFO] threshold_factor {threshold_factor}.")
+print(f"[INFO] replacement_threshold {threshold}.")
 print(f"[INFO] Number of replaced words: {replaced_words} of {total_words}")
 
 logging.info(f"[INFO] Number of replaced words: {replaced_words} of {total_words}")
