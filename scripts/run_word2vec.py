@@ -1,22 +1,21 @@
+import argparse
+import datetime
 import io
+import logging
+import multiprocessing
 import re
 import string
-import tqdm
-import logging
-import datetime
-import numpy as np
-import tensorflow as tf
-from tensorflow.keras import layers
-import argparse
 import time
+import tqdm
 
+from gensim.models import Word2Vec
+from gensim.models.callbacks import CallbackAny2Vec
 
+# Setting up logging
 today_date = datetime.date.today().strftime("%b_%d_%Y")
 start_time = time.time()
 start_time_fmt = time.strftime("%H:%M:%S", time.gmtime(start_time))
-
 logname = f"wn2vec_{today_date} {start_time_fmt}.log"
-
 logging.basicConfig(
     level=logging.INFO,
     filename=logname,
@@ -25,221 +24,111 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 
-
+# Argument parsing
 parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--input", type=str, help="path to input (marea) file")
 parser.add_argument("-v", "--vector", type=str, help="name of output vector file")
 parser.add_argument("-m", "--metadata", type=str, help="name of output metadata file")
+parser.add_argument("-model", "--model_name", type=str, default='word2vec.wordvectors', help="name of model")
 parser.add_argument("-s", "--vocab_size", type=int, default=100000, help="size of vocabulary for word2vec")
 args = parser.parse_args()
-# the vocabulary size and the number of words in a sequence.
+
+# Setting up parameters
 vocab_size = args.vocab_size
 path_to_file = args.input
 vector_file = args.vector
 metadata_file = args.metadata
-
-# Other arguments
-sequence_length = 10
-SEED = 42
-AUTOTUNE = tf.data.experimental.AUTOTUNE
-num_ns = 4
+model_name = args.model_name
+EPOCH = 10
 BATCH_SIZE = 1024
 BUFFER_SIZE = 10000
 embedding_dim = 128
+cores = multiprocessing.cpu_count()
 
-logging.info(f"Starting word2vec run on {today_date}")
+# Logging the start and parameters
+logging.info(f"Starting gensim word2vec run on {today_date}")
 logging.info(f"vocab_size: {vocab_size}")
-logging.info(f"sequence_length: {sequence_length}")
+logging.info(f"epoch: {EPOCH}")
+logging.info(f"input_file: {path_to_file}")
+logging.info(f"model_name: {model_name}")
 
 
-# Load the TensorBoard notebook extension
-# %load_ext tensorboard
+# Callback class to capture training loss after each epoch
+class EpochLossCallback(CallbackAny2Vec):
+    def __init__(self):
+        self.epoch = 1
+        self.losses = []
+        self.cumu_losses = []
+        self.previous_epoch_time = time.time()
+
+    def on_epoch_end(self, model):
+        cumu_loss = model.get_latest_training_loss()
+        loss = cumu_loss if self.epoch <= 1 else cumu_loss - self.cumu_losses[-1]
+        now = time.time()
+        epoch_seconds = now - self.previous_epoch_time
+        self.previous_epoch_time = now
+        print(f"Loss after epoch {self.epoch}: {loss} / cumulative loss: {cumu_loss} "+\
+              f" -> epoch took {round(epoch_seconds, 2)} s")
+        self.epoch += 1
+        self.losses.append(loss)
+        self.cumu_losses.append(cumu_loss)
 
 
-# Compile all the steps described above into a function that can be called on a list of vectorized sentences obtained from any text dataset. Notice that the sampling table is built before sampling skip-gram word pairs. You will use this function in the later sections.
-
-
-# Generates skip-gram pairs with negative sampling for a list of sequences
-# (int-encoded sentences) based on window size, number of negative samples
-# and vocabulary size.
-def generate_training_data(sequences, window_size, num_ns, vocab_size, seed):
-    # Elements of each training example are appended to these lists.
-    targets, contexts, labels = [], [], []
-
-    # Build the sampling table for `vocab_size` tokens.
-    sampling_table = tf.keras.preprocessing.sequence.make_sampling_table(vocab_size)
-
-    # Iterate over all sequences (sentences) in the dataset.
-    for sequence in sequences:
-        # Generate positive skip-gram pairs for a sequence (sentence).
-        positive_skip_grams, _ = tf.keras.preprocessing.sequence.skipgrams(
-            sequence,
-            vocabulary_size=vocab_size,
-            sampling_table=sampling_table,
-            window_size=window_size,
-            negative_samples=0,
-        )
-
-        # Iterate over each positive skip-gram pair to produce training examples
-        # with a positive context word and negative samples.
-        for target_word, context_word in positive_skip_grams:
-            context_class = tf.expand_dims(tf.constant([context_word], dtype="int64"), 1)
-            negative_sampling_candidates, _, _ = tf.random.log_uniform_candidate_sampler(
-                true_classes=context_class,
-                num_true=1,
-                num_sampled=num_ns,
-                unique=True,
-                range_max=vocab_size,
-                seed=SEED,
-                name="negative_sampling",
-            )
-
-            # Build context and label vectors (for one target word)
-            negative_sampling_candidates = tf.expand_dims(negative_sampling_candidates, 1)
-
-            context = tf.concat([context_class, negative_sampling_candidates], 0)
-            label = tf.constant([1] + [0] * num_ns, dtype="int64")
-
-            # Append each element from the training example to global lists.
-            targets.append(target_word)
-            contexts.append(context)
-            labels.append(label)
-
-    return targets, contexts, labels
-
-
-def custom_standardization(input_data):
-    """
-    :param input_data: an input string
-    :return: same string, lower-cased with punctuation removed
-    """
-    lowercase = tf.strings.lower(input_data)
-    return tf.strings.regex_replace(lowercase, "[%s]" % re.escape(string.punctuation), "")
-
-
-## 1. Ingest input file and extract the third field of each line (i.e., the replaced PubMed abstract)
-## TODO do we need this?
-lines = []
-with open(path_to_file) as f:
-    for line in f:
-        columns = line.split("\t")
-        if len(columns) != 3:
-            raise ValueError(f"Malformed marea line: {line}")
-        abstract = columns[2]  # columns[0]: pmid,  columns[1] year, columns[2] abstract text
-        lines.append(abstract)
-
-
-text_ds = tf.data.TextLineDataset(path_to_file).filter(lambda x: tf.cast(tf.strings.length(x), bool))
-
-
-# Use the `TextVectorization` layer to normalize, split, and map strings to
-# integers. Set the `output_sequence_length` length to pad all samples to the
-# same length.
-vectorize_layer = tf.keras.layers.TextVectorization(
-    standardize=custom_standardization, max_tokens=vocab_size, output_mode="int", output_sequence_length=sequence_length
+# Creating the Word2Vec model
+w2v_model = Word2Vec(
+    vector_size=embedding_dim,
+    window=10,
+    min_count=1,
+    sample=1e-5, 
+    alpha=0.03, 
+    workers=cores-1,
+    min_alpha=0.0001,
+    sg=1,
+    compute_loss=True,
+    negative=5
 )
 
-vectorize_layer.adapt(text_ds.batch(1024))
+# Building vocabulary
+t = time.time()
+w2v_model.build_vocab(corpus_file=path_to_file, progress_per=10000)
+print('Time to build vocab: {} mins'.format(round((time.time() - t) / 60, 2)))
 
-# Save the created vocabulary for reference.
-inverse_vocab = vectorize_layer.get_vocabulary()
-# print(inverse_vocab[:20])
-
-# Vectorize the data in text_ds.
-text_vector_ds = text_ds.batch(1024).prefetch(AUTOTUNE).map(vectorize_layer).unbatch()
-
-sequences = list(text_vector_ds.as_numpy_iterator())
-print(len(sequences))
-
-
-for seq in sequences[:5]:
-    print(f"{seq} => {[inverse_vocab[i] for i in seq]}")
-
-targets, contexts, labels = generate_training_data(
-    sequences=sequences, window_size=2, num_ns=4, vocab_size=vocab_size, seed=SEED
+# Training the model
+t = time.time()
+loss_calc = EpochLossCallback()
+trained_word_count, raw_word_count = w2v_model.train(
+    corpus_file=path_to_file,
+    total_examples=w2v_model.corpus_count,
+    total_words=w2v_model.corpus_total_words,
+    epochs=EPOCH,
+    report_delay=1,
+    compute_loss=True,
+    callbacks=[loss_calc]
 )
+print('Time to train the model: {} mins'.format(round((time.time() - t) / 60, 2)))
 
-# record time to generate training data
-now_time = time.time()
-duration = time.strftime("%H:%M:%S", time.gmtime(now_time - start_time))
-logging.info(f"Time to generate training data {duration} ")
+# Saving the losses
+with open('./losses.dat', 'w') as fp:
+    for item in loss_calc.losses:
+        fp.write("%s\n" % item)
+    print('Losses saved.')
 
-
-targets = np.array(targets)
-contexts = np.array(contexts)[:, :, 0]
-labels = np.array(labels)
-
-print("\n")
-print(f"targets.shape: {targets.shape}")
-print(f"contexts.shape: {contexts.shape}")
-print(f"labels.shape: {labels.shape}")
-
-
-dataset = tf.data.Dataset.from_tensor_slices(((targets, contexts), labels))
-dataset = dataset.shuffle(BUFFER_SIZE).batch(BATCH_SIZE, drop_remainder=True)
-print(dataset)
-
-
-dataset = dataset.cache().prefetch(buffer_size=AUTOTUNE)
-print(dataset)
-
-
-class Word2Vec(tf.keras.Model):
-    def __init__(self, vocab_size, embedding_dim):
-        super(Word2Vec, self).__init__()
-        self.target_embedding = layers.Embedding(vocab_size, embedding_dim, input_length=1, name="w2v_embedding")
-        self.context_embedding = layers.Embedding(vocab_size, embedding_dim, input_length=num_ns + 1)
-
-    def call(self, pair):
-        target, context = pair
-        # target: (batch, dummy?)  # The dummy axis doesn't exist in TF2.7+
-        # context: (batch, context)
-        if len(target.shape) == 2:
-            target = tf.squeeze(target, axis=1)
-        # target: (batch,)
-        word_emb = self.target_embedding(target)
-        # word_emb: (batch, embed)
-        context_emb = self.context_embedding(context)
-        # context_emb: (batch, context, embed)
-        dots = tf.einsum("be,bce->bc", word_emb, context_emb)
-        # dots: (batch, context)
-        return dots
-
-
-def custom_loss(x_logit, y_true):
-    return tf.nn.sigmoid_cross_entropy_with_logits(logits=x_logit, labels=y_true)
-
-
-word2vec = Word2Vec(vocab_size, embedding_dim)
-word2vec.compile(optimizer="adam", loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True), metrics=["accuracy"])
-
-tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir="logs")
-history_all = word2vec.fit(dataset, epochs=10, callbacks=[tensorboard_callback])
-
-
-# docs_infra: no_execute
-# %tensorboard --logdir logs
-
-
-weights = word2vec.get_layer("w2v_embedding").get_weights()[0]
-vocab = vectorize_layer.get_vocabulary()
+# Saving the vectors and metadata
 
 ## Output the vector and metadata files representing the embeddings
 
-out_v = io.open(vector_file, "w", encoding="utf-8")
-out_m = io.open(metadata_file, "w", encoding="utf-8")
+word_vectors = w2v_model.wv
+word_vectors.save(model_name)
 
-for index, word in enumerate(vocab):
-    if index == 0:
-        continue  # skip 0, it's padding.
-    vec = weights[index]
-    out_v.write("\t".join([str(x) for x in vec]) + "\n")
-    out_m.write(word + "\n")
+w2v_model.wv.save_word2vec_format(vector_file, binary=True)
+print(f"Vectors saved to {vector_file}")
 
-out_v.close()
-out_m.close()
+# Assuming metadata is the vocabulary
+with open(metadata_file, 'w') as meta:
+    for word in w2v_model.wv.index_to_key:
+        meta.write(word + '\n')
+print(f"Metadata saved to {metadata_file}")
 
-# record end time
-end_time = time.time()
-duration_time = time.strftime("%H:%M:%S", time.gmtime(end_time - start_time))
-logging.info(f"Execution time: {duration_time} ")
+"""
+python run_gensim_word2vec_v1.py -i data/pubmed_filt/1m_abst_all_pubmed_filt.tsv -v vectors_1 -m metadata_1  -model 1m_all_filt_word2vec.wordvectors
+"""
