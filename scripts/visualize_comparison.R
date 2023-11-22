@@ -61,14 +61,11 @@ ggsave('mean_comparision.pdf')
 
 
 
-
-
-
 library(ggplot2)
 library(ggpubr)
 
 # Create DataFrame from CSV file
-data = read.table('/Users/niyone/Desktop/march_2023/comn_concepts/mean/kegg_0_comn_concepts.tsv', sep="\t", header=T)
+data = read.table('/Users/niyone/Desktop/wn2vec/dump/pid_2010_comn_concepts.tsv', sep="\t", header=T)
 
 mean_distance_pm <- data['mean_distance_pm']
 mean_distance_wn <- data['mean_distance_wn']
@@ -82,31 +79,31 @@ p3 <- ggplot(data_frame_mod, aes(x = "", y = mean_diff)) +
   theme_bw() +
   theme(axis.title.x = element_blank(), 
         axis.title.y = element_blank(), 
-        axis.text = element_text(size = 25),
-        axis.title = element_text(size = 25),
+        axis.text = element_text(size = 15),
+        axis.title = element_text(size = 15),
         panel.grid.major = element_line(size = 2),
         panel.grid.minor = element_line(size = 1),
-        plot.title = element_text(size = 20)) +
+        plot.title = element_text(size = 15)) +
   geom_jitter(size = 3) +
   geom_hline(yintercept = mean(data_frame_mod$mean_diff, na.rm=TRUE), color='red')+
-  labs(title = "Significant", size=30)
+  labs(title = "Significant", size=10)
 
 p4 <- ggplot(data, aes(x = "", y = mean_diff)) +
   scale_fill_nejm() + 
   theme_bw() +
   theme(axis.title.x = element_blank(), 
         axis.title.y = element_blank(), 
-        axis.text = element_text(size = 25),
-        axis.title = element_text(size = 25),
+        axis.text = element_text(size = 15),
+        axis.title = element_text(size = 15),
         panel.grid.major = element_line(size = 2),
         panel.grid.minor = element_line(size = 1),
-        plot.title = element_text(size = 20)) +
+        plot.title = element_text(size = 15)) +
   geom_jitter(size = 3) +
   geom_hline(yintercept = mean(data$mean_diff, na.rm=TRUE), color='red')+
-  labs(title = "All comparisons", size=30)
+  labs(title = "All comparisons", size=10)
 
 
 ggarrange(p3, p4)
 
-ggsave('kegg_mean_diff.png')
-ggsave('kegg_mean_diff.pdf')
+ggsave('pid_mean_diff.png')
+ggsave('pid_mean_diff.pdf')
