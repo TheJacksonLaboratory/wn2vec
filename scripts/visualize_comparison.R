@@ -24,9 +24,9 @@ p1 <- ggplot(data, aes(x = concept_set_name,
             scale_fill_nejm() + theme_bw() +
             theme(axis.title.x = element_blank(), 
                   axis.title.y = element_blank(), 
-                  axis.text = element_text(size = 15),
-                  legend.text = element_text(size = 20),
-                  plot.title = element_text(size = 20)) +
+                  axis.text = element_text(size = 10),
+                  legend.text = element_text(size = 15),
+                  plot.title = element_text(size = 10)) +
             labs(color = NULL) +
             guides(fill = guide_legend(title = NULL)) +
             ylim(0, max(sets_counts_per_concept_set, sets_counts_per_concept_set2)) +
@@ -45,9 +45,9 @@ p2 <- ggplot(data2, aes(x = concept_set_name,
             scale_fill_nejm() + theme_bw() +
             theme(axis.title.x = element_blank(), 
                   axis.title.y = element_blank(), 
-                  axis.text = element_text(size = 15),
+                  axis.text = element_text(size = 10),
                   legend.text = element_text(size = 20),
-                  plot.title = element_text(size = 20)) +
+                  plot.title = element_text(size = 10)) +
             guides(fill = guide_legend(title = NULL)) +
             ylim(0, max(sets_counts_per_concept_set, sets_counts_per_concept_set2)) +
             labs(title = "All comparisons")
