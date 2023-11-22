@@ -13,6 +13,7 @@ develop-eggs/
 dist/
 downloads/
 dump/
+data/metadata_vectors
 
 scripts/logs
 eggs/
