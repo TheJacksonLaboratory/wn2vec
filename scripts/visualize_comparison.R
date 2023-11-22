@@ -7,10 +7,10 @@ if(!require('ggpubr')) {
 }
 
 # Considering P-Value for significancy
-sets_counts_per_concept_set <- c(10, 0, 54, 9, 36, 4, 25, 10, 27, 6)
+sets_counts_per_concept_set <- c(13, 9, 32, 12, 35, 13, 36, 27, 29, 5)
 
 concept_set_name <- rep(c('MeSH', 'Biocarta', 'KEGG', 'GO (bp)', 'PID'), each = 2)
-sets_counts_per_concept_set2 <- c(57, 24, 178, 104, 120, 53, 133, 93, 124, 70)
+sets_counts_per_concept_set2 <- c(46, 42, 154, 131, 112, 70, 147, 125, 115, 79)
 
 subgroup <- rep(c("Wordnet", "Pubtator"))
 
@@ -34,7 +34,7 @@ p1 <- ggplot(data, aes(x = concept_set_name,
 
 #Rregardless of P-Value for Significancy 
 
-sets_counts_per_concept_set2 <- c(57, 24, 178, 104, 120, 53, 133, 93, 124, 70)
+sets_counts_per_concept_set2 <- c(46, 42, 154, 131, 112, 70, 147, 125, 115, 79)
 
 data2 <- data.frame(sets_counts_per_concept_set2, concept_set_name, subgroup)
 
