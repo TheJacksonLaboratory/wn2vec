@@ -96,3 +96,8 @@ words = w2v_model.wv.index_to_key  # Corresponding words
 # Save vectors and metadata to TSV files
 np.savetxt(f"{args.vector}.tsv", vectors, delimiter='\t')
 pd.DataFrame(words).to_csv(f"{args.metadata}.tsv", sep='\t', header=False, index=False)
+
+
+"""
+python run_word2vec.py -i ../data/pubmed_wn.tsv -v vectors_1 -m metadata_1
+"""
