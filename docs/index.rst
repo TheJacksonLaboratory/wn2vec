@@ -42,18 +42,17 @@ See :ref:`rst_marea` for instructions on how to run marea to perform biomedical 
 
 3. WordNet-based synonym Replacement
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-To replace non-biomedical synonyms with WordNet identifiers, run /scripts/run_wn_replacement.py script from the wn2vec package. 
+Next we performed non-biomedical synonyms replacement using WordNet identifers from WordNet library. 
 
-See :ref:`wordnetreplacement` for details and instructions.
+See :ref:`wordnetreplacement` for details and instructions to perform wordNet-based synonym replacement.
 
 
 4. word2vec embedding
 ^^^^^^^^^^^^^^^^^^^^^
 
-We perform word2vec embedding using TensorFlow2 with the /scripts/run_word2vec.py. In order to 
-compare the results of embedding with and without WordNet replacement, embedding is performed on both datasets separately.
+We perform word2vec embedding using Gensim word2vec model. In order to compare the results of embedding with and without WordNet replacement, embedding is performed on both datasets separately.
 
-See :ref:`word2vec` for details and instructions.
+See :ref:`word2vec` for details and instructions to perform word2vec embedding.
 
 This step has to be run twice, first for marea output (pubtator) and second for step3 output, where concepts were replaced by their synonyms, before going to the following step 
 
@@ -61,9 +60,16 @@ This step has to be run twice, first for marea output (pubtator) and second for 
 5. Evaluating concept sets 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Our hypothesis is that non-biomedical concept replacement will improve embeddings as judged by a smaller distance of related 
-concepts to each other. To assess this, we defined: biocarta_canonical_gene_set, kegg_canonical_gene_set, bp_gene_ontology_gene_set and pid_canonical_gene_set concept sets representing genetic and genomic functions (gene sets) and biomedical concepts taken from MeSH.
-The /scripts/compare_embeddings.py script from wn2vec is used to assess the mean intracluster cosine distances of the corresponding concepts.
+Our hypothesis is that non-biomedical concept synonym replacement will improve embeddings as judged by a smaller distance of related 
+concepts to each other. 
+
+To assess this, we defined 5 different biomedical concept sets representing genetic and genomic functions (gene sets) and biomedical concepts taken from MeSH  (4 gene sets of sets and 1 MeSH set of sets): 
+* biocarta_canonical_gene_set
+* kegg_canonical_gene_set
+* bp_gene_ontology_gene_set 
+* pid_canonical_gene_set 
+
+We used the word2vec embeddings of each concepts in the sets to evaluate the impact of WordNet-based synonym replacemnt using the mean cluster coside distance of the corresponding concepts.
 
 See :ref:`conceptset_evaluation` for details.
 

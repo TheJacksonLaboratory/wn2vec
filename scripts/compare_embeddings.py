@@ -159,10 +159,4 @@ log.info(f"Outputting results to {out_fname}")
 
 df.to_csv(out_fname, sep="\t")
 
-# sample way of running the code using arparse:
-"""
 
-python compare_embeddings.py -i ../data/metadata_vectors -c ../data/bio_geneset.tsv -p pubt -w wn -o comn_concepts.tsv
-
-
-"""

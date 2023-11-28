@@ -1,4 +1,4 @@
-.. _wnreplacement:
+.. _wordnetreplacement:
 
 =================================
 WordNet-based synonym Replacement

@@ -67,5 +67,5 @@ logging.info(f"[INFO] Number of replaced words: {replaced_words} of {total_words
 
 """
 example: 
-> python ../scripts/run_wn_replacement.py -i ../data/pubmed_filt/100pubmed_filt.tsv -o ../data/pubmed_wn/100pubmed_wn.tsv --threshold 1
+> python scripts/run_wn_replacement.py -i dump/pubmed_cr.tsv -o dump/pubmed_cr_wn.tsv --threshold 1
 """
