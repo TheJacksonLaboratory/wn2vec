@@ -5,12 +5,12 @@ WN2Vec
 ======
 
 The original word2vec method operates on individual words (tokens). However, many biomedical concepts span multiple tokens. 
-For instance, <i>Myocardial Infarction</i>  would be treated by word2vec as two words, but it represents a 
+For instance, *Myocardial Infarction* would be treated by word2vec as two words, but it represents a 
 single medical concept. For this reason, recent approaches collapse multiword concepts into a single token prior to 
 embedding by replacing the multiword concepts with a single concept id (e.g., MeSH:D009203).
 
-In this project,  we reasoned that replacing synomnyms of non-biomedical concepts with the same identifier would 
-additional improve the performance of word2vec. WordNet is a  database of synonyms, hyponyms, and meronyms that 
+In this project,  we reasoned that replacing synonyms of non-biomedical concepts with the same identifier would 
+additionally improve the performance of word2vec. WordNet is a  database of synonyms, hyponyms, and meronyms that 
 groups synonyms from the same lexical category (nouns, verbs, adjectives, and adverbs) into synsets. 
 
 ---------------------------
@@ -18,12 +18,12 @@ Running the WN2Vec pipeline
 ---------------------------
 
 To reproduce the results in the manuscript, the following steps should be performed. Additionally,
-a detailed start to finish :ref:`tutorial` is provided
+a detailed start to finish:ref:`tutorial` is provided
 with a relatively small input dataset.
 
-1. Installation & Downlaod data
+1. Installation & Download data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-See :ref:`installation` for instructions on how to set up the package. 
+See ref:`installation` for instructions on how to set up the package. 
 
 PubMed abstracts
 ^^^^^^^^^^^^^^^^
@@ -37,7 +37,7 @@ of the NCBI `Download PubMed Data <https://pubmed.ncbi.nlm.nih.gov/download/>`_ 
 We use the `marea <https://github.com/TheJacksonLaboratory/marea>`_ package to replace 
 single- or multi-word biomedical concepts with concept identifiers.
 
-See :ref:`rst_marea` for instructions in how to run marea to perform biomedical concept replacement.
+See :ref:`rst_marea` for instructions on how to run marea to perform biomedical concept replacement.
 
 
 3. WordNet-based synonym Replacement
@@ -51,7 +51,7 @@ See :ref:`wordnetreplacement` for details and instructions.
 ^^^^^^^^^^^^^^^^^^^^^
 
 We perform word2vec embedding using TensorFlow2 with the /scripts/run_word2vec.py. In order to 
-compare the results of embedding with and without WordNet replacment, embedding is performed on both datasets separately.
+compare the results of embedding with and without WordNet replacement, embedding is performed on both datasets separately.
 
 See :ref:`word2vec` for details and instructions.
 
