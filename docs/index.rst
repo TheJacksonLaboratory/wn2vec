@@ -23,7 +23,7 @@ with a relatively small input dataset.
 
 1. Installation & Download data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-See ref:`installation` for instructions on how to set up the package. 
+See :ref:`installation` for instructions on how to set up the package. 
 
 PubMed abstracts
 ^^^^^^^^^^^^^^^^
