@@ -25,7 +25,6 @@ parser = argparse.ArgumentParser(description="Word2Vec Model Training Script")
 parser.add_argument("-i", "--input", type=str, help="Path to input (marea) file")
 parser.add_argument("-v", "--vector", type=str, help="Name of output vector file")
 parser.add_argument("-m", "--metadata", type=str, help="Name of output metadata file")
-parser.add_argument("-s", "--vocab_size", type=int, default=100000, help="Size of vocabulary for Word2Vec")
 args = parser.parse_args()
 
 # Set up parameters for Word2Vec
@@ -35,7 +34,7 @@ cores = multiprocessing.cpu_count()
 
 # Log start and parameters
 logging.info(f"Starting gensim word2vec run on {today_date}")
-logging.info(f"vocab_size: {args.vocab_size}, epoch: {EPOCH}, input_file: {args.input}")
+logging.info(f"epoch: {EPOCH}, input_file: {args.input}")
 
 # Callback class for tracking training progress and loss
 class EpochProgressCallback(CallbackAny2Vec):
