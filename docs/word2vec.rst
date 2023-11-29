@@ -1,11 +1,11 @@
-.. _w2v:
+.. _word2vec:
 
 ========
 Word2Vec
 ========
 
 * Now we have two files to campare. We have the marea output  which was filtered by year (pubmed_filt.tsv) and word net transformed text (pubmed_wn.tsv).
-* This step has to be run twice, first for pubmed_filt.tsv and second for wordnet.tsv before going to the following step 
+* This step has to be run twice, first for pubmed_filt.tsv and second for pubmed_wn.tsv before going to the following step 
 * Word2vec converts the texts from abstracts to build word embedding using Skip-gram and negative sampling. 
 * We used a continuous skip-gram model, where we were predicting words within a certain range before and after the current word in the same sentence.
 * The model is trained on skip-grams, which are n-grams that allow tokens to be skipped.
@@ -16,9 +16,7 @@ Word2Vec
         * -i : address of a .tsv file with abstracts (either pubmed_filt.tsv or pubmed_cr.tsv) 
         * -v : name of vector file output
         * -m : name of metadata file
-        * -w : size of embedding window 
-        * --embedding_dim: the desired dimension of vectors
-        * --vocab_size: the size of vocabulary to be produced  
+
     * To run the script:
         * locate the file you are running + python + run_word2vec.py +vector_file name + metadata_file name
         * Example: python run_word2vec.py -i ../data/pubmed_filt.tsv -v filt_vector_file -m filt_metatada_file 

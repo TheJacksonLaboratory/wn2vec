@@ -1,4 +1,4 @@
-.. _conceptseteval:
+.. _conceptset_evaluation:
 
 ======================
 Concept Set Evaluation

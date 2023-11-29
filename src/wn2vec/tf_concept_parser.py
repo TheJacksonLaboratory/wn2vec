@@ -50,7 +50,7 @@ class TfConceptParser:
             if c in concept_set:
                 values = vector_line.rstrip().split('\t')
                 fvals = np.array([float(v) for v in values])
-                self._d[c] = TfConcept(name=c, vctor=fvals)
+                self._d[c] = TfConcept(name=c, vector=fvals)
             else:
                 pass
                 #print(f"Could not fine TF concept \"{c}\"")

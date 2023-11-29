@@ -42,8 +42,6 @@ class FilterAbstracts:
 
         if not os.path.exists(path_to_pubmed_cr):
             raise FileNotFoundError("Could not find marea file")
-        if not os.path.exists(path_to_output_file):
-            raise FileNotFoundError("Could not find output file")
 
         self._marea_file = path_to_pubmed_cr
         self._output_file = path_to_output_file
