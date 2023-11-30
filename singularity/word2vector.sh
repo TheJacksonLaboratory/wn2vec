@@ -1,14 +1,12 @@
 #!/bin/bash
-#SBATCH --qos=long
-#SBATCH --time=200:00:00
-#SBATCH --mem-per-cpu=500G
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=1
-#SBATCH --mail-user=enock.niyonkuru@jax.org
+#SBATCH --job-name=word2vec
+#SBATCH --output=word2vec.out
+#SBATCH --qos=batch
+#SBATCH --time=72:00:00
+#SBATCH --mem-per-cpu=50G
 #SBATCH --mail-type=END,FAIL
 ### SLURM HEADER
 
+source venv/bin/activate
 
-module load singularity
-
-singularity exec --nv tensorflow.sif python ../scripts/run_word2vec.py -i ../data/pubmed_filt.tsv -v filt_vector_file -m filt_metatada_file  
+python ../scripts/run_word2vec.py -i ../data/pubmed_wn.tsv -v wn_vector -m wn_metadata

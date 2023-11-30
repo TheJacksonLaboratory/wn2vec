@@ -1,104 +1,72 @@
-.. _home:
-
-======
-WN2Vec
-======
+# WN2Vec
 
 The original word2vec method operates on individual words (tokens). However, many biomedical concepts span multiple tokens. 
 For instance, *Myocardial Infarction* would be treated by word2vec as two words, but it represents a 
 single medical concept. For this reason, recent approaches collapse multiword concepts into a single token prior to 
 embedding by replacing the multiword concepts with a single concept id (e.g., MeSH:D009203).
 
-In this project,  we reasoned that replacing synonyms of non-biomedical concepts with the same identifier would 
-additionally improve the performance of word2vec. WordNet is a  database of synonyms, hyponyms, and meronyms that 
+In this project, we reasoned that replacing synonyms of non-biomedical concepts with the same identifier would 
+additionally improve the performance of word2vec. WordNet is a database of synonyms, hyponyms, and meronyms that 
 groups synonyms from the same lexical category (nouns, verbs, adjectives, and adverbs) into synsets. 
 
----------------------------
-Running the WN2Vec pipeline
----------------------------
+## Running the WN2Vec pipeline
 
 To reproduce the results in the manuscript, the following steps should be performed. Additionally,
-a detailed start to finish:ref:`tutorial` is provided
+a detailed start to finish [tutorial](tutorial.md) is provided
 with a relatively small input dataset.
 
-1. Installation & Download data
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-See :ref:`installation` for instructions on how to set up the package. 
+### 1. Installation & Download data
 
-PubMed abstracts
-^^^^^^^^^^^^^^^^
+See [installation](install.md) for instructions on how to set up the package. 
 
-To obtain PubMed abstracts, following the instructions
-of the NCBI `Download PubMed Data <https://pubmed.ncbi.nlm.nih.gov/download/>`_ website. 
+#### PubMed abstracts
 
-2. Replacement of biomedical concepts
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-We use the `marea <https://github.com/TheJacksonLaboratory/marea>`_ package to replace 
-single- or multi-word biomedical concepts with concept identifiers.
-
-See :ref:`rst_marea` for instructions on how to run marea to perform biomedical concept replacement.
+To obtain PubMed abstracts, follow the instructions of the NCBI <a href="https://pubmed.ncbi.nlm.nih.gov/download/" target="_blank">Download PubMed Data</a> website.
 
 
-3. WordNet-based synonym Replacement
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Next we performed non-biomedical synonyms replacement using WordNet identifers from WordNet library. 
+### 2. Replacement of biomedical concepts
 
-See :ref:`wordnetreplacement` for details and instructions to perform wordNet-based synonym replacement.
+We use the <a href="https://github.com/TheJacksonLaboratory/marea" target="_blank">marea</a> package to replace single- or multi-word biomedical concepts with concept identifiers.
 
 
-4. word2vec embedding
-^^^^^^^^^^^^^^^^^^^^^
+See [marea](marea.md) for instructions on how to run marea to perform biomedical concept replacement.
 
-We perform word2vec embedding using Gensim word2vec model. In order to compare the results of embedding with and without WordNet replacement, embedding is performed on both datasets separately.
+### 3. WordNet-based synonym Replacement
 
-See :ref:`word2vec` for details and instructions to perform word2vec embedding.
+Next we performed non-biomedical synonyms replacement using WordNet identifiers from the WordNet library. 
 
-This step has to be run twice, first for marea output (pubtator) and second for step3 output, where concepts were replaced by their synonyms, before going to the following step 
+See [wordnetreplacement](wordnetreplacement.md) for details and instructions to perform WordNet-based synonym replacement.
 
+### 4. word2vec embedding
 
-5. Evaluating concept sets 
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+We perform word2vec embedding using the Gensim word2vec model. In order to compare the results of embedding with and without WordNet replacement, embedding is performed on both datasets separately.
+
+See [word2vec](word2vec.md) for details and instructions to perform word2vec embedding.
+
+This step has to be run twice, first for marea output (pubtator) and second for step 3 output, where concepts were replaced by their synonyms, before going to the following step.
+
+### 5. Evaluating concept sets
 
 Our hypothesis is that non-biomedical concept synonym replacement will improve embeddings as judged by a smaller distance of related 
 concepts to each other. 
 
-To assess this, we defined 5 different biomedical concept sets representing genetic and genomic functions (gene sets) and biomedical concepts taken from MeSH  (4 gene sets of sets and 1 MeSH set of sets): 
-* biocarta_canonical_gene_set
-* kegg_canonical_gene_set
-* bp_gene_ontology_gene_set 
-* pid_canonical_gene_set 
+To assess this, we defined 5 different biomedical concept sets representing genetic and genomic functions (gene sets) and biomedical concepts taken from MeSH  (4 gene sets of sets and 1 MeSH set of sets):
 
-We used the word2vec embeddings of each concepts in the sets to evaluate the impact of WordNet-based synonym replacemnt using the mean cluster coside distance of the corresponding concepts.
+- biocarta_canonical_gene_set
 
-See :ref:`conceptset_evaluation` for details.
+- kegg_canonical_gene_set
 
+- bp_gene_ontology_gene_set 
 
+- pid_canonical_gene_set 
 
 
+We used the word2vec embeddings of each concept in the sets to evaluate the impact of WordNet-based synonym replacement using the mean cluster cosine distance of the corresponding concepts.
 
-.. toctree::
-    :caption: wn2vec
-    :name: wn2vec
-    :maxdepth: 1
+See [conceptset_evaluation](conceptset_evaluation.md) for details.
 
-    install
-    marea
-    wordnetreplacement
-    word2vec
-    concept_sets
-    conceptset_evaluation
-    tutorial
-    contributing
-    authors
-    history
-    LICENSE
+---
 
- 
+## Feedback
 
---------
-Feedback
---------
-
-The best place to leave feedback, ask questions, and report bugs is the `WN2vec Issue Tracker <https://github.com/TheJacksonLaboratory/wn2vec/issues>`_.
-
+The best place to leave feedback, ask questions, and report bugs is the <a href="https://github.com/TheJacksonLaboratory/wn2vec/issues" target="_blank">WN2vec Issue Tracker</a>.

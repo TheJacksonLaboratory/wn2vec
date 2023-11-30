@@ -29,9 +29,16 @@ theme:
       accent: lime
 
 
-#nav:
-##  - Home: 'index.md'
-#  - For developers: 'developers.md'
+
+
+nav:
+  - Home: index.md
+  - Tutorial: tutorial.md
+  - Installation: install.md
+  - Marea : marea.md
+  - WordNet Replacement: wordnetreplacement.md
+  - Word2vec: word2vec.md
+  - Concept Sets Evaluation: conceptset_evaluation.md
 
 
 
