@@ -1,3 +1,0 @@
-# Installation
-
-TODO some text
