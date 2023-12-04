@@ -1,13 +1,11 @@
 # WN2Vec
 
-The original word2vec method operates on individual words (tokens). However, many biomedical concepts span multiple tokens. 
-For instance, *Myocardial Infarction* would be treated by word2vec as two words, but it represents a 
-single medical concept. For this reason, recent approaches collapse multiword concepts into a single token prior to 
-embedding by replacing the multiword concepts with a single concept id (e.g., MeSH:D009203).
+The original word2vec method operates on individual words (tokens). However, many biomedical concepts span multiple tokens.
+For instance, *Myocardial Infarction* would be treated by word2vec as two words, but it represents a single medical concept. For this reason, recent approaches collapse multiword concepts into a single token prior to
+embedding by replacing the multiword concepts with a single concept id (e.g., [MeSH:D009203](https://meshb.nlm.nih.gov/record/ui?ui=D009203){:target="_blank"}).
 
-In this project, we reasoned that replacing synonyms of non-biomedical concepts with the same identifier would 
-additionally improve the performance of word2vec. WordNet is a database of synonyms, hyponyms, and meronyms that 
-groups synonyms from the same lexical category (nouns, verbs, adjectives, and adverbs) into synsets. 
+In this project, we reasoned that replacing synonyms of non-biomedical concepts with the same identifier would additionally improve the performance of word2vec. [WordNet](https://wordnet.princeton.edu/){:target="_blank"} is a database of synonyms, hyponyms, and meronyms that
+groups synonyms from the same lexical category (nouns, verbs, adjectives, and adverbs) into synsets.
 
 ## Running the WN2Vec pipeline
 
@@ -17,7 +15,7 @@ with a relatively small input dataset.
 
 ### 1. Installation & Download data
 
-See [installation](install.md) for instructions on how to set up the package. 
+See [installation](install.md) for instructions on how to set up the package.
 
 #### PubMed abstracts
 
@@ -33,7 +31,7 @@ See [marea](marea.md) for instructions on how to run marea to perform biomedical
 
 ### 3. WordNet-based synonym Replacement
 
-Next we performed non-biomedical synonyms replacement using WordNet identifiers from the WordNet library. 
+Next we performed non-biomedical synonyms replacement using WordNet identifiers from the WordNet library.
 
 See [wordnetreplacement](wordnetreplacement.md) for details and instructions to perform WordNet-based synonym replacement.
 
@@ -47,18 +45,24 @@ This step has to be run twice, first for marea output (pubtator) and second for 
 
 ### 5. Evaluating concept sets
 
-Our hypothesis is that non-biomedical concept synonym replacement will improve embeddings as judged by a smaller distance of related 
-concepts to each other. 
+Our hypothesis is that non-biomedical concept synonym replacement will improve embeddings as judged by a smaller distance of related
+concepts to each other.
 
-To assess this, we defined 5 different biomedical concept sets representing genetic and genomic functions (gene sets) and biomedical concepts taken from MeSH  (4 gene sets of sets and 1 MeSH set of sets):
+To assess this, we defined 5 different biomedical concept sets representing genetic and genomic functions (gene sets) and biomedical concepts taken from MeSH  (four  sets of gene concept sets and one set of MeSH concept sets):
 
-- biocarta_canonical_gene_set
+- biocarta canonical gene set
 
-- kegg_canonical_gene_set
+- kegg canonical gene set
 
-- bp_gene_ontology_gene_set 
+<<<<<<< HEAD
+- bp_gene_ontology_gene_set
 
-- pid_canonical_gene_set 
+- pid_canonical_gene_set
+=======
+- (GO) bp gene ontology gene set 
+
+- pid canonical gene set 
+>>>>>>> 84c89fa (updated code)
 
 
 We used the word2vec embeddings of each concept in the sets to evaluate the impact of WordNet-based synonym replacement using the mean cluster cosine distance of the corresponding concepts.
