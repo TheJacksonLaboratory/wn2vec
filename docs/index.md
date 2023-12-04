@@ -50,13 +50,19 @@ concepts to each other.
 
 To assess this, we defined 5 different biomedical concept sets representing genetic and genomic functions (gene sets) and biomedical concepts taken from MeSH  (four  sets of gene concept sets and one set of MeSH concept sets):
 
-- biocarta_canonical_gene_set
+- biocarta canonical gene set
 
-- kegg_canonical_gene_set
+- kegg canonical gene set
 
+<<<<<<< HEAD
 - bp_gene_ontology_gene_set
 
 - pid_canonical_gene_set
+=======
+- (GO) bp gene ontology gene set 
+
+- pid canonical gene set 
+>>>>>>> 84c89fa (updated code)
 
 
 We used the word2vec embeddings of each concept in the sets to evaluate the impact of WordNet-based synonym replacement using the mean cluster cosine distance of the corresponding concepts.
