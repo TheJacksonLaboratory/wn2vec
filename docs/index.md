@@ -54,16 +54,9 @@ To assess this, we defined 5 different biomedical concept sets representing gene
 
 - kegg canonical gene set
 
-<<<<<<< HEAD
-- bp_gene_ontology_gene_set
-
-- pid_canonical_gene_set
-=======
 - (GO) bp gene ontology gene set 
 
 - pid canonical gene set 
->>>>>>> 84c89fa (updated code)
-
 
 We used the word2vec embeddings of each concept in the sets to evaluate the impact of WordNet-based synonym replacement using the mean cluster cosine distance of the corresponding concepts.
 

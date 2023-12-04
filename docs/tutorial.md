@@ -99,8 +99,8 @@ For example:
 - **WN relevant concepts 1302 and PM relevant concepts 1302**: This means there were *1302 genes* both in the WN and PM corpus, and in the biocarta_canonical_gene_set (concept set).
 - **WN sig 22 and PM sig 3**: This indicates that *22 concept sets* in the WN corpus had a *significantly lower cluster mean distance* compared to only *3* in the PM corpus.
 - **WN LESS 165 and PM LESS 117 (irrespective of p-value)**: There were *165 concept sets* in WN with a lower cluster mean distance compared to *117* in PM.
-- **WN sig PairTest 106249 and PM sig PairTest 90127**
-- **WN LESS PairTest 130706 and PM LESS PairTest 113559 (irrespective of p-value)**
+- WN sig PairTest 106249 and PM sig PairTest 90127
+- WN LESS PairTest 130706 and PM LESS PairTest 113559 (irrespective of p-value)
 
 #### Explanation:
 
