@@ -83,9 +83,9 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-i", type=str, help="address of marea_file")  # name of pubmed_cr file
-    parser.add_argument("-o", type=str, help="address of output_file")  # address of output file
-    parser.add_argument("-y", type=int, help="threshold year of filter")  # year threshold
+    parser.add_argument("-i", type=str, help="address of marea_file", required=True)  # name of pubmed_cr file
+    parser.add_argument("-o", type=str, help="address of output_file", required=True)  # address of output file
+    parser.add_argument("-y", type=int, help="threshold year of filter", required=True)  # year threshold
     args = parser.parse_args()
 
 
@@ -95,7 +95,7 @@ FilterAbstracts(args.i, args.o, args.y)
 
 Sample way of running the code:
 
-python filter_by_year.py 'path_to_pubmed_cr' 'path_to_output_file' 'threshold_year' 
+python filter_by_year.py 'path_to_pubmed_cr' 'path_to_output_file' 'threshold_year'
 
 ex:  python  /scripts/filter_by_year.py  -i ../data/pubmed_cr.tsv  -o ../data/pubmed_filt.tsv  -y 2015
 

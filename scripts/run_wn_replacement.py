@@ -5,7 +5,23 @@ import logging
 import datetime
 import time
 import nltk
+
+"""
+The following code downloads the NLTK wordnet resource. The main command is simply
 nltk.download('wordnet')
+However, we have noted that on some systems this leads to a certificate verify failed error.
+The following solution to this problem was found on StackOverflow 38916452.
+"""
+import ssl
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
+nltk.download('wordnet')
+
+
 
 sys.path.insert(0, os.path.abspath("../src/"))
 from wn2vec import WordNetTransformer
@@ -66,6 +82,6 @@ logging.info(f"[INFO] Number of replaced words: {replaced_words} of {total_words
 
 
 """
-example: 
+example:
 > python scripts/run_wn_replacement.py -i dump/pubmed_cr.tsv -o dump/pubmed_cr_wn.tsv --threshold 1
 """
