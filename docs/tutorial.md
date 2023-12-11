@@ -42,10 +42,15 @@ We proceed with the `pubmed_filt.tsv` file (or prepared your own input file to h
 
 ```shell
 # Note: still in scripts folder
-python run_wn_replacement.py -i ../pubmed_filt.tsv -o ../pubmed_wn.tsv [--threshold <float>]
+python run_wn_replacement.py -i ../pubmed_filt.tsv -p PREFIX [--threshold <float>]
 ```
 
-The `-i` argument points to the input file. The `-o` argument creates a new output file with the result. The `--threshold` is a floating number that controls the minimum (threshold) count of a synonym to be replaced. First, the mean word count of all words (tokens) in the entire corpus is determined. For example, the mean could be &mu; = 400, meaning that the average word occurs 400 times in the entire corpus of texts. If the threshold is set to &tau; = 2.0, then, the minimum count for being replaced would be &tau;&mu; = 800.
+The `-i` argument points to the input file. The `-p` argument is a prefix that will be used to create two files:
+
+- PREFIX-WN.txt: Text of the abstracts **with** WordNet replacements, one abstract per line
+- PREFIX-abstracts.txt: Text of the abstracts **without** WordNet replacements, one abstract per line
+
+The `--threshold` is a floating number that controls the minimum (threshold) count of a synonym to be replaced. First, the mean word count of all words (tokens) in the entire corpus is determined. For example, the mean could be &mu; = 400, meaning that the average word occurs 400 times in the entire corpus of texts. If the threshold is set to &tau; = 2.0, then, the minimum count for being replaced would be &tau;&mu; = 800.
 
 The output file has the same number of abstracts as the input file, except that some words are replaced by more common synonyms, and the format changed to be just one column which is the abstracts only.
 
@@ -53,8 +58,6 @@ When the script is run, it will either download or preload the WordNet vocabular
 
 
 ![run_wn_replacement](./img/run_wn_shell.png)
-
-
 
 
 
@@ -80,9 +83,11 @@ The next step is to run word2vec on the replaced input file. If desired, word2ve
 Now, run each file with abstracts through word2vec. If you want to compare both files to test the impact of WordNet-based synonym replacement, run the following code twice:
 
 ```shell
-python run_word2vec.py -i pubmed_filt_abst.tsv -v pm_vector -m pm_metadata
-python run_word2vec.py -i pubmed_wn.tsv -v wn_vector -m wn_metadata
+python run_word2vec.py -i pubmed_filt_abst.tsv -p pm
+python run_word2vec.py -i pubmed_wn.tsv -p wn
 ```
+
+Running the script with the argument `-p` (long form `--prefix`) to "pm" will create output files pm_vector.tsv and pm_metadata.tsv.
 
 Remember to run this code twice with separate paths for the input and different names for vectors and metadata if you want to compare two separate files. Note: all custom vector names should end with '_vector' and metadata should end '_metadata'.
 

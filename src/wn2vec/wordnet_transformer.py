@@ -80,11 +80,11 @@ class WordNetTransformer:
     def get_word_to_synonyms_d(self, unique_words_list) -> Dict:
         """
         Constructs a dictionary of synonyms.
-        
+
         This method traverses through the list of unique words, and for each word, a list of synonyms is retrieved. The word
         with the highest occurrence from the synonym list is then chosen as the value in the dictionary, ensuring
         that common words are not replaced.
-        
+
         :param unique_words_list: A list of unique words sorted by frequency.
         :type unique_words_list: List[str]
         :return: A dictionary where keys are unique words and values are the highest occurring synonyms.
@@ -104,17 +104,17 @@ class WordNetTransformer:
                 dictionary[this_word] = self.get_highest_occuring_synonym(synonym_list)
         """""
         # Remove duplicates
-        # if a value is not the same as the key, and there is no pair of the same key & value (based on the value), 
+        # if a value is not the same as the key, and there is no pair of the same key & value (based on the value),
                  and then replace the value with the same key
-         i.e If a word is replaced by another  a word, it cannot replace another word. 
-                                Example:  before: 
+         i.e If a word is replaced by another  a word, it cannot replace another word.
+                                Example:  before:
                                                 work: study
                                                 influence: work
-                                                study: study 
-                                            after: 
+                                                study: study
+                                            after:
                                                 work: study
                                                 influence: influence
-                                                study: study 
+                                                study: study
         """ ""
 
         synonyms_used_for_replacements = set()
@@ -133,13 +133,12 @@ class WordNetTransformer:
         @ urgument: synonym_list: a list of a word's syonyms from Wordnet
         @ return: The word (synonym) with the highest count in our dataset
 
-           
         :param synonym_list: A list of synonyms derived from WordNet for a particular word in the dataset.
         :type synonym_list: List[str]
-        
+
         :return: The synonym with the highest occurrence in the dataset.
         :rtype: str
-    
+
         """
         if len(synonym_list) == 0:
             raise ValueError("synonym_list was length zero, should never happen")
@@ -168,10 +167,10 @@ class WordNetTransformer:
     def transform(self, line_abstract: str) -> str:
         """
         Replaces the variable in dataset with their synonyms from the dictionary
-        :param line_abstract: A string representing a line from the marea file, 
+        :param line_abstract: A string representing a line from the marea file,
                             containing the PMID, year, and abstract text separated by tabs.
         :type line_abstract: str
-        
+
         :return: A string representing the transformed abstract, with words replaced by their synonyms.
         :rtype: str
 
@@ -190,17 +189,13 @@ class WordNetTransformer:
         # trans_abstract = columns[0] + '\t' + columns[1] + '\t' + columns[2] + '\n'
         return abstract + "\n"
 
-    def output_abstract_only(self):
+    def output_abstract_only(self, outfilename):
         """
         The marea input file has three fields - PMID - Year - Abstract
         For word2vec, we want to have just the Abstract text
         :return: The third field (abstract) with new line symbol
         """
-        path, filename = os.path.split(self._marea_file)
-        filename = os.path.splitext(filename)[0]
-        newfilename = "abstracts-%s.txt" % filename
-        newpath = os.path.join(path, newfilename)
-        fh = open(newpath, "w")
+        fh = open(outfilename, "w")
         file_size = os.path.getsize(self._marea_file)
         pbar = tqdm(total=file_size, unit="MB", desc="output abstracts of input marea file")
         with open(self._marea_file, "r") as f:
@@ -225,13 +220,13 @@ class WordNetTransformer:
     def transform_and_write(self, output_file):
         """
         Transforms each abstract and writes to the specified output file.
-        
+
         Reads each line from the marea file, transforms the abstract by replacing words with synonyms, and writes
         the new abstract to the specified output file.
-        
+
         :param output_file: The path to the output file where transformed abstracts will be written.
         :type output_file: str
-        
+
         """
         fh = open(output_file, "w")
         file_size = os.path.getsize(self._marea_file)
@@ -250,7 +245,7 @@ class WordNetTransformer:
     def get_replaced_word_count(self):
         """
         Computes the number of words in the dataset that were replaced using WordNet.
-        
+
         :return: The count of replaced words in the dataset.
         :rtype: int
         """
