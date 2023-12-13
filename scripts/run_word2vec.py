@@ -23,8 +23,7 @@ logging.basicConfig(
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description="Word2Vec Model Training Script")
 parser.add_argument("-i", "--input", type=str, help="Path to input (marea) file")
-parser.add_argument("-v", "--vector", type=str, help="Name of output vector file")
-parser.add_argument("-m", "--metadata", type=str, help="Name of output metadata file")
+parser.add_argument("-p", "--prefix", type=str, required=True, help="prefix for output metadata and vector files")
 args = parser.parse_args()
 
 # Set up parameters for Word2Vec
@@ -61,8 +60,8 @@ w2v_model = Word2Vec(
     vector_size=embedding_dim,
     window=10,
     min_count=1,
-    sample=1e-5, 
-    alpha=0.03, 
+    sample=1e-5,
+    alpha=0.03,
     workers=cores - 1,
     min_alpha=0.0001,
     sg=1,
@@ -93,6 +92,9 @@ vectors = w2v_model.wv.vectors  # Word vectors
 words = w2v_model.wv.index_to_key  # Corresponding words
 
 # Save vectors and metadata to TSV files
-np.savetxt(f"{args.vector}.tsv", vectors, delimiter='\t')
-pd.DataFrame(words).to_csv(f"{args.metadata}.tsv", sep='\t', header=False, index=False)
+prefix = args.prefix
+vector_file = f"{prefix}_vector.tsv"
+metadata_file = f"{prefix}_metadata.tsv"
+np.savetxt(vector_file, vectors, delimiter='\t')
+pd.DataFrame(words).to_csv(metadata_file, sep='\t', header=False, index=False)
 
