@@ -1,0 +1,808 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../install/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.2">
+    
+    
+      
+        <title>Tutorial - wn2vec</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.50c56a3b.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="white">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#tutorial" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="wn2vec" class="md-header__button md-logo" aria-label="wn2vec" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            wn2vec
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Tutorial
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="white"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+    
+  
+  Tutorial
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../install/" class="md-tabs__link">
+        
+  
+    
+  
+  Installation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../marea/" class="md-tabs__link">
+        
+  
+    
+  
+  Marea
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../wordnetreplacement/" class="md-tabs__link">
+        
+  
+    
+  
+  WordNet Replacement
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../word2vec/" class="md-tabs__link">
+        
+  
+    
+  
+  Word2vec
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../conceptset_evaluation/" class="md-tabs__link">
+        
+  
+    
+  
+  Concept Set Evaluation
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="wn2vec" class="md-nav__button md-logo" aria-label="wn2vec" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    wn2vec
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Tutorial
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Tutorial
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-setting-up-the-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Setting Up the Environment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-downloading-the-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Downloading the Data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-optional-preparing-the-input-file-with-marea" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 (Optional) Preparing the input file with marea
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-filter-by-year" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Filter By Year
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-wordnet-replacement" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. WordNet Replacement
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. WordNet Replacement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#input-text-excerpt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Input Text (Excerpt)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wordnet-replaced-text-excerpt" class="md-nav__link">
+    <span class="md-ellipsis">
+      WordNet-Replaced Text (Excerpt)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-word2vec" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Word2Vec
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-compare-embeddings" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Compare Embeddings
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-result-interpretation" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Result Interpretation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Result Interpretation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explanation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explanation:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../marea/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Marea
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wordnetreplacement/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    WordNet Replacement
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../word2vec/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Word2vec
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conceptset_evaluation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Concept Set Evaluation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="tutorial">Tutorial</h1>
+<p>Here, we demonstrate all the steps required to run the wn2vec pipeline on a small input dataset consisting of 100,000 abstracts from PubMed. The pipeline can be run similarly with all PubMed abstracts or any other input source.</p>
+<h2 id="1-setting-up-the-environment">1. Setting Up the Environment</h2>
+<p>There are several ways to run the code, but the simplest is to set up a virtual environment. We call the environment <code>wn2v_env</code> in this example, but you can use any name you like.</p>
+<p><div class="highlight"><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>wn2v_env
+<span class="nb">source</span><span class="w"> </span>wn2v_env/bin/activate
+pip<span class="w"> </span>install<span class="w"> </span>.
+</code></pre></div>
+Note that wn2vec requires Python 3.</p>
+<h2 id="2-downloading-the-data">2. Downloading the Data</h2>
+<p>The input data for this tutorial consists of a file with 100,000 abstracts from PubMed that have been processed using the marea pipeline for medical concept replacement.</p>
+<p>The file can be downloaded from Zenodo: <a href="https://zenodo.org/record/7588919/files/pubmed_cr.tsv?download=1">pubmed_cr.tsv</a>.</p>
+<h2 id="3-optional-preparing-the-input-file-with-marea">3 (Optional) Preparing the input file with marea</h2>
+<p>The file we downloaded above has been pre-processed using <a href="https://github.com/TheJacksonLaboratory/marea" target="_blank">MAREA</a>. For new data, you will
+need to use marea or an analogous tool. See <a href="../marea/">Running marea</a> for details.</p>
+<h2 id="4-filter-by-year">4. Filter By Year</h2>
+<p>After you have downloaded the <code>pubmed_cr.tsv</code> file (or prepared your own input file to have the same format), the next step is to filter by certain year if you want.</p>
+<p>For example if you would like publication above the year of 2010, if you would like to proceed with all the text, please skip this step:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>scripts
+python<span class="w"> </span>filter_by_year.py<span class="w"> </span>-i<span class="w"> </span>../pubmed_cr.tsv<span class="w"> </span>-o<span class="w"> </span>../pubmed_filt.tsv<span class="w"> </span>-y<span class="w"> </span><span class="m">2010</span>
+</code></pre></div>
+<h2 id="5-wordnet-replacement">5. WordNet Replacement</h2>
+<p>We proceed with the <code>pubmed_filt.tsv</code> file (or prepared your own input file to have the same format), the next step is to perform the WordNet non-biomedical concept replacement. Run the following script (which is in the <code>scripts</code> directory -- note that the example does not show full paths).</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Note: still in scripts folder</span>
+python<span class="w"> </span>run_wn_replacement.py<span class="w"> </span>-i<span class="w"> </span>../pubmed_filt.tsv<span class="w"> </span>-p<span class="w"> </span>PREFIX<span class="w"> </span><span class="o">[</span>--threshold<span class="w"> </span>&lt;float&gt;<span class="o">]</span>
+</code></pre></div>
+<p>The <code>-i</code> argument points to the input file. The <code>-p</code> argument is a prefix that will be used to create two files:</p>
+<ul>
+<li>PREFIX-WN.txt: Text of the abstracts <strong>with</strong> WordNet replacements, one abstract per line</li>
+<li>PREFIX-abstracts.txt: Text of the abstracts <strong>without</strong> WordNet replacements, one abstract per line</li>
+</ul>
+<p>The <code>--threshold</code> is a floating number that controls the minimum (threshold) count of a synonym to be replaced. First, the mean word count of all words (tokens) in the entire corpus is determined. For example, the mean could be &mu; = 400, meaning that the average word occurs 400 times in the entire corpus of texts. If the threshold is set to &tau; = 2.0, then, the minimum count for being replaced would be &tau;&mu; = 800.</p>
+<p>The output file has the same number of abstracts as the input file, except that some words are replaced by more common synonyms, and the format changed to be just one column which is the abstracts only.</p>
+<p>When the script is run, it will either download or preload the WordNet vocabulary (which may take a minute or so). Once it starts to perform sysnonym replacement, you will see a progress bar similar to the following.</p>
+<p><img alt="run_wn_replacement" src="../img/run_wn_shell.png" /></p>
+<h3 id="input-text-excerpt">Input Text (Excerpt)</h3>
+<p>The text is formatted in three tab-separated columns with column 1 being the PubMed identifier, column 2 being the year of publication, and column 3 being the abstract text with concept replacements. The following table shows an example.</p>
+<blockquote>
+<p>33500803  2020    colloid cyst curtail case report spontaneous colloid cyst regression (...) discover colloid cyst image perform transient meshd009461 ct mri brain reveal 5mm lesion</p>
+</blockquote>
+<h3 id="wordnet-replaced-text-excerpt">WordNet-Replaced Text (Excerpt)</h3>
+<blockquote>
+<p>colloid cyst restrict case report spontaneous colloid cyst regression (...) discover colloid cyst image perform transient meshd009461 ct mri brain reveal 5mm lesion</p>
+</blockquote>
+<p>Thus, the relatively rare word <code>curtail</code> was replaced by the more common synonym <code>restrict</code>.</p>
+<h2 id="6-word2vec">6. Word2Vec</h2>
+<p>The next step is to run word2vec on the replaced input file. If desired, word2vec can be run on both files for comparison purposes; the steps are analogous.</p>
+<p>Now, run each file with abstracts through word2vec. If you want to compare both files to test the impact of WordNet-based synonym replacement, run the following code twice:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>run_word2vec.py<span class="w"> </span>-i<span class="w"> </span>pubmed_filt_abst.tsv<span class="w"> </span>-p<span class="w"> </span>pm
+python<span class="w"> </span>run_word2vec.py<span class="w"> </span>-i<span class="w"> </span>pubmed_wn.tsv<span class="w"> </span>-p<span class="w"> </span>wn
+</code></pre></div>
+<p>Running the script with the argument <code>-p</code> (long form <code>--prefix</code>) to "pm" will create output files pm_vector.tsv and pm_metadata.tsv.</p>
+<p>Remember to run this code twice with separate paths for the input and different names for vectors and metadata if you want to compare two separate files. Note: all custom vector names should end with '_vector' and metadata should end '_metadata'.</p>
+<h2 id="7-compare-embeddings">7. Compare Embeddings</h2>
+<p>This step comes after you have 2 vector files and 2 metadata files for two separate corpora generated from the step above. This step evaluates the impact of WordNet-based synonym replacement on the corpus. The test will be done on different biomedical sets as detailed in <a href="../conceptset_evaluation/">Concept Set Evaluation</a>:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>compare_embeddings.py<span class="w"> </span>-i<span class="w"> </span>metadata_vectors/<span class="w"> </span>-c<span class="w"> </span>data/bio_geneset.tsv<span class="w"> </span>-p<span class="w"> </span>filt<span class="w"> </span>-w<span class="w"> </span>wn<span class="w"> </span>-o<span class="w"> </span>/comn_concepts.tsv
+</code></pre></div>
+<p>Repeat this step for multiple concept sets to check how different concepts' embeddings behave.</p>
+<h2 id="8-result-interpretation">8. Result Interpretation</h2>
+<p>We performed two tests, one is the cluster mean distance between genes of the same set, and the second is PairTest.</p>
+<ul>
+<li><strong>WN</strong>: refers to the <em>WordNet replaced corpus</em>.</li>
+<li><strong>PM</strong>: refers to the <em>marea output</em> (none of the concepts were replaced using WordNet).</li>
+</ul>
+<p>For example:</p>
+<ul>
+<li><strong>WN relevant concepts 1302 and PM relevant concepts 1302</strong>: This means there were <em>1302 genes</em> both in the WN and PM corpus, and in the biocarta_canonical_gene_set (concept set).</li>
+<li><strong>WN sig 22 and PM sig 3</strong>: This indicates that <em>22 concept sets</em> in the WN corpus had a <em>significantly lower cluster mean distance</em> compared to only <em>3</em> in the PM corpus.</li>
+<li><strong>WN LESS 165 and PM LESS 117 (irrespective of p-value)</strong>: There were <em>165 concept sets</em> in WN with a lower cluster mean distance compared to <em>117</em> in PM.</li>
+<li>WN sig PairTest 106249 and PM sig PairTest 90127</li>
+<li>WN LESS PairTest 130706 and PM LESS PairTest 113559 (irrespective of p-value)</li>
+</ul>
+<h4 id="explanation">Explanation:</h4>
+<ul>
+<li><strong>WN vs. PM</strong>: The comparison is between two different corpora - one processed with WordNet (WN) and the other with marea (PM).</li>
+<li><strong>Relevant Concepts</strong>: The number (1302) signifies the count of genes common between the analyzed corpus and a specific gene set.</li>
+<li><strong>Significance (sig)</strong>: The number of concept sets where the WordNet approach showed a statistically significant improvement in clustering compared to marea.</li>
+<li><strong>LESS</strong>: Indicates the number of concept sets where the mean distance between concepts is less (closer), suggesting better clustering or relatedness in the corpus.</li>
+<li><strong>PairTest</strong>: Represents a detailed comparison test between the two corpora, indicating how many times one performed better than the other in terms of clustering concepts.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2023 <a href="https://github.com/pnrobinson"  target="_blank" rel="noopener">Peter N Robinson</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy", "content.code.select"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      
+    
+  </body>
+</html>
